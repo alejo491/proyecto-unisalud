@@ -1,3 +1,28 @@
-<div id="footer"><div class="fleft">Copyright Statement</div><div class="fright">Buena colecci&oacute;n de plantillas web gratis <a href="http://www.mejoresplantillasgratis.es" target="_blank">aqu&iacute;</a>.</div><div class="fcenter">Design by: <a href="http://www.templatesperfect.com/">Templatesperfect.com</a></div></div>
+<!--footer -->
+<div class="body4">
+	<div class="main">
+		<div id="footer_menu">
+			<nav>
+				<ul>
+					<li><a href="index.html">Home</a></li>
+					<li><a href="Researches.html">Researches</a></li>
+					<li><a href="Services.html">Services</a></li>
+					<li><a href="Events.html">Events</a></li>
+					<li class="bg_none"><a href="Contacts.html">Contacts</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<div class="body5">
+	<div class="main">
+		<footer>
+			<a rel="nofollow" href="http://www.templatemonster.com/" target="_blank">Website template</a> designed by TemplateMonster.com<br>
+			<a href="http://www.templates.com/product/3d-models/" target="_blank">3D Models</a> provided by Templates.com
+		</footer>
+	</div>
+</div>
+<!--footer end-->
+<script type="text/javascript"> Cufon.now(); </script>
 </body>
 </html>
