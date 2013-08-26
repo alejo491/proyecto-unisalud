@@ -1,23 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html lang="en-US" xml:lang="en-US" xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta name="generator" content="HTML Tidy for Linux (vers 6 November 2007), see www.w3.org"/>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-<meta name="title" content=""/>
-<meta http-equiv="Pragma" content="cache"/>
-<meta name="ROBOTS" content="All"/>
-<meta http-equiv="Content-Language" content="es"/>
-<meta name="description" content=""/>
-<meta name="abstract" content=""/>
-<meta name="keywords" content=""/>
-<meta name="author" content=""/>
-<meta name="publisher" content=""/>
-<meta name="copyright" content=""/>
-<meta http-equiv="Reply-to" content=""/>
-<meta name="creation" content=""/>
-<meta name="expires" content=""/>
-<meta name="designer" content=""/>
-<title>UniSalud.com</title>
-<link rel="shortcut icon" href="favicon.ico"/>
-<link rel="stylesheet" type="text/css" href="css/style.css"/>
+<title>Home</title>
+<meta charset="utf-8">
+<link rel="stylesheet" href="css/reset.css" type="text/css" media="all">
+<link rel="stylesheet" href="css/layout.css" type="text/css" media="all">
+<link rel="stylesheet" href="css/style.css" type="text/css" media="all">
+<script type="text/javascript" src="js/jquery-1.4.2.js" ></script>
+<script type="text/javascript" src="js/cufon-yui.js"></script>
+<script type="text/javascript" src="js/cufon-replace.js"></script> 
+<script type="text/javascript" src="js/Myriad_Pro_300.font.js"></script>
+<script type="text/javascript" src="js/Myriad_Pro_400.font.js"></script>
+<!--[if lt IE 9]>
+	<script type="text/javascript" src="http://info.template-help.com/files/ie6_warning/ie6_script_other.js"></script>
+	<script type="text/javascript" src="js/html5.js"></script>
+<![endif]-->
 </head>
