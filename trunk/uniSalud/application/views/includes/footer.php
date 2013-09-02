@@ -1,7 +1,7 @@
 <!--footer -->
 <div class="body4">
 	<div class="main">
-		<?php $this->load->view("estandar/footerMenu");?>
+		<?php $this->load->view($footerMenu);?>
 	</div>
 </div>
 <div class="body5">

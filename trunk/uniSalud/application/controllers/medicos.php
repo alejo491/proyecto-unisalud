@@ -11,7 +11,7 @@ class Medicos extends CI_Controller {
     public function index() {
          $data['titulo'] = "Personal UniSalud";
 	 $data['title'] = 'Personal UniSalud';
-         $data['contenido'] = 'reegistro_medico';
+         $data['content'] = 'reegistro_medico';
          $this->load->view('plantilla', $data);
        
     }
