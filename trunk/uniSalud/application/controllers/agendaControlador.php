@@ -66,12 +66,12 @@ class agendaControlador extends CI_Controller {
             $crud->set_table('horarioatencion');
             $crud->set_subject('Horario de Atencion');
             $crud->required_fields('dia', 'hora_inicial', 'hora_final');
-            $crud->set_relation('id_medico', 'medico', 'nombre_medico');
-            //$crud->fields('dia', 'hora_inicial', 'hora_final');
+            $crud->set_relation('id_medico', 'medico','nombre_medico');
+            $crud->fields('dia', 'hora_inicial', 'hora_final','id_medico');
             $crud->where('horarioatencion.id_medico', $id_medico);
             $crud->display_as('hora_inicial', 'Hora de Inicio');
             $crud->display_as('hora_final', 'Hora de Finalizacion');
-            $crud->display_as('id_medico', 'Medico');
+            $crud->display_as('id_medico', '');
             $crud->callback_edit_field('id_medico', array($this, 'cargarMedico'));
             $crud->callback_add_field('id_medico',array($this,'cargarMedico'));
             $crud->unset_print();
@@ -87,7 +87,7 @@ class agendaControlador extends CI_Controller {
     function cargarMedico() {
         $session = $this->session->all_userdata();
             $id_medico=$session['medico_id'];
-            return '<input type="text" maxlength="50" value="'.$id_medico.'" name="id_medico" style="width:400px">';
+            return '<input style="visibility:hidden;" type="text" maxlength="50" value="'.$id_medico.'" name="id_medico" style="width:400px">';
        }
 
 }
