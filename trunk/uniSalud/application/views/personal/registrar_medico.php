@@ -19,8 +19,9 @@
                     echo form_open('medicos/registrar', $atributos);
                     ?>
                     <h1>Registro de Nuevo Usuario</h1><br />
+                    <strong>Los campos marcados con (*) son obligatorios</strong><br /><br />
                     <table>
-                    <td><strong>Los campos marcados con (*) son obligatorios</strong></td><br />
+                        
                         <tr>
                             <td><strong>Nombres:*</strong></td>
                             <td><?php
@@ -37,7 +38,7 @@
                                 ?></td>
                          </tr>
                          <tr>
-                             <td><strong>Apellidos:*</strong></td><td></td>
+                             <td><strong>Apellidos:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'apellido',
@@ -52,7 +53,7 @@
                                 ?></td>
                          </tr>
                          <tr>
-                             <td><strong>Cedula:*</strong></td><td></td>
+                             <td><strong>Cedula:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'cedula',
@@ -67,7 +68,7 @@
                                 ?></td>
                          </tr>
                          <tr>
-                             <td><strong>N° Tarjeta Profesional:*</strong></td><td></td>
+                             <td><strong>N° Tarjeta Profesional:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'Tarjeta',
@@ -82,7 +83,7 @@
                                 ?></td>
                          </tr>
                          <tr>
-                             <td><strong>Profesion:*</strong></td><td></td>
+                             <td><strong>Profesion:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'Profesion',
@@ -97,7 +98,7 @@
                                 ?></td>
                          </tr>
                          <tr>
-                             <td><strong>Especialidad:*</strong></td><td></td>
+                             <td><strong>Especialidad:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'especialidad',
@@ -112,7 +113,7 @@
                                 ?></td>
                          </tr>
                           <tr>
-                             <td><strong>E-mail:*</strong></td><td></td>
+                             <td><strong>E-mail:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'email',
@@ -127,7 +128,7 @@
                                 ?></td>
                          </tr>
                          <tr>
-                             <td><strong>Comfirmar E-mail:*</strong></td><td></td>
+                             <td><strong>Comfirmar E-mail:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'comemail',
@@ -142,7 +143,7 @@
                                 ?></td>
                          </tr>
                          <tr>
-                             <td><strong>Servicio a prestar:*</strong></td><td></td>
+                             <td><strong>Servicio a prestar:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'servicio',
@@ -157,7 +158,7 @@
                                 ?></td>
                          </tr>
                            <tr>
-                             <td><strong>Servicio a prestar:*</strong></td><td></td>
+                             <td><strong>Servicio a prestar:*</strong></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'servicio',
