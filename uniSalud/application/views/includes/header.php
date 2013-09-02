@@ -1,11 +1,11 @@
-<body id="page1">
+<body id="page2">
 <div class="body1"></div>
 <div class="body2">
 	<div class="main"><div class="ic">More Website Templates at TemplateMonster.com!</div>
 <!--header -->
 		<header>
 			<div class="wrapper">
-				<?php $this->load->view("estandar/menu");?>
+				<?php $this->load->view($menu);?>
 				<h1><a href="index.html" id="logo">cience</a></h1>
 			</div>
 			<div class="wrapper">
