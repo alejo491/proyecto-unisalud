@@ -35,7 +35,7 @@ class agendaControlador extends CI_Controller {
             $crud->display_as('medico', 'Servicios');
             $crud->unset_read();
             $crud->unset_print();
-            $crud->add_action('Agregar Horario', 'hola', 'http://localhost/uniSalud/agendaControlador/actualizarAgenda/', 'ui-icon-plus');
+            $crud->add_action('Actualizar Agenda', 'hola', 'http://localhost/uniSalud/agendaControlador/actualizarAgenda/', 'ui-icon-plus');
             $crud->set_crud_url_path(site_url('agendaControlador/index'));
 
             $output = $crud->render();
