@@ -168,6 +168,7 @@ CREATE TABLE IF NOT EXISTS `servicio` (
   `id_servicio` int(11) NOT NULL AUTO_INCREMENT,
   `costo` float NOT NULL,
   `tipo_servicio` varchar(256) NOT NULL,
+  `actividad` varchar(256) NOT NULL,
   PRIMARY KEY (`id_servicio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
  
@@ -232,3 +233,15 @@ ALTER TABLE `programa`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+INSERT INTO `usuario` (`id_usuario`, `email`, `contrasena`) VALUES
+(12,'alexis@gmail.com', '147258'),
+(13,'alejo491@gmail.com', '123456');
+
+INSERT INTO `rol` (`id_rol`, `nombre_rol`) VALUES
+(3,'administrador'),
+(1,'estudiante');
+
+INSERT INTO `posee` (`id_usuario`, `id_rol`) VALUES
+(12,1),
+(13,3);

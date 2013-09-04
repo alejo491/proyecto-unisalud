@@ -17,7 +17,7 @@ class agendaControlador extends CI_Controller {
     }
 
     public function index() {
-        $this->session->sess_destroy();
+        
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'personal/topcontentPersonalMedico';
