@@ -1,5 +1,5 @@
 <div style="float:left; display: inline; width: 100%; margin-top: 2%; margin-left: 2%;">
-    <form action="<?php echo base_url(); ?>usuario/login/" method="post">
+    <form action="<?php echo base_url(); ?>usuariosControlador/login/" method="post">
 
         <table cellpadding="20%" cellspacing="20%" style="width: 100%;">
             <tbody align="left">

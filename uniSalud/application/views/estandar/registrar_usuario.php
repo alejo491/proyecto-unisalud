@@ -15,7 +15,7 @@
                     <table>
                             <tr style="height: 35px ">
                             <td style="width: 200px"><strong>Codigo Estudiante:* </strong><br /></td>
-                            <td><?php
+                            <td><?php 
                                 $data_form=array(
                                     'id'        => 'codigoEstudiante',
                                     'name'    =>  'codigoEstudiante',
@@ -187,10 +187,11 @@
                                 $data_form=array(
                                     'id'        => 'contrasena',
                                     'name'    =>  'contrasena',
+                                   
                                     'size'      =>  '40',
                                     'style'     => "background:whitesmoke;border: 1px solid"
                                 );
-                               echo form_input($data_form);?>
+                               echo form_password($data_form);?>
                              </td>
                              <td>
                                 <?php echo form_error('contrasena','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
@@ -205,7 +206,7 @@
                                     'size'      =>  '40',
                                     'style'     => "background:whitesmoke;border: 1px solid"
                                 );
-                               echo form_input($data_form);?>
+                               echo form_password($data_form);?>
                              </td>
                              <td>
                                 <?php echo form_error('CContrasena','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>

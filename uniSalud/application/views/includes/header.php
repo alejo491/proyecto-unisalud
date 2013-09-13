@@ -18,7 +18,21 @@
                     }
                     ?>
                 <div class="wrapper">
-                        <?php $this->load->view($menu); ?>
+                       <?php 
+                               if(isset($user['id_rol'])) {
+                                    if($user['id_rol']=="3"){
+                                                $this->load->view("personal/menu");
+                                            }elseif ($user['id_rol']=="3") {
+
+                                                   $this->load->view("estandar/menu");
+
+
+                                            }
+                               }else{
+                                   
+                                   $this->load->view("estandar/menu");
+                               }
+                        ?>
                     <h1><a href="index.html" id="logo">cience</a></h1>
                 </div>
                 <div class="wrapper">
