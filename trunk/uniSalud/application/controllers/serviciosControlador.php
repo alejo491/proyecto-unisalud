@@ -32,6 +32,7 @@ class serviciosControlador extends CI_Controller {
             $crud->display_as('tipo_servicio', 'Tipo de Servicio');
             $crud->unset_read();
             $crud->unset_print();
+            $crud->unset_export();
             $crud->set_crud_url_path(site_url('serviciosControlador/index'));
 
             $output = $crud->render();

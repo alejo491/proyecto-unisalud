@@ -7,25 +7,9 @@ class Usuario extends CI_Controller {
 
     function __construct() {
         parent::__construct();
-        $this->load->model('usuariosModel');
-        
-       
+        $this->load->model('usuarioModelo');   
     }
-    
-    function index(){
-        
-        $data['header'] = 'includes/header';
-        $data['menu'] = 'personal/menu';
-        $data['topcontent'] = 'personal/topcontentRegistrarse';
-        $data['content'] = 'personal/registrar_usuario';
-        $data['footerMenu'] = 'personal/footerMenu';
-        
-        $this->load->view('plantilla', $data);
-    }
-    
 
-    
-    
     public function login() {
         
        if ($_POST) {
@@ -38,16 +22,12 @@ class Usuario extends CI_Controller {
             if ($this->form_validation->run() == TRUE) {
                 $email = $this->input->post('email', true);
                 $contrasena = $this->input->post('contrasena', true);
-                $usuarioActual = $this->usuariosModel->login($email, $contrasena);
+                $usuarioActual = $this->usuarioModelo->login($email, $contrasena);
                  
                if (isset($usuarioActual)) {
-                   
-                
-                    
                     $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
                     $this->session->set_userdata('email', $usuarioActual['email']);
-                    $this->session->set_userdata('id_rol',$this->usuariosModel->getRol($usuarioActual['id_usuario'])['id_rol']);
-                    
+                    $this->session->set_userdata('id_rol',$this->usuarioModelo->getRol($usuarioActual['id_usuario'])['id_rol']);
                 }
             }
             else{
@@ -63,8 +43,4 @@ class Usuario extends CI_Controller {
         $this->session->sess_destroy();
         redirect(base_url());
     }
-    
-   
-    
-    
 }

@@ -7,11 +7,11 @@
 <div class="main">
 	<?php 
         if(isset($output)){
-        $this->load->view($content,$output);
-        }else{
-            
+            $this->load->view($content,$output);
+        }
+        else{
             $this->load->view($content);
         }
-        ?>
+?>
 </div>
 <!--content end-->

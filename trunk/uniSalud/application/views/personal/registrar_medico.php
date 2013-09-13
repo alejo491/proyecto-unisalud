@@ -3,9 +3,6 @@
 <div class="main">
 	
 		<div class="wrapper pad_bot1">
-			
-                       
-       
                     <?php
                     $this->load->helper('form');
                     $atributos=array(

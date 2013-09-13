@@ -1,9 +1,20 @@
-<div style="float:right">
-<form action="<?php echo base_url(); ?>usuario/login/" method="post">
-                    
-			<table >
-			<tr><td align="left" style="color:white">E-mail:</td><td align="left" style="color:white">Contraseña:</td></tr>
-                        <tr><td><input class="text" name="email" id='email' size="15" maxlength="64"/></td><td><input type='password' class="text" name="contrasena" id='contrasena' size="15" maxlength="64" /></td><td><input value="Ingresar" type="submit" /></td><td><a href=".<?php base_url()?>/usuario/index" style="color:white">Registrarse</a></td></tr>
-			</table>
-        </form>
+<div style="float:left; display: inline; width: 100%; margin-top: 2%; margin-left: 2%;">
+    <form action="<?php echo base_url(); ?>usuario/login/" method="post">
+
+        <table cellpadding="20%" cellspacing="20%" style="width: 100%;">
+            <tbody align="left">
+            <tr>
+                <td><h4>E-mail:</h4></td>
+                <td><input class="text" name="email" id='email' size="15" maxlength="64" style="height: 100%; width: 80%"/></td>
+                
+                <td><h4>Contraseña: </h4></td>
+                <td><input type='password' class="text" name="contrasena" id='contrasena' size="15" maxlength="64" style="height: 100%; width: 80%" /></td>
+                <td align="left"><input value="Ingresar" type="submit" style=" cursor: pointer; width: 90%; color: #673f85;height: 100%;border-radius: 15% 15% 15% 15%;box-shadow:3px 3px 5px #402f55;"/></td>
+                <td style=" text-align: right;"><a  style="color:white" href="http://localhost/uniSalud/estandarControlador/registrarse"><h4>Registrarse</h4></a></td>
+                <td style=" text-align: right; padding-right: 5%;"><a  style="color:white" href=""><h4>Recuperar Contraseña</h4></a></td>
+                
+            </tr>
+            <tbody>
+        </table>
+    </form>
 </div>

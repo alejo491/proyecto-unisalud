@@ -1,8 +1,6 @@
 <nav>
-    <ul id="menu">
-        <li id="menu_active"><a href="index.html">Inicio</a></li>
-        <li><a href="Researches.html">Reg&iacute;strate </a></li>
-        <li><a href="Services.html">Acerca De</a></li>
-        <li class="bg_none"><a href="Contacts.html">Contacts</a></li>
+    <ul id="menu" style="float:right;">
+        <li id="menu_active"><?php echo anchor('estandarControlador', 'Inicio'); ?></li>
+        <li id="menu_active"><?php echo anchor('estandarControlador', 'Acerca De'); ?></li>
     </ul>
 </nav>
