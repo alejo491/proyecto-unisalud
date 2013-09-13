@@ -9,7 +9,7 @@ mark, rp, rt, ruby, summary, time {display:inline}
 body {background:#fff;border:0;font:13px Arial, Helvetica, sans-serif;color:#4e4e4e;line-height:20px}
 /* Global Structure */
 .body1 {background:url(../images/bg_img2.png) top center no-repeat;height:680px;position:absolute;width:100%;z-index:1}
-.body2 {background:url(../images/top.jpg) top center no-repeat #2d213c}
+.body2 {background:url(../images/top.jpg)}
 .body3 {background:url(../images/line_hor1.jpg) bottom repeat-x #f5f5f5;border-top:1px solid #fff}
 .body4 {background:url(../images/line_hor2.jpg) top repeat-x #f5f5f5}
 .body5 {background:url(../images/bot.jpg) top center no-repeat #38294a}
@@ -18,11 +18,12 @@ body {background:#fff;border:0;font:13px Arial, Helvetica, sans-serif;color:#4e4
 a {color:#a369c4;text-decoration:underline;outline:none}
 a:hover {text-decoration:none}
 h1 {padding:21px 0 0 20px}
-h2 {font-size:28px;font-weight:bold;font-weight:300;color:#4e4e4e;padding:29px 0 27px 0;line-height:38px}
+h2 {font-size:25px;font-weight:bold;font-weight:300;color:#4e4e4e;padding:29px 0 0 0;line-height:38px}
 h2 span {display:block;margin-top:-10px}
 h3 {background:url(../images/box2.jpg) no-repeat;font-size:24px;padding:0 20px;margin:17px 0 20px 0;color:#fff;line-height:51px;font-weight:300}
+h4 {background: none; color: #fff;}
 #titulo {background: none; color: #000; padding: 0 0; margin: 0 0 0 0;}
-p {padding-bottom:20px}
+p {padding-bottom:20px }
 /* header */
 header {width:100%;overflow:hidden;padding-bottom:22px}
 #logo {display:block;background:url(../images/logo.png) no-repeat;width:192px;height:58px;text-indent:-5000px}
@@ -31,7 +32,7 @@ header {width:100%;overflow:hidden;padding-bottom:22px}
 #menu .bg_none {background:none;padding:0;margin:0}
 #menu li a {display:block;font-size:16px;font-weight:400;color:#fff;line-height:31px;padding:0 9px;text-decoration:none;position:relative;behavior:url(js/PIE.htc)}
 #menu li a:hover, #menu #menu_active a {background:url(../images/menu_bg.gif) top repeat-x #b3b3b3;border-radius:5px;-moz-border-radius:5px;-webkit-border-radius:5px;box-shadow:3px 3px 5px #402f55;-moz-box-shadow:3px 3px 5px #402f55;-webkit-box-shadow:3px 3px 5px #402f55;color:#673f85;}
-.text1 {font-size:30px;font-weight:300;color:#fff;line-height:39px;padding:24px 0 15px 0}
+.text1 {font-size:30px;font-weight:300;color:#fff;line-height:39px;padding:1% 0 1% 0}
 .text1 span {display:block;margin-top:-10px}
 header p {color:#9688a7;padding-bottom:17px}
 header .link1 {text-decoration:none}
@@ -65,6 +66,7 @@ footer a {color:#dfd2e7}
 #footer_menu .bg_none {background:none;padding:0;margin:0}
 #footer_menu li a {display:inline-block;color:#4e4e4e;padding:0 39px;line-height:42px}
 /* forms */
+input {float:left;width:307px;height:16px;border:1px solid #d5d5d5;background:#fff;padding:3px 6px;margin-bottom:6px;color:#4e4e4e;font:13px Arial, Helvetica, sans-serif}
 #ContactForm {margin-top:-15px;width:860px}
 #ContactForm p {line-height:24px;padding-bottom:6px;width:104px;float:left}
 #ContactForm a {margin-left:24px;margin-top:8px}

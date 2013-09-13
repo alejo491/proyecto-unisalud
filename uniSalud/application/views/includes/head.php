@@ -15,15 +15,13 @@
 	<script type="text/javascript" src="http://info.template-help.com/files/ie6_warning/ie6_script_other.js"></script>
 	<script type="text/javascript" src="js/html5.js"></script>
 <![endif]-->
-<?php if (isset($css_files)) {
-    
-
+<?php 
+if(isset($output)){
 foreach($css_files as $file): ?>
 	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
-<?php endforeach; }?>
-<?php 
-        if(isset($js_files)){
-foreach($js_files as $file): ?>
+<?php endforeach; ?>
+<?php foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
-<?php endforeach; }?>
+<?php endforeach; 
+}?>
 </head>

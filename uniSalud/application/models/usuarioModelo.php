@@ -3,17 +3,24 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class usuariosModel extends CI_Model {
+class usuarioModelo extends CI_Model {
 
     function __construct() {
         parent::__construct();
     }
-
-    
-
     function registrar($data) {
-        $id = $this->db->insert('usuario', $data);
-        return $id;
+        $this->db->insert('usuario', $data);
+        $this->db->select('id_usuario')->from('usuario')->where('email',$data['email']);
+        $this->db->limit(1);     
+        $query=$this->db->get();
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row){
+                return $row->id_usuario;
+            }
+        }
+        else{
+            return FALSE;
+        }
     }
 
     public function login($str1, $str2) {
