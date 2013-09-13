@@ -1,9 +1,5 @@
 <!--content -->
-<div class="body3">
-	<div class="main">
-		<?php $this->load->view("estandar/topcontent");?>
-	</div>
-</div>
+
 <div class="main">
 	
 		<div class="wrapper pad_bot1">

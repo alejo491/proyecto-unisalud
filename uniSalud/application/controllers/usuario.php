@@ -12,6 +12,16 @@ class Usuario extends CI_Controller {
        
     }
     
+    function index(){
+        
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'personal/topcontentRegistrarse';
+        $data['content'] = 'personal/registrar_usuario';
+        $data['footerMenu'] = 'personal/footerMenu';
+        
+        $this->load->view('plantilla', $data);
+    }
     
 
     

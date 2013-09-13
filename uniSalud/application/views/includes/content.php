@@ -5,6 +5,13 @@
 	</div>
 </div>
 <div class="main">
-	<?php $this->load->view($content,$output);?>
+	<?php 
+        if(isset($output)){
+        $this->load->view($content,$output);
+        }else{
+            
+            $this->load->view($content);
+        }
+        ?>
 </div>
 <!--content end-->
