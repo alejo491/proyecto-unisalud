@@ -235,8 +235,8 @@ ALTER TABLE `programa`
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 INSERT INTO `usuario` (`id_usuario`, `email`, `contrasena`) VALUES
-(12,'alexis@gmail.com', '147258'),
-(13,'alejo491@gmail.com', '123456');
+(12,'alexis@gmail.com', '1496aa696d9d35aa2c23b0f1ef3020df7f26f869'),
+(13,'alejo491@gmail.com', '7c4a8d09ca3762af61e59520943dc26494f8941b');
 
 INSERT INTO `rol` (`id_rol`, `nombre_rol`) VALUES
 (3,'administrador'),
@@ -245,3 +245,16 @@ INSERT INTO `rol` (`id_rol`, `nombre_rol`) VALUES
 INSERT INTO `posee` (`id_usuario`, `id_rol`) VALUES
 (12,1),
 (13,3);
+
+INSERT INTO `facultad` (`id_facultad`, `nombre_facultad`) VALUES
+(1,'Artes'),
+(2,'Ciencias Agropecuarias'),
+(3,'Ciencias de la Salud'),
+(4,'Ciencias Contables, Economicas y Administrativas'),
+(5,'Ciencias Humanas y Sociales'),
+(6,'Ciencias Naturales, Exactas y de la Educacion'),
+(7,'Derecho, Ciencias Politicas y Sociales'),
+(8,'Ingenieria Civil'),
+(9,'Ingenieria Electronica y Telecomunicaciones');
+
+

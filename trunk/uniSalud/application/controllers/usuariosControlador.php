@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class Usuario extends CI_Controller {
+class UsuariosControlador extends CI_Controller {
 
     function __construct() {
         parent::__construct();
@@ -21,7 +21,7 @@ class Usuario extends CI_Controller {
             $this->form_validation->set_message('xss_clean', 'Codigo malicioso detectado');
             if ($this->form_validation->run() == TRUE) {
                 $email = $this->input->post('email', true);
-                $contrasena = $this->input->post('contrasena', true);
+                $contrasena = sha1($this->input->post('contrasena', true));
                 $usuarioActual = $this->usuarioModelo->login($email, $contrasena);
                  
                if (isset($usuarioActual)) {
