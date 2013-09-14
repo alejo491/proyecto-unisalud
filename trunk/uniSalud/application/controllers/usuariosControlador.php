@@ -11,7 +11,6 @@ class UsuariosControlador extends CI_Controller {
     }
 
     public function login() {
-        
        if ($_POST) {
             $this->form_validation->set_rules('email', 'Buscar', 'trim|required|xss_clean|valid_email');
             $this->form_validation->set_rules('contrasena', 'Buscar', 'trim|required|xss_clean');
@@ -19,23 +18,19 @@ class UsuariosControlador extends CI_Controller {
             $this->form_validation->set_message('valid_email', 'El campo %s debe ser un email');
             $this->form_validation->set_message('trim', 'No se admiten caracteres especiales');
             $this->form_validation->set_message('xss_clean', 'Codigo malicioso detectado');
+            echo "<script>alert ('exito')</script>";
             if ($this->form_validation->run() == TRUE) {
                 $email = $this->input->post('email', true);
                 $contrasena = sha1($this->input->post('contrasena', true));
                 $usuarioActual = $this->usuarioModelo->login($email, $contrasena);
-                 
                if (isset($usuarioActual)) {
                     $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
                     $this->session->set_userdata('email', $usuarioActual['email']);
-                    $this->session->set_userdata('id_rol',$this->usuarioModelo->getRol($usuarioActual['id_usuario'])['id_rol']);
+                    $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
+                    $this->session->set_userdata('id_rol',$id_rol['id_rol']);
                 }
             }
-            else{
-                
-               
-            }
-            
-           redirect(base_url());
+            redirect('medicosControlador');
         }
     }
 

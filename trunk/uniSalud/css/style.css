@@ -66,8 +66,8 @@ footer a {color:#dfd2e7}
 #footer_menu .bg_none {background:none;padding:0;margin:0}
 #footer_menu li a {display:inline-block;color:#4e4e4e;padding:0 39px;line-height:42px}
 /* forms */
-input {float:left;width:307px;height:16px;border:1px solid #d5d5d5;background:#fff;padding:3px 6px;margin-bottom:6px;color:#4e4e4e;font:13px Arial, Helvetica, sans-serif}
-#ContactForm {margin-top:-15px;width:860px}
+/*input {float:left;width:307px;height:16px;border:1px solid #d5d5d5;background:#fff;padding:3px 6px;margin-bottom:6px;color:#4e4e4e;font:13px Arial, Helvetica, sans-serif}
+*/#ContactForm {margin-top:-15px;width:860px}
 #ContactForm p {line-height:24px;padding-bottom:6px;width:104px;float:left}
 #ContactForm a {margin-left:24px;margin-top:8px}
 #ContactForm .input {float:left;width:307px;height:16px;border:1px solid #d5d5d5;background:#fff;padding:3px 6px;margin-bottom:6px;color:#4e4e4e;font:13px Arial, Helvetica, sans-serif}

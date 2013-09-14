@@ -10,7 +10,7 @@ class agendaModelo extends CI_Model {
     }
     function getMedico($id_medico){
         $data = array();
-        $this->db->select('id_medico, numero_tarjeta, identificacion, nombre_medico, especialidad');
+        $this->db->select('id_medico, numero_tarjeta, identificacion, nombre_medico');
         $this->db->from('medico');
         $this->db->where('id_medico', $id_medico);
         $this->db->limit(1);

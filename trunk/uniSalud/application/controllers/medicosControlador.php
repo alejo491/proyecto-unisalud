@@ -18,7 +18,7 @@ class medicosControlador extends CI_Controller {
     }
 
     public function index() {
-        $this->session->sess_destroy();
+        $this->session->set_userdata('medico_id',"");
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'personal/topcontentPersonalMedico';
@@ -41,27 +41,11 @@ class medicosControlador extends CI_Controller {
             $crud->set_crud_url_path(site_url('medicosControlador/index'));
             //$crud->callback_after_insert(array($this, 'añadirMedico_callback'));
             //$crud->callback_before_insert(array($this,'añadirMedico_callback'));
-            $crud->callback_insert(array($this,'añadirMedico_callback'));
+            //$crud->callback_insert(array($this,'añadirMedico_callback'));
             $output = $crud->render();
             $this->mostrar($data, $output);
         } catch (Exception $e) {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
     }
-
-    function añadirMedico_callback($post_array) {
-        $user_logs_insert = array(
-            "numero_tarjeta" => "Entro",
-            "identificacion" => "Identificacion",
-            "nombre_medico" => "don Medico",
-            "especialidad" => $post_array[medico][0]
-        );
-        //echo $post_array;
-        //echo $primary_key;
-
-        $this->db->insert('medico', $user_logs_insert);
-
-        return true;
-    }
-
 }

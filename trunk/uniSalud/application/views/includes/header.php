@@ -4,9 +4,9 @@
         <div class="main"><div class="ic"></div>
             <!--header -->
             <header>
+                
                     <?php
                     $user = $this->session->all_userdata();
-
                     if (isset($user['id_usuario'])) {?>
                             <?php $this->load->view("estandar/micuenta");?>
                         <?php
@@ -19,19 +19,12 @@
                     ?>
                 <div class="wrapper">
                        <?php 
-                               if(isset($user['id_rol'])) {
-                                    if($user['id_rol']=="3"){
-                                                $this->load->view("personal/menu");
-                                            }elseif ($user['id_rol']=="3") {
-
-                                                   $this->load->view("estandar/menu");
-
-
-                                            }
-                               }else{
-                                   
-                                   $this->load->view("estandar/menu");
-                               }
+                            if(isset($user['id_usuario']) && $user['id_rol']==3){
+                                $this->load->view("personal/menu");
+                            }
+                            else{
+                                $this->load->view("estandar/menu");
+                            }
                         ?>
                     <h1><a href="index.html" id="logo">cience</a></h1>
                 </div>
