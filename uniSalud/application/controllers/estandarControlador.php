@@ -54,7 +54,7 @@ class estandarControlador extends CI_Controller {
                 array(
                     'field' => 'segundoApellido',
                     'label' => 'Segundo Apellido',
-                    'rules' => 'trim|required'
+                    'rules' => 'trim|'
                 ),
                 array(
                     'field' => 'facultad',
@@ -138,8 +138,9 @@ class estandarControlador extends CI_Controller {
                     $usuarioActual = $this->usuarioModelo->login($_POST['email'], $_POST['contrasena']);
                     $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
                     $this->session->set_userdata('email', $usuarioActual['email']);
-                    $rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
-                    $this->session->set_userdata('id_rol',$rol);
+                    $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
+                    $this->session->set_userdata('id_rol',$id_rol['id_rol']);
+                    
                 }
             }
             $this->load->view('plantilla',$data);

@@ -112,8 +112,8 @@
                              <td><strong>Facultad:*</strong><br /></td>
                              <td><?php
                                 $data_form=array(
-                                    '1'      => 'selecciones una opcion',
-                                    '2' => 'FIET'
+                                    '0'      => 'selecciones una opcion',
+                                    '1' => 'FIET'
                                 );
                                echo form_dropdown('facultad',$data_form,array(),'style="background:whitesmoke;border: 1px solid;width:273px"');?>
                              </td>
@@ -125,8 +125,8 @@
                              <td><strong>Programa:*</strong><br /></td>
                              <td><?php
                                 $data_form=array(
-                                    '1'      => 'selecciones una opcion',
-                                    '2' => 'Ingenieria de Sistemas'
+                                    '0'      => 'selecciones una opcion',
+                                    '1' => 'Ingenieria de Sistemas'
                                 );
                                echo form_dropdown('programa',$data_form,array(),'style="background:whitesmoke;border: 1px solid;width:273px"')?>
                              </td>   

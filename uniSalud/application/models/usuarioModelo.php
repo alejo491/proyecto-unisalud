@@ -32,8 +32,7 @@ class usuarioModelo extends CI_Model {
         );
         $this->db->select()->from('usuario')->where($where);
         $query = $this->db->get();
-        if ($query->num_rows() > 0) {
-           
+        if ($query->num_rows() > 0) { 
             return $query->first_row('array');
         } else {
             return FALSE;
@@ -50,8 +49,5 @@ class usuarioModelo extends CI_Model {
         } else {
             return FALSE;
         }
-    }
-
-   
-
+    }   
 }
