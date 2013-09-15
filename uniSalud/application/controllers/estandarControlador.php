@@ -21,7 +21,8 @@ class estandarControlador extends CI_Controller {
     public function registrarse(){
         $data['header'] = 'includes/header';
         $data['menu'] = 'estandar/menu';
-        $data['topcontent'] = 'estandar/topcontentRegistrarse';
+        //$data['topcontent'] = 'estandar/topcontentRegistrarse';
+        $data['topcontent']='estandar/topcontent';
         $data['content'] = 'estandar/registrar_usuario';
         $data['footerMenu'] = 'estandar/footerMenu';
         $this->load->view('plantilla',$data);
@@ -107,7 +108,8 @@ class estandarControlador extends CI_Controller {
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos 6 caracteres');
             $data['header'] = 'includes/header';
                 $data['menu'] = 'estandar/menu';
-                $data['topcontent'] = 'estandar/topcontentRegistrarse';
+                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
+                $data['topcontent']='estandar/topcontent';
                 $data['content'] = 'estandar/registrar_usuario';
                 $data['footerMenu'] = 'estandar/footerMenu';
             if ($this->form_validation->run() == FALSE) {

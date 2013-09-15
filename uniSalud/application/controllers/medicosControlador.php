@@ -21,7 +21,8 @@ class medicosControlador extends CI_Controller {
         $this->session->set_userdata('medico_id',"");
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
-        $data['topcontent'] = 'personal/topcontentPersonalMedico';
+        //$data['topcontent'] = 'personal/topcontentPersonalMedico';
+        $data['topcontent']='estandar/topcontent';
         $data['content'] = 'personal/contentPersonalMedico';
         $data['footerMenu'] = 'personal/footerMenu';
 
@@ -37,11 +38,8 @@ class medicosControlador extends CI_Controller {
             $crud->unset_read();
             $crud->unset_print();
             $crud->unset_export();
-            $crud->add_action('Actualizar Agenda', '', 'http://localhost/uniSalud/agendaControlador/index/', 'ui-icon-plus');
+            $crud->add_action('Agenda', '', 'http://localhost/uniSalud/agendaControlador/index/', 'ui-icon-plus');
             $crud->set_crud_url_path(site_url('medicosControlador/index'));
-            //$crud->callback_after_insert(array($this, 'añadirMedico_callback'));
-            //$crud->callback_before_insert(array($this,'añadirMedico_callback'));
-            //$crud->callback_insert(array($this,'añadirMedico_callback'));
             $output = $crud->render();
             $this->mostrar($data, $output);
         } catch (Exception $e) {
