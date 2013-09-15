@@ -20,7 +20,8 @@ class agendaControlador extends CI_Controller {
         $this->load->model('agendaModelo');
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
-        $data['topcontent'] = 'personal/topcontentHorarioAtencion';
+        //$data['topcontent'] = 'personal/topcontentHorarioAtencion';
+        $data['topcontent']='estandar/topcontent';
         $data['content'] = 'personal/contentHorarioAtencion';
         $data['footerMenu'] = 'personal/footerMenu';
         $session = $this->session->all_userdata();

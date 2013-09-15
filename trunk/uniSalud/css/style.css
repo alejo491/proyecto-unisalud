@@ -15,7 +15,7 @@ body {background:#fff;border:0;font:13px Arial, Helvetica, sans-serif;color:#4e4
 .body5 {background:url(../images/bot.jpg) top center no-repeat #38294a}
 .main {	margin:0 auto;	width:900px;position:relative;z-index:2}
 /* main layout */
-a {color:#a369c4;text-decoration:underline;outline:none}
+a {color: #fff;text-decoration:underline;outline:none}
 a:hover {text-decoration:none}
 h1 {padding:21px 0 0 20px}
 h2 {font-size:25px;font-weight:bold;font-weight:300;color:#4e4e4e;padding:29px 0 0 0;line-height:38px}

@@ -20,16 +20,20 @@ class serviciosControlador extends CI_Controller {
         
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
-        $data['topcontent'] = 'personal/topcontentServicios';
+        //$data['topcontent'] = 'personal/topcontentServicios';
+        $data['topcontent']='estandar/topcontent';
         $data['content'] = 'personal/contentServicios';
         $data['footerMenu'] = 'personal/footerMenu';
 
         try {
             $crud = new grocery_CRUD();
+            $crud->set_theme('datatables');
             $crud->set_table('servicio');
             $crud->set_subject('Servicio');
             $crud->required_fields('costo', 'tipo_servicio');
             $crud->display_as('tipo_servicio', 'Tipo de Servicio');
+            $crud->callback_edit_field('actividad', array($this, 'inputActividad'));
+            $crud->callback_add_field('actividad',array($this,'inputActividad'));
             $crud->unset_read();
             $crud->unset_print();
             $crud->unset_export();
@@ -41,6 +45,13 @@ class serviciosControlador extends CI_Controller {
             show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
         }
     }
+    function inputActividad() {
+            return '<select name="actividad">
+  <option value="Asistencial" selected="selected">Asistencial</option>
+  <option value="Promoción y Prevención">Promoción y Prevención</option>
+  <option value="Administrativas">Administrativas</option>
+</select>';
+       }
 }
 
 ?>

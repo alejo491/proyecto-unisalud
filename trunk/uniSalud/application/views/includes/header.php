@@ -18,14 +18,6 @@
                     }
                     ?>
                 <div class="wrapper">
-                       <?php 
-                            if(isset($user['id_usuario']) && $user['id_rol']==3){
-                                $this->load->view("personal/menu");
-                            }
-                            else{
-                                $this->load->view("estandar/menu");
-                            }
-                        ?>
                     <h1><a href="index.html" id="logo">cience</a></h1>
                 </div>
                 <div class="wrapper">
