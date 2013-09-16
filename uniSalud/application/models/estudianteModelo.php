@@ -14,7 +14,7 @@ class estudianteModelo extends CI_Model {
                 $data=array('id_rol'=>1,'id_usuario'=>$data['id_usuario']);
                 $id=$this->db->insert('posee',$data);
             }
-        return $id;
+     return $id;
     }
 
     public function login($str1, $str2) {
@@ -45,7 +45,37 @@ class estudianteModelo extends CI_Model {
             return FALSE;
         }
     }
+    
+      function cargarFacultad() {
 
+        $sql = "SELECT id_facultad, nombre_facultad FROM facultad ORDER BY nombre_facultad";
+        $query = $this->db->query($sql);
+        $facultades = array();
+        if ($query->num_rows() > 0) {
+            $facultades[""] = "Seleccione una opcion";
+            foreach ($query->result_array() as $row) {
+                $facultades[$row['id_facultad']] = ($row['nombre_facultad']);
+            }
+            return $facultades;
+        }
+        $query->free_result();
+        return $facultades;
+    }
+    function cargarProgramas() {
+
+        $sql = "SELECT id_programa, nombre_programa FROM programa  ORDER BY nombre_programa";
+        $query = $this->db->query($sql);
+        $facultades = array();
+        if ($query->num_rows() > 0) {
+            $facultades[""] = "Seleccione una opcion";
+            foreach ($query->result_array() as $row) {
+                $facultades[$row['id_programa']] = ($row['nombre_programa']);
+            }
+            return $facultades;
+        }
+        $query->free_result();
+        return $facultades;
+    }
    
 
 }

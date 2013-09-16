@@ -8,6 +8,7 @@ class estandarControlador extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->database();
+        $this->load->model('estudianteModelo');
         $this->load->library('grocery_CRUD');
     }
     public function index(){
@@ -16,6 +17,7 @@ class estandarControlador extends CI_Controller {
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'estandar/contentHome';
         $data['footerMenu'] = 'estandar/footerMenu';
+        $data['programas']=$this->estudianteModelo->CargarProgramas();
         $this->load->view('plantilla',$data);
     }
     public function registrarse(){
@@ -25,11 +27,13 @@ class estandarControlador extends CI_Controller {
         $data['topcontent']='estandar/topcontent';
         $data['content'] = 'estandar/registrar_usuario';
         $data['footerMenu'] = 'estandar/footerMenu';
+        $data['programas']=$this->estudianteModelo->CargarProgramas();
         $this->load->view('plantilla',$data);
     }
     public function registrar(){
         $this->load->model('usuarioModelo');   
-        $this->load->model('estudianteModelo');   
+        $this->load->model('estudianteModelo'); 
+        $data['programas']=$this->estudianteModelo->CargarProgramas();
         if ($_POST) {
             $config = array(
                 array(
@@ -135,16 +139,26 @@ class estandarControlador extends CI_Controller {
                     'segundo_apellido' => $_POST['segundoApellido'],
                     'genero' => $_POST['genero']
                 );
+                
+                $data['header'] = 'includes/header';
+                
+                $data['topcontent'] = 'estandar/topcontent';
+                $data['content'] = 'estandar/contentHome';
+                $data['footerMenu'] = 'estandar/footerMenu';
                 $id = $this->estudianteModelo->registrar($data['estudiante']);
+                
                 if ($id) {
-                    $usuarioActual = $this->usuarioModelo->login($_POST['email'], $_POST['contrasena']);
+                   
+                    $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
                     $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
                     $this->session->set_userdata('email', $usuarioActual['email']);
                     $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
                     $this->session->set_userdata('id_rol',$id_rol['id_rol']);
+                      
                     
                 }
             }
+            
             $this->load->view('plantilla',$data);
         }
     }
