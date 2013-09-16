@@ -108,27 +108,12 @@
                                 <?php echo form_error('genero','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
                             </td>
                          </tr>
-                         <tr  style="height: 35px">
-                             <td><strong>Facultad:*</strong><br /></td>
-                             <td><?php
-                                $data_form=array(
-                                    '0'      => 'selecciones una opcion',
-                                    '1' => 'FIET'
-                                );
-                               echo form_dropdown('facultad',$data_form,array(),'style="background:whitesmoke;border: 1px solid;width:273px"');?>
-                             </td>
-                             <td>
-                                <?php echo form_error('genero','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
-                            </td>
-                         </tr>
+                         
                          <tr  style="height: 35px">
                              <td><strong>Programa:*</strong><br /></td>
                              <td><?php
-                                $data_form=array(
-                                    '0'      => 'selecciones una opcion',
-                                    '1' => 'Ingenieria de Sistemas'
-                                );
-                               echo form_dropdown('programa',$data_form,array(),'style="background:whitesmoke;border: 1px solid;width:273px"')?>
+                                
+                               echo form_dropdown('programa',$programas,array(),'style="background:whitesmoke;border: 1px solid;width:273px"')?>
                              </td>   
                              <td>
                                 <?php echo form_error('genero','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>

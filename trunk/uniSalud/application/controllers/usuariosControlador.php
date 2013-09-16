@@ -30,7 +30,7 @@ class UsuariosControlador extends CI_Controller {
                     $this->session->set_userdata('id_rol',$id_rol['id_rol']);
                 }
             }
-            redirect('medicosControlador');
+            redirect(base_url());
         }
     }
 
