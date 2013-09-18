@@ -101,7 +101,7 @@
                                     'm'    =>  'masculino',
                                     'f'      =>  'femenino'
                                 );
-                               echo form_dropdown('genero',$data_form)
+                               echo form_dropdown('genero',$data_form,array(),'style="background:whitesmoke;border: 1px solid;width:273px"')
                                 ?>
                             </td>
                             <td>
@@ -116,7 +116,24 @@
                                echo form_dropdown('programa',$programas,array(),'style="background:whitesmoke;border: 1px solid;width:273px"')?>
                              </td>   
                              <td>
-                                <?php echo form_error('genero','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
+                                <?php echo form_error('programa','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
+                            </td>
+                         </tr>
+                         <tr  style="height: 35px">
+                             <td><strong>Fecha de Nacimiento:*</strong>(YYYY-MM-DD)<br /></td>
+                             <td><?php
+                                $data_form=array(
+                                    'id'        => 'fecha_nac',
+                                    'name'    =>  'fecha_nac',
+                                    'size'      =>  '40',
+                                    
+                                    'style'     => "background:whitesmoke;border: 1px solid"
+                                    
+                                );
+                               echo form_input($data_form);?>
+                             </td>
+                             <td>
+                                <?php echo form_error('fecha_nac','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
                             </td>
                          </tr>
                          <tr style="height: 35px ">
@@ -128,12 +145,15 @@
                                     '1'      =>  'Tarjeta de Identidad',
                                     '2'     => 'Registro Civil'
                                 );
-                               echo form_dropdown('tipoId',$data_form)?>
+                               echo form_dropdown('tipoId',$data_form,array(),'style="background:whitesmoke;border: 1px solid;width:273px"')?>
                             </td>
                             <td>
                                 <?php echo form_error('tipoId','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
                             </td>
                          </tr>  
+                         
+                         
+                         
                          <tr  style="height: 35px">
                              <td><strong>Numero de Identificacion:*</strong><br /></td>
                              <td><?php
