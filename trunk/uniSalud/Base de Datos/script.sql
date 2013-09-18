@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `cita` (
   `hora_inicio` int(11) NOT NULL,
   `hora_fin` int(11) NOT NULL,
   `confirmado` smallint(6) NOT NULL,
+  `observacion` varchar(300) NOT NULL,
   PRIMARY KEY (`id_usuario`,`id_estudiante`,`id_servicio`,`id_medico`),
   KEY `fk_cita_cita2_servicio` (`id_servicio`),
   KEY `fk_cita_cita3_medico` (`id_medico`)
@@ -72,6 +73,7 @@ CREATE TABLE IF NOT EXISTS `estudiante` (
   `primer_apellido` varchar(256) NOT NULL,
   `segundo_apellido` varchar(256) NOT NULL,
   `genero` varchar(10) NOT NULL,
+  `fecha_nacimiento` date NOT NULL,
   PRIMARY KEY (`id_usuario`,`id_estudiante`),
   KEY `fk_estudian_pertenece_programa` (`id_programa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;

@@ -77,6 +77,11 @@ class estandarControlador extends CI_Controller {
                     'rules' => 'trim|'
                 ),
                 array(
+                    'field' => 'fecha_nac',
+                    'label' => 'Fecha de Nacimiento',
+                    'rules' => 'trim|required'
+                ),
+                array(
                     'field' => 'tipoId',
                     'label' => 'tipo de Identificacion',
                     'rules' => 'trim|'
@@ -137,7 +142,8 @@ class estandarControlador extends CI_Controller {
                     'segundo_nombre' => $_POST['email'],
                     'primer_apellido' => $_POST['primerApellido'],
                     'segundo_apellido' => $_POST['segundoApellido'],
-                    'genero' => $_POST['genero']
+                    'genero' => $_POST['genero'],
+                    'fecha_nacimiento' =>$_POST['fecha_nac']
                 );
                 
                 $data['header'] = 'includes/header';
