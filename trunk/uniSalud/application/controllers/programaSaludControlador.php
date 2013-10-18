@@ -3,7 +3,7 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-class serviciosControlador extends CI_Controller {
+class programaSaludControlador extends CI_Controller {
 
     function __construct() {
         parent::__construct();
@@ -37,7 +37,7 @@ class serviciosControlador extends CI_Controller {
             $crud->unset_read();
             $crud->unset_print();
             $crud->unset_export();
-            $crud->set_crud_url_path(site_url('serviciosControlador/index'));
+            $crud->set_crud_url_path(site_url('programaSaludControlador/index'));
 
             $output = $crud->render();
             $this->mostrar($data, $output);
