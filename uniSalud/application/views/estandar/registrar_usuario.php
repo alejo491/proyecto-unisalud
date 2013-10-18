@@ -110,13 +110,32 @@
                          </tr>
                          
                          <tr  style="height: 35px">
-                             <td><strong>Programa:*</strong><br /></td>
-                             <td><?php
-                                
-                               echo form_dropdown('programa',$programas,array(),'style="background:whitesmoke;border: 1px solid;width:273px"')?>
+                             <td><strong>Facultad:*</strong><br /></td>
+                             <td><select id="facultad" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_programa('<?php echo base_url()?>estandarControlador/cargarprograma','programa')">
+                                <option value="">Selecciona una facultad</option>
+                                 <?php 
+                                    foreach($facultades->result_array() as $fila)
+                                    {
+                                    
+                                   echo  '<option value="'.$fila['id_facultad'].'">'.$fila['nombre_facultad'].'</option>';
+                                    
+                                    }
+                                    ?>  
+                                </select>
                              </td>   
                              <td>
-                                <?php echo form_error('programa','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
+                                <?php echo form_error('facultad','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
+                            </td>
+                         </tr>
+                         <tr  style="height: 35px">
+                             <td><strong>Programa:*</strong><br /></td>
+                             <td><select id="programas" name="programas" style="background:whitesmoke;border: 1px solid;width:273px" >
+                                <option value="">Selecciona un programa</option>
+                                 
+                                </select>
+                             </td>   
+                             <td>
+                                <?php echo form_error('facultad','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
                             </td>
                          </tr>
                          <tr  style="height: 35px">

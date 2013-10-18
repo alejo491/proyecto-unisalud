@@ -17,7 +17,7 @@ class estandarControlador extends CI_Controller {
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'estandar/contentHome';
         $data['footerMenu'] = 'estandar/footerMenu';
-        $data['programas']=$this->estudianteModelo->CargarProgramas();
+        $data['facultades']=$this->estudianteModelo->CargarFacultad();
         $this->load->view('plantilla',$data);
     }
     public function registrarse(){
@@ -27,13 +27,14 @@ class estandarControlador extends CI_Controller {
         $data['topcontent']='estandar/topcontent';
         $data['content'] = 'estandar/registrar_usuario';
         $data['footerMenu'] = 'estandar/footerMenu';
-        $data['programas']=$this->estudianteModelo->CargarProgramas();
+        $data['facultades']=$this->estudianteModelo->CargarFacultad();
         $this->load->view('plantilla',$data);
     }
     public function registrar(){
+        
         $this->load->model('usuarioModelo');   
         $this->load->model('estudianteModelo'); 
-        $data['programas']=$this->estudianteModelo->CargarProgramas();
+        $data['facultades']=$this->estudianteModelo->CargarFacultad();
         if ($_POST) {
             $config = array(
                 array(
@@ -99,7 +100,7 @@ class estandarControlador extends CI_Controller {
                 array(
                     'field' => 'contrasena',
                     'label' => 'Contraseña',
-                    'rules' => 'trim|required|min_length[6]'
+                    'rules' => 'trim|required|min_length[6],callback_validarPass'
                 ),
                 array(
                     'field' => 'CContrasena',
@@ -133,11 +134,10 @@ class estandarControlador extends CI_Controller {
                 $data['estudiante'] = array(
                     'id_usuario' => $id,
                     'id_estudiante' => $_POST['codigoEstudiante'],
-                    'id_programa' => $_POST['programa'],
-                    'email' => $_POST['email'],
-                    'contrasena' => sha1($_POST['contrasena']),
+                    'id_programa' => $_POST['programas'],
+                    
                     'tipo_identificacion' => $_POST['tipoId'],
-                    'numero_identificacion' => $_POST['numId'],
+                    'identificacion' => $_POST['numId'],
                     'primer_nombre' => $_POST['primerNombre'],
                     'segundo_nombre' => $_POST['email'],
                     'primer_apellido' => $_POST['primerApellido'],
@@ -166,6 +166,45 @@ class estandarControlador extends CI_Controller {
             }
             
             $this->load->view('plantilla',$data);
+        }
+    }
+    
+    public function cargarprograma()
+    {
+        
+        $id=$this->input->post("id",true);
+        $datos=$this->estudianteModelo->cargarProgramas($id);
+        echo '<option value="">Seleccione un programa</option>';
+        foreach ($datos->result_array() as $row) {
+             echo  '<option value="'.$row['id_programa'].'">'.$row['nombre_programa'].'</option>';
+        }
+    }
+    
+    function validarPass($str){
+        $banMin=FALSE;
+        $banMay=FALSE;
+        $banEsp=FALSE;
+        $banNum=FALSE;
+        for($i=0; $i<strlen($str);$i++){
+            if(ord($str[$i])>=33 && ord($str[$i])<=47){
+                $banEsp=TRUE;
+            }
+            if(ord($str[$i])>=65 && ord($str[$i])<=90){
+                $banMay=TRUE;
+            }
+            if(ord($str[$i])>=97 && ord($str[$i])<=122){
+                $banMin=TRUE;
+            }
+            if(ord($str[$i])>=48 && ord($str[$i])<=57){
+                $banNum=TRUE;
+            }
+        }
+        if($banEsp==TRUE && $banMay==TRUE && $banMin==TRUE && $banNum==TRUE){
+            return TRUE;
+        }
+        else{
+            $this->form_validation->set_message('validarPass', 'Su contraseña debe contener caracteres: Mayuscula, Minuscula,Numero y Especial');
+            return FALSE;
         }
     }
 }

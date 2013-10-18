@@ -18,7 +18,7 @@ class UsuariosControlador extends CI_Controller {
             $this->form_validation->set_message('valid_email', 'El campo %s debe ser un email');
             $this->form_validation->set_message('trim', 'No se admiten caracteres especiales');
             $this->form_validation->set_message('xss_clean', 'Codigo malicioso detectado');
-            echo "<script>alert ('exito')</script>";
+            
             if ($this->form_validation->run() == TRUE) {
                 $email = $this->input->post('email', true);
                 $contrasena = sha1($this->input->post('contrasena', true));

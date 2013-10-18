@@ -28,9 +28,9 @@ class serviciosControlador extends CI_Controller {
         try {
             $crud = new grocery_CRUD();
             $crud->set_theme('datatables');
-            $crud->set_table('servicio');
-            $crud->set_subject('Servicio');
-            $crud->required_fields('costo', 'tipo_servicio');
+            $crud->set_table('programasalud');
+            $crud->set_subject('Programa de Salud');
+            $crud->required_fields('costo', 'tipo_servicio','actividad');
             $crud->display_as('tipo_servicio', 'Tipo de Servicio');
             $crud->callback_edit_field('actividad', array($this, 'inputActividad'));
             $crud->callback_add_field('actividad',array($this,'inputActividad'));
