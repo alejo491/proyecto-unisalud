@@ -52,29 +52,24 @@ class estudianteModelo extends CI_Model {
         $query = $this->db->query($sql);
         $facultades = array();
         if ($query->num_rows() > 0) {
-            $facultades[""] = "Seleccione una opcion";
-            foreach ($query->result_array() as $row) {
-                $facultades[$row['id_facultad']] = ($row['nombre_facultad']);
-            }
-            return $facultades;
+            
+            
+            return $query;
         }
-        $query->free_result();
-        return $facultades;
+        
+        
     }
-    function cargarProgramas() {
+    
+    function cargarProgramas($id) {
 
-        $sql = "SELECT id_programa, nombre_programa FROM programa  ORDER BY nombre_programa";
+        $sql = "SELECT id_programa, nombre_programa FROM programa WHERE id_facultad=$id ORDER BY nombre_programa";
         $query = $this->db->query($sql);
         $facultades = array();
         if ($query->num_rows() > 0) {
-            $facultades[""] = "Seleccione una opcion";
-            foreach ($query->result_array() as $row) {
-                $facultades[$row['id_programa']] = ($row['nombre_programa']);
-            }
-            return $facultades;
+            
+            return $query;
         }
-        $query->free_result();
-        return $facultades;
+        
     }
    
 
