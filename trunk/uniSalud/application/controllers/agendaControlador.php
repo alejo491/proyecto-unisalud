@@ -17,7 +17,7 @@ class agendaControlador extends CI_Controller {
     }
 
     public function index() {
-        $this->load->model('agendaModelo');
+        $this->load->model('personalModelo');
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         //$data['topcontent'] = 'personal/topcontentHorarioAtencion';
@@ -31,21 +31,21 @@ class agendaControlador extends CI_Controller {
             $id_medico = $this->uri->segment(3);
             $this->session->set_userdata('medico_id', $id_medico);
         }
-        $data['medico'] = $this->agendaModelo->getMedico($id_medico);
+        $data['medico'] = $this->personalModelo->getMedico($id_medico);
         try {
             $crud = new grocery_CRUD();
             $crud->set_theme('datatables');
             $crud->set_table('horarioatencion');
             $crud->set_subject('Horario de Atencion');
             $crud->required_fields('dia', 'hora_inicial', 'hora_final');
-            $crud->set_relation('id_medico', 'medico','nombre_medico');
-            $crud->fields('dia', 'hora_inicial', 'hora_final','id_medico');
-            $crud->where('horarioatencion.id_medico', $id_medico);
+            $crud->set_relation('id_personalsalud', 'personalsalud','primer_nombre');
+            $crud->fields('dia', 'hora_inicial', 'hora_final','id_personalsalud');
+            $crud->where('horarioatencion.id_personalsalud', $id_medico);
             $crud->display_as('hora_inicial', 'Hora de Inicio');
             $crud->display_as('hora_final', 'Hora de Finalizacion');
-            $crud->display_as('id_medico', '');
-            $crud->callback_edit_field('id_medico', array($this, 'cargarMedico'));
-            $crud->callback_add_field('id_medico',array($this,'cargarMedico'));
+            $crud->display_as('id_personalsalud', '');
+            $crud->callback_edit_field('id_personalsalud', array($this, 'cargarMedico'));
+            $crud->callback_add_field('id_personalsalud',array($this,'cargarMedico'));
             $crud->callback_edit_field('dia', array($this, 'inputDia'));
             $crud->callback_add_field('dia',array($this,'inputDia'));
             $crud->callback_edit_field('hora_inicial', array($this, 'inputHoraI'));
@@ -67,7 +67,7 @@ class agendaControlador extends CI_Controller {
     function cargarMedico() {
         $session = $this->session->all_userdata();
             $id_medico=$session['medico_id'];
-            return '<input style="visibility:hidden;" type="text" maxlength="50" value="'.$id_medico.'" name="id_medico" style="width:400px"/>';
+            return '<input style="visibility:hidden;" type="text" maxlength="50" value="'.$id_medico.'" name="id_personalsalud" style="width:400px"/>';
        }
        function inputDia() {
             return '<select name="dia">

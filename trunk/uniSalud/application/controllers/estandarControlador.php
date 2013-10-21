@@ -12,7 +12,7 @@ class estandarControlador extends CI_Controller {
         $this->load->library('grocery_CRUD');
     }
     public function index(){
-        $data['header'] = 'includes/header';
+        $data['header'] = 'includes/headerHome';
         $data['menu'] = 'estandar/menu';
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'estandar/contentHome';
@@ -21,6 +21,8 @@ class estandarControlador extends CI_Controller {
         $this->load->view('plantilla',$data);
     }
     public function registrarse(){
+        
+        //controlar registrarse segun el rol
         $data['header'] = 'includes/header';
         $data['menu'] = 'estandar/menu';
         //$data['topcontent'] = 'estandar/topcontentRegistrarse';
@@ -125,36 +127,31 @@ class estandarControlador extends CI_Controller {
             if ($this->form_validation->run() == FALSE) {
                 $data['errores'] = validation_errors();
             } else {
-                $data['usuario'] = array(
-                    'email' => $_POST['email'],
-                    'contrasena' => sha1($_POST['contrasena'])
-                );
-                $id = $this->usuarioModelo->registrar($data['usuario']);
-                //echo "<script>alert('".$id."')</script>";
-                $data['estudiante'] = array(
-                    'id_usuario' => $id,
+                   $data['estudiante'] = array(
                     'id_estudiante' => $_POST['codigoEstudiante'],
                     'id_programa' => $_POST['programas'],
-                    
                     'tipo_identificacion' => $_POST['tipoId'],
                     'identificacion' => $_POST['numId'],
                     'primer_nombre' => $_POST['primerNombre'],
-                    'segundo_nombre' => $_POST['email'],
+                    'segundo_nombre' => $_POST['segundoNombre'],
                     'primer_apellido' => $_POST['primerApellido'],
                     'segundo_apellido' => $_POST['segundoApellido'],
                     'genero' => $_POST['genero'],
                     'fecha_nacimiento' =>$_POST['fecha_nac']
                 );
-                
                 $data['header'] = 'includes/header';
-                
                 $data['topcontent'] = 'estandar/topcontent';
                 $data['content'] = 'estandar/contentHome';
                 $data['footerMenu'] = 'estandar/footerMenu';
                 $id = $this->estudianteModelo->registrar($data['estudiante']);
                 
-                if ($id) {
-                   
+                if ($id!=FALSE) {
+                     $data['usuario'] = array(
+                         'id_persona'=>$id,
+                         'email' => $_POST['email'],
+                         'contrasena' => sha1($_POST['contrasena'])
+                     );
+                    $this->usuarioModelo->registrar($data['usuario']);
                     $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
                     $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
                     $this->session->set_userdata('email', $usuarioActual['email']);

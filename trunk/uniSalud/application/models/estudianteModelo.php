@@ -9,12 +9,18 @@ class estudianteModelo extends CI_Model {
         parent::__construct();
     }
     function registrar($data) {
-        $id = $this->db->insert('estudiante', $data);
-            if($id){
-                $data=array('id_rol'=>1,'id_usuario'=>$data['id_usuario']);
-                $id=$this->db->insert('posee',$data);
+        $this->db->insert('estudiante', $data);
+        $this->db->select('id_estudiante')->from('estudiante')->where('identificacion',$data['identificacion']);
+        $this->db->limit(1);     
+        $query=$this->db->get();
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row){
+                return $row->id_estudiante;
             }
-     return $id;
+        }
+        else{
+            return FALSE;
+        }
     }
 
     public function login($str1, $str2) {

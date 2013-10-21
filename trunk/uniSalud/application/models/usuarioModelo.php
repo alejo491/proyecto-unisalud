@@ -10,17 +10,16 @@ class usuarioModelo extends CI_Model {
     }
     function registrar($data) {
         $this->db->insert('usuario', $data);
-        $this->db->select('id_usuario')->from('usuario')->where('email',$data['email']);
+        $this->db->select('id_usuario')->from('usuario')->where('id_persona',$data['id_persona']);
         $this->db->limit(1);     
         $query=$this->db->get();
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row){
-                return $row->id_usuario;
+                $id_usu= $row->id_usuario;
             }
         }
-        else{
-            return FALSE;
-        }
+        $insert='INSERT INTO POSEE (ID_USUARIO,ID_ROL)VALUES ('.$id_usu.', 1)';
+        $this->db->query($insert);
     }
 
     public function login($str1, $str2) {
