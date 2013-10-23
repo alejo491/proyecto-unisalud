@@ -67,7 +67,13 @@ CREATE TABLE IF NOT EXISTS `consultorio` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 -- --------------------------------------------------------
-
+--
+-- Volcado de datos para la tabla `consultorio`
+-- 
+INSERT INTO `consultorio` (`id_consultorio`, `numero_consultorio`, `descripcion`) VALUES
+(1, '1','Medico General'),
+(2, '2','Odontologia'),
+(3, '3','Sicologia');
 --
 -- Estructura de tabla para la tabla `estudiante`
 --
