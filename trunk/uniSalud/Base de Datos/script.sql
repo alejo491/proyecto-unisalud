@@ -326,7 +326,7 @@ ALTER TABLE `estudiante`
 -- Filtros para la tabla `horarioatencion`
 --
 ALTER TABLE `horarioatencion`
-  ADD CONSTRAINT `fk_horarioa_tiene_2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`);
+  ADD CONSTRAINT `fk_horarioa_tiene_2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `personalsalud`
