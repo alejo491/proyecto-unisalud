@@ -233,7 +233,7 @@
                     <table id ="btnRegistro">
                             <tr style="height: 35px">
                                 <td><input  type="submit" value="Registrar" style=" height: 100%;border-radius: 15% 15% 15% 15%;cursor: pointer;box-shadow:3px 3px 5px #402f55;"/></td>
-                                <td><input  type="button" value="Cancelar" onclick="cancelar" style=" height: 100%;border-radius: 15% 15% 15% 15%;cursor: pointer;box-shadow:3px 3px 5px #402f55;" /></td>               
+                                <td><input  type="button" value="Cancelar" onclick="cancelar('<?php echo base_url()?>estandarControlador/cancelar')" style=" height: 100%;border-radius: 15% 15% 15% 15%;cursor: pointer;box-shadow:3px 3px 5px #402f55;" /></td>               
                              </tr>
                     </table>
  

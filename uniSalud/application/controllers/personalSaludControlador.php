@@ -33,7 +33,7 @@ class personalSaludControlador extends CI_Controller {
             $crud->set_subject('Personal De Salud');
             $crud->set_relation_n_n('personalsalud', 'atiende', 'programasalud', 'id_personalsalud', 'id_programasalud', 'tipo_servicio');
             $crud->set_relation('id_consultorio', 'consultorio','numero_consultorio');
-            $crud->required_fields('id_consultorio','numero_tarjeta', 'identificacion', 'tipo_identificacion','primer_nombre','primer_apellido');
+            $crud->required_fields('id_consultorio','numero_tarjeta', 'tipo_identificacion','identificacion','primer_nombre','primer_apellido');
             $crud->columns('primer_nombre', 'primer_apellido', 'id_consultorio','especialidad');
             $crud->display_as('id_consultorio', 'Numero de Consultorio');
             $crud->display_as('primer_nombre', 'Primer Nombre');

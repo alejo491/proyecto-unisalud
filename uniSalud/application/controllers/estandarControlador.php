@@ -32,6 +32,10 @@ class estandarControlador extends CI_Controller {
         $data['facultades']=$this->estudianteModelo->CargarFacultad();
         $this->load->view('plantilla',$data);
     }
+    
+    public function cancelar() {
+        redirect(base_url());
+    }
     public function registrar(){
         
         $this->load->model('usuarioModelo');   
