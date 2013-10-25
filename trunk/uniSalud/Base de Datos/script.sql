@@ -305,8 +305,8 @@ INSERT INTO `usuario` (`id_usuario`, `id_persona`, `contrasena`, `email`) VALUES
 -- Filtros para la tabla `atiende`
 --
 ALTER TABLE `atiende`
-  ADD CONSTRAINT `fk_atiende_atiende2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`),
-  ADD CONSTRAINT `fk_atiende_atiende_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`);
+  ADD CONSTRAINT `fk_atiende_atiende2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_atiende_atiende_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `cita`

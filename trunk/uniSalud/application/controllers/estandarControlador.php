@@ -92,7 +92,7 @@ class estandarControlador extends CI_Controller {
                 array(
                     'field' => 'numId',
                     'label' => 'numero de Identificacion',
-                    'rules' => 'trim|required'
+                    'rules' => 'trim|required|is_unique[estudiante.identificacion]'
                 ),
                 array(
                     'field' => 'email',

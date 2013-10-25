@@ -48,9 +48,9 @@ class agendaControlador extends CI_Controller {
             $crud->callback_add_field('id_personalsalud',array($this,'cargarMedico'));
             $crud->callback_edit_field('dia', array($this, 'inputDia'));
             $crud->callback_add_field('dia',array($this,'inputDia'));
-            $crud->callback_edit_field('hora_inicial', array($this, 'inputHoraI'));
+            $crud->callback_edit_field('hora_inicial', array($this, 'editHoraI'));
             $crud->callback_add_field('hora_inicial',array($this,'inputHoraI'));
-            $crud->callback_edit_field('hora_final', array($this, 'inputHoraF'));
+            $crud->callback_edit_field('hora_final', array($this, 'editHoraF'));
             $crud->callback_add_field('hora_final',array($this,'inputHoraF'));
             $crud->unset_print();
             $crud->unset_export();
@@ -91,6 +91,18 @@ class agendaControlador extends CI_Controller {
        }
        function inputHoraF(){
            return'<input type="text" name="hora_final" value="00:00:00"/>  HH:mm:ss';
+       }
+       function editHoraI(){
+           $this->load->model('agendaModelo');
+           $session = $this->session->all_userdata();
+           $HoraI=$this->agendaModelo->getHoras($session['medico_id'],$this->uri->segment(4));
+           return '<input type="text" name="hora_inicial" value="'.$HoraI['hora_inicial'].'"/>  HH:mm:ss';
+       }
+       function editHoraF(){
+           $this->load->model('agendaModelo');
+           $session = $this->session->all_userdata();
+           $HoraI=$this->agendaModelo->getHoras($session['medico_id'],$this->uri->segment(4));
+           return '<input type="text" name="hora_final" value="'.$HoraI['hora_final'].'"/>  HH:mm:ss';
        }
 }
 ?>

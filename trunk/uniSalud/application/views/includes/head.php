@@ -1,7 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Home</title>
+ <?php if (isset($title)&& $title!=""):?>
+<title><?php echo( $title);?></title>
+<?php else: ?>
+<title>Unisalud</title>
+<?php endif;?>
 <meta charset="utf-8">
 <link rel="stylesheet" href="http://localhost/uniSalud/css/reset.css" type="text/css" media="all">
 <link rel="stylesheet" href="http://localhost/uniSalud/css/layout.css" type="text/css" media="all">

@@ -6,14 +6,10 @@
             <header>
                     <?php
                     $user = $this->session->all_userdata();
-                    if (isset($user['id_usuario'])) {?>
-                            <?php $this->load->view("estandar/micuenta");?>
-                        <?php
+                    if (isset($user['id_usuario'])) {
+                        $this->load->view("estandar/micuenta");
                     } else {
-                        ?>
-                            <?php $this->load->view("estandar/inicioSesion");
-                            ?>
-                            <?php
+                        $this->load->view("estandar/inicioSesion");
                     }
                     ?>
                 <div class="wrapper">
