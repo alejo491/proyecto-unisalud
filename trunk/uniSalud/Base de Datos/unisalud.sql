@@ -62,9 +62,17 @@ CREATE TABLE IF NOT EXISTS `cita` (
 CREATE TABLE IF NOT EXISTS `consultorio` (
   `id_consultorio` int(11) NOT NULL AUTO_INCREMENT,
   `numero_consultorio` varchar(100) NOT NULL,
+   `descripcion` varchar(124) DEFAULT 'ninguna descripcion',
   PRIMARY KEY (`id_consultorio`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
+
+-- Volcado de datos para la tabla `consultorio`
+--
+INSERT INTO `consultorio` (`id_consultorio`, `numero_consultorio`, `descripcion`) VALUES
+(1, '1','Medico General'),
+(2, '2','Odontologia'),
+(3, '3','Sicologia');
 -- --------------------------------------------------------
 
 --
@@ -145,8 +153,8 @@ CREATE TABLE IF NOT EXISTS `personalsalud` (
   `segundo_nombre` varchar(256) DEFAULT NULL,
   `primer_apellido` varchar(256) NOT NULL,
   `segundo_apellido` varchar(256) NOT NULL,
+   `tipo_identificacion` varchar(20) NOT NULL,
   `identificacion` varchar(16) NOT NULL,
-  `tipo_identificacion` varchar(20) NOT NULL,
   `numero_tarjeta` varchar(32) NOT NULL,
   `especialidad` varchar(256) NOT NULL,
   PRIMARY KEY (`id_personalsalud`),
@@ -296,8 +304,8 @@ INSERT INTO `usuario` (`id_usuario`, `email`, `contrasena`) VALUES
 -- Filtros para la tabla `atiende`
 --
 ALTER TABLE `atiende`
-  ADD CONSTRAINT `fk_atiende_atiende2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`),
-  ADD CONSTRAINT `fk_atiende_atiende_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`);
+  ADD CONSTRAINT `fk_atiende_atiende2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_atiende_atiende_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `cita`
@@ -318,7 +326,7 @@ ALTER TABLE `estudiante`
 -- Filtros para la tabla `horarioatencion`
 --
 ALTER TABLE `horarioatencion`
-  ADD CONSTRAINT `fk_horarioa_tiene_2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`);
+  ADD CONSTRAINT `fk_horarioa_tiene_2_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `personalsalud`
