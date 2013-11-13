@@ -8,50 +8,184 @@ class programaSaludControlador extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->database();
-        $this->load->library('grocery_CRUD');
     }
 
-    public function mostrar($data, $output = null) {
-        $data['output'] = $output;
+    public function mostrarProgramas() {
+        //Definicion de la interface
+        $this->load->library('pagination');
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/contentProgramaSalud';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Programas de Salud";
+        $this->load->model('programaSaludModelo');
+        $programas = $this->programaSaludModelo->obtenerProgramas();
+        if ($programas != FALSE) {
+            //CONFIGURACION DE LA PAGINACION...
+            $opciones = array();
+            //numero de items por pagina
+            $opciones['per_page'] = 5;
+            //linck de la paginacion
+            $opciones['base_url'] = base_url() . '/programaSaludControlador/mostrarProgramas/';
+            //numero total de tuplas en la base de datos
+            $opciones['total_rows'] = $programas->num_rows();
+            //segmento que se usara para pasar los datos de la paginacion
+            $opciones['uri_segment'] = 3;
+            //numero de links mostrados en la paginacion antes y despues de la pagina actual
+            $opciones['num_links'] = 2;
+            //nombre de la primera y ultima pagina
+            $opciones['first_link'] = 'Primero';
+            $opciones['last_link'] = 'Ultimo';
+            $opciones['full_tag_open'] = '<h3>';
+            $opciones['full_tag_close'] = '</h3>';
+            //inicializacion de la paginacion
+            $this->pagination->initialize($opciones);
+            //consulta a la base de datos segun paginacion
+            $programas = $this->programaSaludModelo->obtenerProgramas($opciones['per_page'], $this->uri->segment(3));
+            //carga de datos del resultado de la consulta
+            $data['programas'] = $programas;
+            //creacion de los linck de la paginacion
+            $data['paginacion'] = $this->pagination->create_links();
+            //FIN_PAGINACION...
+        } else {
+            $data['programas'] = NULL;
+        }
         $this->load->view('plantilla', $data);
     }
 
-    public function index() {
-        
+    public function agregarProgramaSalud() {
+        //definicion de la interface...
+        $this->session->set_userdata('mensaje', NULL);
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
-        //$data['topcontent'] = 'personal/topcontentServicios';
-        $data['topcontent']='estandar/topcontent';
-        $data['content'] = 'personal/contentServicios';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/contentRegistrarPrograma';
         $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Agregar Programa";
 
-        try {
-            $crud = new grocery_CRUD();
-            $crud->set_theme('datatables');
-            $crud->set_table('programasalud');
-            $crud->set_subject('Programa de Salud');
-            $crud->required_fields('costo', 'tipo_servicio','actividad');
-            $crud->display_as('tipo_servicio', 'Tipo de Servicio');
-            $crud->callback_edit_field('actividad', array($this, 'inputActividad'));
-            $crud->callback_add_field('actividad',array($this,'inputActividad'));
-            $crud->unset_read();
-            $crud->unset_print();
-            $crud->unset_export();
-            $crud->set_crud_url_path(site_url('programaSaludControlador/index'));
+        $this->load->view('plantilla', $data);
+    }
 
-            $output = $crud->render();
-            $this->mostrar($data, $output);
-        } catch (Exception $e) {
-            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+    public function aniadirDatos() {
+
+        $this->load->model('programaSaludModelo');
+        $this->load->library('form_validation');
+        if ($_POST) {
+            if ($this->validar() == FALSE) {
+                $data['header'] = 'includes/header';
+                $data['menu'] = 'personal/menu';
+                $data['topcontent'] = 'estandar/topcontent';
+                $data['content'] = 'personal/contentRegistrarPrograma';
+                $data['footerMenu'] = 'personal/footerMenu';
+                $data['title'] = "Agregar Programa";
+                $this->load->view('plantilla', $data);
+            } else {
+                $programa['costo'] = $_POST['costo'];
+                $programa['tipo_servicio'] = $_POST['tipo_servicio'];
+                $programa['actividad'] = $_POST['actividad'];
+                $id = $this->programaSaludModelo->ingresarProgramaSalud($programa);
+                if ($id) {
+                    $this->session->set_userdata('mensaje', 'Programa Ingresado Con Exito');
+                    $this->session->set_userdata('exito', TRUE);
+                } else {
+                    $this->session->set_userdata('mensaje', 'Fallo al Ingresar el Programa');
+                    $this->session->set_userdata('exito', FALSE);
+                }
+                redirect('programaSaludControlador/mostrarProgramas');
+            }
         }
     }
-    function inputActividad() {
-            return '<select name="actividad">
-  <option value="Asistencial" selected="selected">Asistencial</option>
-  <option value="Promoción y Prevención">Promoción y Prevención</option>
-  <option value="Administrativas">Administrativas</option>
-</select>';
-       }
+
+    public function actualizarProgramaSalud() {
+        $this->session->set_userdata('mensaje', NULL);
+        $this->load->model('programaSaludModelo');
+
+        $id = $_POST['id_programasalud'];
+        $data['programa'] = $this->programaSaludModelo->buscarPrograma($id);
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/editarProgramaSalud';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Editar Programa";
+        $this->load->view('plantilla', $data);
+    }
+
+    public function editarProgramaSalud() {
+        $this->load->model('programaSaludModelo');
+
+        if ($_POST) {
+            if ($this->validar() == FALSE) {
+                $id = $_POST['id_programasalud'];
+                $data['programa'] = $this->programaSaludModelo->buscarPrograma($id);
+                $data['header'] = 'includes/header';
+                $data['menu'] = 'personal/menu';
+                $data['topcontent'] = 'estandar/topcontent';
+                $data['content'] = 'personal/editarProgramaSalud';
+                $data['footerMenu'] = 'personal/footerMenu';
+                $data['title'] = "Editar Programa";
+                $this->load->view('plantilla', $data);
+            } else {
+                $datos['costo'] = $_POST['costo'];
+                $datos['tipo_servicio'] = $_POST['tipo_servicio'];
+                $datos['actividad'] = $_POST['actividad'];
+                $datos['id_programasalud'] = $_POST['id_programasalud'];
+                $respuesta = $this->programaSaludModelo->editarProgramaSalud($datos);
+                if ($respuesta) {
+                    $this->session->set_userdata('mensaje', 'Programa Actualizado Con Exito');
+                    $this->session->set_userdata('exito', TRUE);
+                } else {
+                    $this->session->set_userdata('mensaje', 'Fallo al Actualizar el Programa');
+                    $this->session->set_userdata('exito', FALSE);
+                }
+                redirect('programaSaludControlador/mostrarProgramas');
+            }
+        }
+    }
+
+    public function eliminarProgramaSalud() {
+        $this->session->set_userdata('mensaje', NULL);
+        $this->load->model('programaSaludModelo');
+        $id = $_POST['id_programasalud'];
+        $respuesta = $this->programaSaludModelo->eliminarProgramaSalud($id);
+        if ($respuesta) {
+            $this->session->set_userdata('mensaje', 'Programa Eliminado Con Exito');
+            $this->session->set_userdata('exito', TRUE);
+        } else {
+            $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Programa');
+            $this->session->set_userdata('exito', FALSE);
+        }
+        redirect('programaSaludControlador/mostrarProgramas');
+    }
+
+    public function validar() {
+        $this->load->library('form_validation');
+        $config = array(
+            array(
+                'field' => 'costo',
+                'label' => 'Costo',
+                'rules' => 'trim|required|numeric|xss_clean'
+            ),
+            array(
+                'field' => 'tipo_servicio',
+                'label' => 'Tipo De Servicio',
+                'rules' => 'trim|required|xss_clean'
+            ),
+            array(
+                'field' => 'actividad',
+                'label' => 'Actividad',
+                'rules' => 'trim|required|xss_clean'
+            )
+        );
+
+        $this->form_validation->set_rules($config);
+        $this->form_validation->set_message('required', 'El campo %s es Obligatorio');
+        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+        $this->form_validation->set_message('numeric', 'El campo %s debe ser numerico');
+        return $this->form_validation->run();
+    }
+
 }
 
 ?>
