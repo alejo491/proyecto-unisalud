@@ -8,101 +8,228 @@ class agendaControlador extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->database();
-        $this->load->library('grocery_CRUD');
     }
-
-    public function mostrar($data, $output = null) {
-        $data['output'] = $output;
+    function buscarDatos(){
+        if(isset($_POST['id_personalsalud'])){
+            $id = $_POST['id_personalsalud'];
+            $this->session->set_userdata('id_personalsalud',$id);
+        }else{
+            $session=$this->session->all_userdata();
+            $id=$session['id_personalsalud'];
+        }
+        $data['personal'] = $this->personalSaludModelo->buscarPersonal($id);
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/contentHorarioAtencion';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Editar Personal Salud";
+        $agenda= $this->agendaModelo->obtenerAgenda($id);
+        if ($agenda != FALSE) {
+            //CONFIGURACION DE LA PAGINACION...
+            $opciones = array();
+            //numero de items por pagina
+            $opciones['per_page'] = 5;
+            //linck de la paginacion
+            $opciones['base_url'] = base_url() . '/agendaControlador/buscarDatos';
+            //numero total de tuplas en la base de datos
+            $opciones['total_rows'] = $agenda->num_rows();
+            //segmento que se usara para pasar los datos de la paginacion
+            $opciones['uri_segment'] = 3;
+            //numero de links mostrados en la paginacion antes y despues de la pagina actual
+            $opciones['num_links'] = 2;
+            //nombre de la primera y ultima pagina
+            $opciones['first_link'] = 'Primero';
+            $opciones['last_link'] = 'Ultimo';
+            $opciones['full_tag_open'] = '<h3>';
+            $opciones['full_tag_close'] = '</h3>';
+            //inicializacion de la paginacion
+            $this->pagination->initialize($opciones);
+            //consulta a la base de datos segun paginacion
+            $agenda = $this->agendaModelo->obtenerAgenda($id,$opciones['per_page'], $this->uri->segment(3));
+            //carga de datos del resultado de la consulta
+            $data['agenda'] = $agenda;
+            //creacion de los linck de la paginacion
+            $data['paginacion'] = $this->pagination->create_links();
+            //FIN_PAGINACION...
+        } else {
+            $data['agenda'] = NULL;
+        }
+        $this->load->view('plantilla', $data);
+    }
+    public function agregarHorarioAtencion() {
+        //definicion de la interface...
+        $this->session->set_userdata('mensaje', NULL);
+        $data['id_personalsalud']=$_POST['id_personalsalud'];
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/contentRegistrarHorarioAtencion';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Agregar Personal de Salud";
         $this->load->view('plantilla', $data);
     }
 
-    public function index() {
-        $this->load->model('personalModelo');
-        $data['header'] = 'includes/header';
-        $data['menu'] = 'personal/menu';
-        //$data['topcontent'] = 'personal/topcontentHorarioAtencion';
-        $data['topcontent']='estandar/topcontent';
-        $data['content'] = 'personal/contentHorarioAtencion';
-        $data['footerMenu'] = 'personal/footerMenu';
-        $session = $this->session->all_userdata();
-        if (isset($session['medico_id']) && $session['medico_id']!="") {
-            $id_medico = $session['medico_id'];
-        } else {
-            $id_medico = $this->uri->segment(3);
-            $this->session->set_userdata('medico_id', $id_medico);
-        }
-        $data['medico'] = $this->personalModelo->getMedico($id_medico);
-        try {
-            $crud = new grocery_CRUD();
-            $crud->set_theme('datatables');
-            $crud->set_table('horarioatencion');
-            $crud->set_subject('Horario de Atencion');
-            $crud->required_fields('dia', 'hora_inicial', 'hora_final');
-            $crud->set_relation('id_personalsalud', 'personalsalud','primer_nombre');
-            $crud->fields('dia', 'hora_inicial', 'hora_final','id_personalsalud');
-            $crud->where('horarioatencion.id_personalsalud', $id_medico);
-            $crud->display_as('hora_inicial', 'Hora de Inicio');
-            $crud->display_as('hora_final', 'Hora de Finalizacion');
-            $crud->display_as('id_personalsalud', '');
-            $crud->callback_edit_field('id_personalsalud', array($this, 'cargarMedico'));
-            $crud->callback_add_field('id_personalsalud',array($this,'cargarMedico'));
-            $crud->callback_edit_field('dia', array($this, 'inputDia'));
-            $crud->callback_add_field('dia',array($this,'inputDia'));
-            $crud->callback_edit_field('hora_inicial', array($this, 'editHoraI'));
-            $crud->callback_add_field('hora_inicial',array($this,'inputHoraI'));
-            $crud->callback_edit_field('hora_final', array($this, 'editHoraF'));
-            $crud->callback_add_field('hora_final',array($this,'inputHoraF'));
-            $crud->unset_print();
-            $crud->unset_export();
-            $crud->unset_read();
-            $crud->set_crud_url_path(site_url('agendaControlador/index'));
-
-            $output = $crud->render();
-            $this->mostrar($data, $output);
-        } catch (Exception $e) {
-            show_error($e->getMessage() . ' --- ' . $e->getTraceAsString());
+    public function aniadirDatos() {
+        $this->load->library('form_validation');
+        if ($_POST) {
+            if ($this->validar() == FALSE) {
+                $data['id_personalsalud']=$_POST['id_personalsalud'];
+                $data['header'] = 'includes/header';
+                $data['menu'] = 'personal/menu';
+                $data['topcontent'] = 'estandar/topcontent';
+                $data['content'] = 'personal/contentRegistrarHorarioAtencion';
+                $data['footerMenu'] = 'personal/footerMenu';
+                $data['title'] = "Agregar Horario Atencion";
+                $this->load->view('plantilla', $data);
+            } else {
+                $horario['id_personalsalud'] = $_POST['id_personalsalud'];
+                $horario['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':'.$_POST['seg_i'];
+                $horario['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':'.$_POST['seg_f'];
+                $horario['dia'] = $_POST['dia'];
+                
+                $id = $this->agendaModelo->ingresarHorarioAgenda($horario);
+                if ($id) {
+                    $this->session->set_userdata('mensaje', 'Horario Ingresado Con Exito');
+                    $this->session->set_userdata('exito', TRUE);
+                } else {
+                    $this->session->set_userdata('mensaje', 'Fallo al Ingresar el Horario');
+                    $this->session->set_userdata('exito', FALSE);
+                }
+                //$this->buscarDatos();
+                redirect('agendaControlador/buscarDatos');
+            }
         }
     }
 
-    function cargarMedico() {
-        $session = $this->session->all_userdata();
-            $id_medico=$session['medico_id'];
-            return '<input style="visibility:hidden;" type="text" maxlength="50" value="'.$id_medico.'" name="id_personalsalud" style="width:400px"/>';
-       }
-       function inputDia() {
-            return '<select name="dia">
-  <option value="lunes" selected="selected">lunes</option>
-  <option value="martes">martes</option>
-  <option value="miercoles">miercoles</option>
-  <option value="jueves">jueves</option>
-  <option value="viernes">viernes</option>
-  <option value="sabado">sabado</option>
-</select>';
-       }
-       function inputHoraI(){
-           /*return '<select name="hora"><option value="6" selected="selected">6</option>
-               <option value="7">7</option><option value="8">8</option><option value="9">9</option>
-               <option value="10">10</option><option value="11">11</option><option value="12">12</option>
-               <option value="13">13</option><option value="14">14</option><option value="15">15</option>
-               <option value="16">16</option><option value="17">17</option><option value="18">18</option>
-               </select>
-               <input type="text" name="hora_inicial" value="'.  set_value('hora').':00:00"/>';*/
-           return '<input type="text" name="hora_inicial" value="00:00:00"/>  HH:mm:ss';
-       }
-       function inputHoraF(){
-           return'<input type="text" name="hora_final" value="00:00:00"/>  HH:mm:ss';
-       }
-       function editHoraI(){
-           $this->load->model('agendaModelo');
-           $session = $this->session->all_userdata();
-           $HoraI=$this->agendaModelo->getHoras($session['medico_id'],$this->uri->segment(4));
-           return '<input type="text" name="hora_inicial" value="'.$HoraI['hora_inicial'].'"/>  HH:mm:ss';
-       }
-       function editHoraF(){
-           $this->load->model('agendaModelo');
-           $session = $this->session->all_userdata();
-           $HoraI=$this->agendaModelo->getHoras($session['medico_id'],$this->uri->segment(4));
-           return '<input type="text" name="hora_final" value="'.$HoraI['hora_final'].'"/>  HH:mm:ss';
-       }
+    public function buscarHorarioPersonal() {
+        $this->session->set_userdata('mensaje', NULL);
+        $id = $_POST['id_agenda'];
+        $data['horario']=$this->agendaModelo->obtenerHorarioAtencion($id);
+        $str='';
+        $i=0;
+        while(strcmp($data['horario']->hora_inicial[$i],":")!=0 && $i<strlen($data['horario']->hora_inicial)){
+            $str=$str.$data['horario']->hora_inicial[$i];
+            $i++;
+        }
+        $i++;
+        $data['hora_i']=(int)$str;
+        $str='';
+        while(strcmp($data['horario']->hora_inicial[$i],":")!=0 && $i<strlen($data['horario']->hora_inicial)){
+            $str=$str.$data['horario']->hora_inicial[$i];
+            $i++;
+        }
+        $i++;
+        $data['min_i']=(int)$str;
+        $str='';
+        while($i<strlen($data['horario']->hora_inicial)){
+            $str=$str.$data['horario']->hora_inicial[$i];
+            $i++;
+        }
+        $i++;
+        $data['seg_i']=(int)$str;
+        $i=0;
+        $str='';
+        while(strcmp($data['horario']->hora_final[$i],":")!=0 && $i<strlen($data['horario']->hora_final)){
+            $str=$str.$data['horario']->hora_final[$i];
+            $i++;
+        }
+        $i++;
+        $data['hora_f']=(int)$str;
+        $str='';
+        while(strcmp($data['horario']->hora_final[$i],":")!=0 && $i<strlen($data['horario']->hora_final)){
+            $str=$str.$data['horario']->hora_final[$i];
+            $i++;
+        }
+        $i++;
+        $data['min_f']=(int)$str;
+        $str='';
+        while($i<strlen($data['horario']->hora_final)){
+            $str=$str.$data['horario']->hora_final[$i];
+            $i++;
+        }
+        $data['seg_f']=(int)$str;
+        
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/editarHorarioAtencion';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Editar Personal Salud";
+        $this->load->view('plantilla', $data);
+    }
+
+    public function editarHorarioAtencion() {
+        $this->load->library('form_validation');
+        if ($_POST) {
+            if ($this->validar() == FALSE) {
+                $data['id_personalsalud']=$_POST['id_personalsalud'];
+                $data['header'] = 'includes/header';
+                $data['menu'] = 'personal/menu';
+                $data['topcontent'] = 'estandar/topcontent';
+                $data['content'] = 'personal/contentRegistrarHorarioAtencion';
+                $data['footerMenu'] = 'personal/footerMenu';
+                $data['title'] = "Agregar Horario Atencion";
+                $this->load->view('plantilla', $data);
+            } else {
+                $data['id_agenda'] = $_POST['id_agenda'];
+                $data['id_personalsalud'] = $_POST['id_personalsalud'];
+                $data['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':'.$_POST['seg_i'];
+                $data['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':'.$_POST['seg_f'];
+                $data['dia'] = $_POST['dia'];
+                
+                $respuesta = $this->agendaModelo->actualizarHorarioAtencion($data);
+                if ($respuesta) {
+                    $this->session->set_userdata('mensaje', 'Horario Actualizado Con Exito');
+                    $this->session->set_userdata('exito', TRUE);
+                } else {
+                    $this->session->set_userdata('mensaje', 'Fallo al Actualizar el Horario');
+                    $this->session->set_userdata('exito', FALSE);
+                }
+                redirect('agendaControlador/buscarDatos');
+            }
+        }
+    }
+
+    public function eliminarHorarioAtencion() {
+        $this->session->set_userdata('mensaje', NULL);
+        $id = $_POST['id_agenda'];
+        $respuesta = $this->agendaModelo->eliminarHorario($id);
+        if ($respuesta) {
+            $this->session->set_userdata('mensaje', 'Horario Eliminado Con Exito');
+            $this->session->set_userdata('exito', TRUE);
+        } else {
+            $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Horario');
+            $this->session->set_userdata('exito', FALSE);
+        }
+        redirect('AgendaControlador/buscarDatos');
+    }
+
+    public function validar() {
+        $this->load->library('form_validation');
+        $config = array(
+            array(
+                'field' => 'dia',
+                'label' => 'Dia',
+                'rules' => 'trim|required|xss_clean'
+            ),
+            array(
+                'field' => 'hora_i',
+                'label' => 'Hora Inicial',
+                'rules' => 'trim|xss_clean|required'
+            ),
+            array(
+                'field' => 'hora_f',
+                'label' => 'Hora Final',
+                'rules' => 'trim|required|xss_clean'
+            )
+        );
+
+        $this->form_validation->set_rules($config);
+        $this->form_validation->set_message('required', 'El campo %s es Obligatorio');
+        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+        return $this->form_validation->run();
+    }
 }
+
 ?>
