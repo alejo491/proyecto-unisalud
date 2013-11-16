@@ -9,7 +9,10 @@ class personalSaludControlador extends CI_Controller {
         parent::__construct();
         $this->load->database();
     }
-
+    public function  index(){
+        $this->session->set_userdata('mensaje', NULL);
+        $this->mostrarPersonalSalud();
+    }
     public function mostrarPersonalSalud() {
         //Definicion de la interface
         $this->load->library('pagination');
@@ -163,7 +166,7 @@ class personalSaludControlador extends CI_Controller {
     public function eliminarPersonalSalud() {
         $this->session->set_userdata('mensaje', NULL);
         $this->load->model('personalSaludModelo');
-        $id = $_POST['id_personalsalud'];
+        $id = $this->uri->segment(3);
         $respuesta = $this->personalSaludModelo->eliminarPersonalSalud($id);
         if ($respuesta) {
             $this->session->set_userdata('mensaje', 'Personal Salud Eliminado Con Exito');

@@ -9,7 +9,10 @@ class programaSaludControlador extends CI_Controller {
         parent::__construct();
         $this->load->database();
     }
-
+    public function index(){
+        $this->session->set_userdata('mensaje', NULL);
+        $this->mostrarProgramas();
+    }
     public function mostrarProgramas() {
         //Definicion de la interface
         $this->load->library('pagination');
@@ -147,7 +150,8 @@ class programaSaludControlador extends CI_Controller {
     public function eliminarProgramaSalud() {
         $this->session->set_userdata('mensaje', NULL);
         $this->load->model('programaSaludModelo');
-        $id = $_POST['id_programasalud'];
+        //$id = $_POST['id_programasalud'];
+        $id=$this->uri->segment(3);
         $respuesta = $this->programaSaludModelo->eliminarProgramaSalud($id);
         if ($respuesta) {
             $this->session->set_userdata('mensaje', 'Programa Eliminado Con Exito');

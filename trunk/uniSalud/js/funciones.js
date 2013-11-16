@@ -1,4 +1,4 @@
-function saludo()
+function exitoEliminar()
 {
     alert("hola");
 }
@@ -22,4 +22,10 @@ function cancelar(ruta)
                 alert("cancelado");
             }
        
+        }
+function eliminar(ruta,id) 
+        {
+            if(confirm('Confirma que desea Eliminar este campo')){
+                window.location.href = ruta+"/"+id;
+            }       
         }
