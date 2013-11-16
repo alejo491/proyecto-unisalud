@@ -97,7 +97,6 @@
                             <td style="width: 200px"><strong>Genero:*</strong><br /></td>
                             <td><?php
                                 $data_form=array(
-                                    'null'        => 'selecciona una opcion',
                                     'm'    =>  'masculino',
                                     'f'      =>  'femenino'
                                 );
@@ -111,7 +110,7 @@
                          
                          <tr  style="height: 35px">
                              <td><strong>Facultad:*</strong><br /></td>
-                             <td><select id="facultad" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_programa('<?php echo base_url()?>estandarControlador/cargarprograma','programa')">
+                             <td><select name="facultad" id="facultad" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_programa('<?php echo base_url()?>estandarControlador/cargarprograma','programa')">
                                 <option value="">Selecciona una facultad</option>
                                  <?php 
                                     foreach($facultades->result_array() as $fila)
@@ -131,7 +130,7 @@
                              <td><strong>Programa:*</strong><br /></td>
                              <td><select id="programas" name="programas" style="background:whitesmoke;border: 1px solid;width:273px" >
                                 <option value="">Selecciona un programa</option>
-                                 
+                                
                                 </select>
                              </td>   
                              <td>
@@ -150,7 +149,6 @@
                             <td style="width: 200px"><strong>Tipo de Indentificacion:*</strong><br /></td>
                             <td><?php
                                 $data_form=array(
-                                    'null'        => 'selecciona una opcion',
                                     'Cedula de Ciudadania'    =>  'Cedula de Ciudadania',
                                     'Tarjeta de Identidad'      =>  'Tarjeta de Identidad',
                                     'Registro Civil'     => 'Registro Civil'

@@ -42,7 +42,53 @@ class estandarControlador extends CI_Controller {
         $this->load->model('estudianteModelo'); 
         $data['facultades']=$this->estudianteModelo->CargarFacultad();
         if ($_POST) {
-            $config = array(
+            $data['header'] = 'includes/header';
+                $data['menu'] = 'estandar/menu';
+                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
+                $data['topcontent']='estandar/topcontent';
+                $data['content'] = 'estandar/registrar_usuario';
+                $data['footerMenu'] = 'estandar/footerMenu';
+            if ($this->validar()==FALSE) {
+                $data['errores'] = validation_errors();
+            } else {
+                   $data['estudiante'] = array(
+                    'id_estudiante' => $_POST['codigoEstudiante'],
+                    'id_programa' => $_POST['programas'],
+                    'tipo_identificacion' => $_POST['tipoId'],
+                    'identificacion' => $_POST['numId'],
+                    'primer_nombre' => $_POST['primerNombre'],
+                    'segundo_nombre' => $_POST['segundoNombre'],
+                    'primer_apellido' => $_POST['primerApellido'],
+                    'segundo_apellido' => $_POST['segundoApellido'],
+                    'genero' => $_POST['genero'],
+                    'fecha_nacimiento' =>$_POST['fecha_nac']
+                );
+                $data['header'] = 'includes/header';
+                $data['topcontent'] = 'estandar/topcontent';
+                $data['content'] = 'estandar/contentHome';
+                $data['footerMenu'] = 'estandar/footerMenu';
+                $id = $this->estudianteModelo->registrar($data['estudiante']);
+                
+                if ($id!=FALSE) {
+                     $data['usuario'] = array(
+                         'id_persona'=>$id,
+                         'email' => $_POST['email'],
+                         'contrasena' => sha1($_POST['contrasena'])
+                     );
+                    $this->usuarioModelo->registrar($data['usuario']);
+                    $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
+                    $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
+                    $this->session->set_userdata('email', $usuarioActual['email']);
+                    $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
+                    $this->session->set_userdata('id_rol',$id_rol['id_rol']);
+                }
+            }
+            
+            $this->load->view('plantilla',$data);
+        }
+    }
+    public function validar(){
+        $config = array(
                 array(
                     'field' => 'codigoEstudiante',
                     'label' => 'Codigo Estudiante',
@@ -71,7 +117,7 @@ class estandarControlador extends CI_Controller {
                 array(
                     'field' => 'facultad',
                     'label' => 'Facultad',
-                    'rules' => 'trim|'
+                    'rules' => 'trim|callback_isSelected'
                 ),
                 array(
                     'field' => 'genero',
@@ -79,9 +125,9 @@ class estandarControlador extends CI_Controller {
                     'rules' => 'trim|'
                 ),
                 array(
-                    'field' => 'programa',
-                    'label' => 'Programa',
-                    'rules' => 'trim|'
+                    'field' => 'programas',
+                    'label' => 'Programas',
+                    'rules' => 'trim|callback_isSelected'
                 ),
                 array(
                     'field' => 'fecha_nac',
@@ -122,56 +168,9 @@ class estandarControlador extends CI_Controller {
             $this->form_validation->set_message('valid_email', 'El campo %s no corresponde a un Email');
             $this->form_validation->set_message('trim', 'Caracteres Invalidos');
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos 6 caracteres');
-            $data['header'] = 'includes/header';
-                $data['menu'] = 'estandar/menu';
-                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
-                $data['topcontent']='estandar/topcontent';
-                $data['content'] = 'estandar/registrar_usuario';
-                $data['footerMenu'] = 'estandar/footerMenu';
-            if ($this->form_validation->run() == FALSE) {
-                $data['errores'] = validation_errors();
-            } else {
-                   $data['estudiante'] = array(
-                    'id_estudiante' => $_POST['codigoEstudiante'],
-                    'id_programa' => $_POST['programas'],
-                    'tipo_identificacion' => $_POST['tipoId'],
-                    'identificacion' => $_POST['numId'],
-                    'primer_nombre' => $_POST['primerNombre'],
-                    'segundo_nombre' => $_POST['segundoNombre'],
-                    'primer_apellido' => $_POST['primerApellido'],
-                    'segundo_apellido' => $_POST['segundoApellido'],
-                    'genero' => $_POST['genero'],
-                    'fecha_nacimiento' =>$_POST['fecha_nac']
-                );
-                $data['header'] = 'includes/header';
-                $data['topcontent'] = 'estandar/topcontent';
-                $data['content'] = 'estandar/contentHome';
-                $data['footerMenu'] = 'estandar/footerMenu';
-                $id = $this->estudianteModelo->registrar($data['estudiante']);
-                
-                if ($id!=FALSE) {
-                     $data['usuario'] = array(
-                         'id_persona'=>$id,
-                         'email' => $_POST['email'],
-                         'contrasena' => sha1($_POST['contrasena'])
-                     );
-                    $this->usuarioModelo->registrar($data['usuario']);
-                    $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
-                    $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
-                    $this->session->set_userdata('email', $usuarioActual['email']);
-                    $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
-                    $this->session->set_userdata('id_rol',$id_rol['id_rol']);
-                      
-                    
-                }
-            }
-            
-            $this->load->view('plantilla',$data);
-        }
+            return $this->form_validation->run();
     }
-    
-    public function cargarprograma()
-    {
+    public function cargarprograma(){
         
         $id=$this->input->post("id",true);
         $datos=$this->estudianteModelo->cargarProgramas($id);
@@ -206,6 +205,16 @@ class estandarControlador extends CI_Controller {
         else{
             $this->form_validation->set_message('validarPass', 'Su contraseña debe contener caracteres: Mayuscula, Minuscula,Numero y Especial');
             return FALSE;
+        }
+    }
+    function isSelected($str=NULL){
+        echo $str;
+        if($str==NULL){
+            $this->form_validation->set_message('isSelected', 'Debe seleccionar una opcio para %s');
+            return FALSE;
+        }
+        else{
+            return TRUE;
         }
     }
 }
