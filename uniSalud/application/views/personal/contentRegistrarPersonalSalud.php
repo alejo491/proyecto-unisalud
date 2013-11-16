@@ -140,12 +140,13 @@
         <td>
             * Programa de Salud: 
         </td>
-        <td> <?php 
-            $data_form=array();
+        <td> <strong>Escoja uno o varios programas de salud</strong><br />
+            <?php 
+            $i=0;
             foreach ($programas->result() as $programa):
-                $data_form[$programa->id_programasalud]=$programa->tipo_servicio;
+                echo '<input type="checkbox" name="opcion['.$i.']" value="'.$programa->id_programasalud.'">'.$programa->tipo_servicio.'<br>';
+                $i=$i+1;
             endforeach;
-            echo form_dropdown('id_programasalud',$data_form);
         ?></td>
     </tr>
     <tr>
