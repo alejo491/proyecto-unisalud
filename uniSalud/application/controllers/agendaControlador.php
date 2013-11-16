@@ -9,6 +9,10 @@ class agendaControlador extends CI_Controller {
         parent::__construct();
         $this->load->database();
     }
+    public function index(){
+        $this->session->set_userdata('mensaje', NULL);
+        $this->buscarDatos();
+    }
     function buscarDatos(){
         if(isset($_POST['id_personalsalud'])){
             $id = $_POST['id_personalsalud'];
@@ -193,7 +197,7 @@ class agendaControlador extends CI_Controller {
 
     public function eliminarHorarioAtencion() {
         $this->session->set_userdata('mensaje', NULL);
-        $id = $_POST['id_agenda'];
+        $id = $this->uri->segment(3);
         $respuesta = $this->agendaModelo->eliminarHorario($id);
         if ($respuesta) {
             $this->session->set_userdata('mensaje', 'Horario Eliminado Con Exito');

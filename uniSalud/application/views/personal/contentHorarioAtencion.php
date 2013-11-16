@@ -44,11 +44,11 @@
                             <?php echo form_close(); ?>
                         </td>
                         <td>
-                            <?php echo form_open('agendaControlador/eliminarHorarioAtencion') ?>
-                            <?php echo form_hidden('id_personalsalud', $horario->id_personalsalud); ?>
-                            <?php echo form_hidden('id_agenda', $horario->id_agenda); ?>
-                            <input id="btnTabla" type="submit" value="Eliminar" class="boton"/>
-                            <?php echo form_close(); ?>
+                            <?php //echo form_open('agendaControlador/eliminarHorarioAtencion') ?>
+                            <?php //echo form_hidden('id_personalsalud', $horario->id_personalsalud); ?>
+                            <?php //echo form_hidden('id_agenda', $horario->id_agenda); ?>
+                            <input id="btnTabla" type="submit" value="Eliminar" onclick="eliminar('<?php echo base_url()?>agendaControlador/eliminarHorarioAtencion','<?php echo $horario->id_agenda?>');" class="boton"/>
+                            <?php //echo form_close(); ?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
