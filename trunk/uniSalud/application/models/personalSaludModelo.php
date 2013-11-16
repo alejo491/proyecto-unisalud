@@ -53,13 +53,13 @@ class personalSaludModelo extends CI_Model {
     }
     
     function programasPersonal($id){
-        $this->db->limit(1);
+        
         $this->db->select('id_programasalud');
         $this->db->where('id_personalsalud',$id);
         $this->db->from('atiende');
         $consulta=$this->db->get();
         if($consulta->num_rows()>0){
-            return $consulta->row();
+            return $consulta;
         }
         else{
             return FALSE;

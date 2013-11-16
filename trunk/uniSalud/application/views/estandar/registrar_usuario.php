@@ -211,7 +211,7 @@
                             </td>
                          </tr>
                          <tr  style="height: 35px">
-                             <td><strong>Comfirmar contrase&ntilde;a:*</strong><br /></td>
+                             <td><strong>Confirmar contrase&ntilde;a:*</strong><br /></td>
                              <td><?php
                                 $data_form=array(
                                     'id'        => 'CContrasena',

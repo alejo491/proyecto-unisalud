@@ -142,11 +142,19 @@
             * Programa Salud: 
         </td>
         <td> <?php 
+            $pro_per=array();
+            foreach($programas_personal->result() as $pp):
+                array_push($pro_per, $pp->id_programasalud);
+               
+            endforeach;
             $i=0;
             foreach ($programas->result() as $programa):
                 
-                    echo '<input type="checkbox" name="opcion['.$i.']" value="'.$programa->id_programasalud.'">'.$programa->tipo_servicio.'<br>';
-                
+                        if(in_array($programa->id_programasalud, $pro_per)){
+                             echo '<input type="checkbox" name="opcion['.$i.']" value="'.$programa->id_programasalud.'" checked>'.$programa->tipo_servicio.'<br>';   
+                        }else{
+                             echo '<input type="checkbox" name="opcion['.$i.']" value="'.$programa->id_programasalud.'">'.$programa->tipo_servicio.'<br>';
+                        }
                 
                 $i=$i+1;
             endforeach;
