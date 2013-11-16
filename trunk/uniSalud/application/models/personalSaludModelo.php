@@ -21,19 +21,22 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
-    function ingresarPersonalSalud($personal,$pro){
-        $progra=explode(',',$pro);
+    function ingresarPersonalSalud($personal,$pro=NULL){
+        
         unset($personal['id_programasalud']);
         $this->db->insert('personalsalud',$personal);
-        $this->db->select('id_personalsalud');
-        $this->db->limit(1);
-        $this->db->where('identificacion',$personal['identificacion']);
-        $this->db->from('personalsalud');
-        $personalsalud=$this->db->get()->row();
-        foreach ($progra as $programasalud):
-            $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$personalsalud->id_personalsalud.",".$programasalud.")";
-            $this->db->query($query);    
-       endforeach;
+        if($pro!=NULL){
+            $this->db->select('id_personalsalud');
+            $this->db->limit(1);
+            $this->db->where('identificacion',$personal['identificacion']);
+            $this->db->from('personalsalud');
+            $personalsalud=$this->db->get()->row();
+            $progra=explode(',',$pro);
+            foreach ($progra as $programasalud):
+                $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$personalsalud->id_personalsalud.",".$programasalud.")";
+                $this->db->query($query);    
+            endforeach;
+        }
     }
     function buscarPersonal($id){
         $this->db->limit(1);
@@ -62,18 +65,19 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
-    function editarPersonalSalud($datos,$pro){
-        $progra=explode(',',$pro);
-        $this->db->where('id_personalsalud',$datos['id_personalsalud']);
-        $this->db->delete('atiende');
-        foreach ($progra as $programasalud):
-            $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$datos['id_personalsalud'].",".$programasalud.")";
-            $this->db->query($query);    
-       endforeach;    
+    function editarPersonalSalud($datos,$pro=NULL){
         
-        foreach ($progra as $value) {
-            
+        
+        if($pro!=NULL){
+            $progra=explode(',',$pro);
+            $this->db->where('id_personalsalud',$datos['id_personalsalud']);
+            $this->db->delete('atiende');
+            foreach ($progra as $programasalud):
+                $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$datos['id_personalsalud'].",".$programasalud.")";
+                $this->db->query($query);    
+            endforeach;    
         }
+        
         $this->db->where('id_personalsalud', $datos['id_personalsalud']);
         return $this->db->update('personalsalud', $datos);
     }

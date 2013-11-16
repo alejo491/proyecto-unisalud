@@ -84,6 +84,7 @@ class personalSaludControlador extends CI_Controller {
                 $data['title'] = "Agregar Personal de Salud";
                 $this->load->model('consultorioModelo');
                 $data['consultorios']=$this->consultorioModelo->obtenerConsultorios();
+                $data['programas']=$this->programaSaludModelo->obtenerProgramas();
                 $this->load->view('plantilla', $data);
             } else {
                 $personal['primer_nombre'] = $_POST['primer_nombre'];
@@ -95,8 +96,9 @@ class personalSaludControlador extends CI_Controller {
                 $personal['numero_tarjeta'] = $_POST['numero_tarjeta'];
                 $personal['especialidad'] = $_POST['especialidad'];
                 $personal['id_consultorio'] = $_POST['consultorio'];
+                if(isset($_POST['opcion'])){
                 $pro=substr(implode(',', $this->input->post('opcion')), 0);
-                
+                }else{$pro=NULL;}
                 $id = $this->personalSaludModelo->ingresarPersonalSalud($personal,$pro);
                 if ($id) {
                     $this->session->set_userdata('mensaje', 'Personal Ingresado Con Exito');
@@ -154,10 +156,13 @@ class personalSaludControlador extends CI_Controller {
                 $datos['especialidad'] = $_POST['especialidad'];
                 $datos['id_consultorio'] = $_POST['consultorio'];
                 
-                
+               
+                if(isset($_POST['opcion'])){
                 $pro=substr(implode(',', $this->input->post('opcion')), 0);
-                
-                
+                }else{
+                    
+                    $pro=NULL;
+                }
                 $respuesta = $this->personalSaludModelo->editarPersonalSalud($datos,$pro);
                 
                 if ($respuesta) {
