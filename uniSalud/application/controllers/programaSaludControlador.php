@@ -158,7 +158,57 @@ class programaSaludControlador extends CI_Controller {
         }
         redirect('programaSaludControlador/mostrarProgramas');
     }
-
+    //Definicion de la interface
+    public function buscarProgramaSalud(){
+        $this->load->library('pagination');
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/contentProgramaSalud';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Programas de Salud";
+        if(isset($_POST['tipo_servicio'])&& isset($_POST['actividad']) && isset($_POST['costo'])){
+            $filtro['tipo_servicio']=$_POST['tipo_servicio'];
+            $filtro['actividad']=$_POST['actividad'];
+            $filtro['costo']=$_POST['costo'];
+            $this->session->set_userdata('filtro',$filtro);
+        }else{
+               $session=$this->session->all_userdata();
+               $filtro=$session['filtro'];
+        }
+        $respuesta = $this->programaSaludModelo->buscarFiltradoProgramaSalud($filtro);
+        if ($respuesta != FALSE) {
+            //CONFIGURACION DE LA PAGINACION...
+            $opciones = array();
+            //numero de items por pagina
+            $opciones['per_page'] = 5;
+            //linck de la paginacion
+            $opciones['base_url'] = base_url() . 'programaSaludControlador/buscarProgramaSalud/';
+            //numero total de tuplas en la base de datos
+            $opciones['total_rows'] = $respuesta->num_rows();
+            //segmento que se usara para pasar los datos de la paginacion
+            $opciones['uri_segment'] = 3;
+            //numero de links mostrados en la paginacion antes y despues de la pagina actual
+            $opciones['num_links'] = 2;
+            //nombre de la primera y ultima pagina
+            $opciones['first_link'] = 'Primero';
+            $opciones['last_link'] = 'Ultimo';
+            $opciones['full_tag_open'] = '<h3>';
+            $opciones['full_tag_close'] = '</h3>';
+            //inicializacion de la paginacion
+            $this->pagination->initialize($opciones);
+            //consulta a la base de datos segun paginacion
+            $respuesta = $this->programaSaludModelo->buscarFiltradoProgramaSalud($filtro,$opciones['per_page'], $this->uri->segment(3));
+            //carga de datos del resultado de la consulta
+            $data['programas'] = $respuesta;
+            //creacion de los linck de la paginacion
+            $data['paginacion'] = $this->pagination->create_links();
+            //FIN_PAGINACION...
+            } else {
+                $data['programas'] = NULL;
+            }
+        $this->load->view('plantilla', $data);
+}
     public function validar() {
         $this->load->library('form_validation');
         $config = array(
@@ -185,7 +235,12 @@ class programaSaludControlador extends CI_Controller {
         $this->form_validation->set_message('numeric', 'El campo %s debe ser numerico');
         return $this->form_validation->run();
     }
-
+    
+    public function cargarprogramasalud(){
+        $programas = $this->programaSaludModelo->obtenerProgramas();
+        foreach ($programas->result_array() as $row) {
+             echo  '<option value="'.$row['id_programasalud'].'">'.$row['tipo_servicio'].'</option>';
+        }
+    }
 }
-
 ?>

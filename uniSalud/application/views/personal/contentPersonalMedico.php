@@ -1,6 +1,6 @@
 <section id="content">
     <div>
-        <button id ="btnAgregar" class="boton" onclick="location.href='<?php echo base_url()."/personalSaludControlador/agregarPersonalSalud"; ?>'; return false;"> Añadir Personal de Salud</button>
+        <button id ="btnAgregar" class="boton" onclick="location.href='<?php echo base_url()."personalSaludControlador/agregarPersonalSalud"; ?>'; return false;"> Añadir Personal de Salud</button>
     </div>
     <div id="paginacion" align="center">
         <?php if(isset($paginacion))echo $paginacion?>
@@ -52,6 +52,59 @@
                     </tr>
                 <?php endforeach; ?>
             </tbody>
+            <tfoot>
+                <?php echo form_open('personalSaludControlador/buscarPersonalSalud') ?>
+                <tr>
+                    <td>
+                        <?php
+                        $data_form = array(
+                            'name' => 'primer_nombre',
+                            'id' => 'primer_nombre',
+                            'size' => '20',
+                            'value' => ''
+                        );
+                        echo form_input($data_form);
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $data_form = array(
+                            'name' => 'primer_apellido',
+                            'id' => 'primer_apellido',
+                            'size' => '20',
+                            'value' => ''
+                        );
+                        echo form_input($data_form);
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $data_form = array(
+                            'name' => 'identificacion',
+                            'id' => 'identificacion',
+                            'size' => '20',
+                            'value' => ''
+                        );
+                        echo form_input($data_form);
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        $data_form = array(
+                            'name' => 'especialidad',
+                            'id' => 'especialidad',
+                            'size' => '20',
+                            'value' => ''
+                        );
+                        echo form_input($data_form);
+                        ?>
+                    </td>
+                    <td colspan="3">
+                            <input id="btnTabla" type="submit" value="Buscar" class="boton"/>
+                            <?php echo form_close(); ?>
+                    </td>
+                </tr>
+            </tfoot>
         <?php else: ?>
             <tfoot>
                 <tr>

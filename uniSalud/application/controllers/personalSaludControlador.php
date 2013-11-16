@@ -58,6 +58,7 @@ class personalSaludControlador extends CI_Controller {
         $this->session->set_userdata('mensaje', NULL);
         $this->load->model('consultorioModelo');
         $data['consultorios']=$this->consultorioModelo->obtenerConsultorios();
+        $data['programas']=$this->programaSaludModelo->obtenerProgramas();
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'estandar/topcontent';
@@ -91,6 +92,7 @@ class personalSaludControlador extends CI_Controller {
                 $personal['numero_tarjeta'] = $_POST['numero_tarjeta'];
                 $personal['especialidad'] = $_POST['especialidad'];
                 $personal['id_consultorio'] = $_POST['consultorio'];
+                $personal['id_programasalud']=$_POST['id_programasalud'];
                 
                 $id = $this->personalSaludModelo->ingresarPersonalSalud($personal);
                 if ($id) {
@@ -111,6 +113,7 @@ class personalSaludControlador extends CI_Controller {
         $id = $_POST['id_personalsalud'];
         $data['consultorios']=$this->consultorioModelo->obtenerConsultorios();
         $data['personal'] = $this->personalSaludModelo->buscarPersonal($id);
+        $data['programas']=$this->programaSaludModelo->obtenerProgramas();
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'estandar/topcontent';
@@ -171,7 +174,59 @@ class personalSaludControlador extends CI_Controller {
         }
         redirect('personalSaludControlador/mostrarPersonalSalud');
     }
-
+    public function buscarPersonalSalud(){
+        //Definicion de la interface
+        $this->load->library('pagination');
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/contentPersonalMedico';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Programas de Salud";
+        if(isset($_POST['primer_nombre'])&&isset($_POST['primer_apellido'])&&isset($_POST['identificacion'])&&isset($_POST['especialidad'])){
+            $filtro['primer_nombre']=$_POST['primer_nombre'];
+            $filtro['primer_apellido']=$_POST['primer_apellido'];
+            $filtro['identificacion']=$_POST['identificacion'];
+            $filtro['especialidad']=$_POST['especialidad'];
+            $this->session->set_userdata('filtro',$filtro);
+        }
+        else{
+            $session=$this->session->all_userdata();
+            $filtro=$session['filtro'];
+        }
+        $respuesta = $this->personalSaludModelo->buscarFiltradoPersonalSalud($filtro);
+        if ($respuesta != FALSE) {
+            //CONFIGURACION DE LA PAGINACION...
+            $opciones = array();
+            //numero de items por pagina
+            $opciones['per_page'] = 5;
+            //linck de la paginacion
+            $opciones['base_url'] = base_url() . 'personalSaludControlador/buscarPersonalSalud/';
+            //numero total de tuplas en la base de datos
+            $opciones['total_rows'] = $respuesta->num_rows();
+            //segmento que se usara para pasar los datos de la paginacion
+            $opciones['uri_segment'] = 3;
+            //numero de links mostrados en la paginacion antes y despues de la pagina actual
+            $opciones['num_links'] = 2;
+            //nombre de la primera y ultima pagina
+            $opciones['first_link'] = 'Primero';
+            $opciones['last_link'] = 'Ultimo';
+            $opciones['full_tag_open'] = '<h3>';
+            $opciones['full_tag_close'] = '</h3>';
+            //inicializacion de la paginacion
+            $this->pagination->initialize($opciones);
+            //consulta a la base de datos segun paginacion
+            $respuesta = $this->personalSaludModelo->buscarFiltradoPersonalSalud($filtro,$opciones['per_page'], $this->uri->segment(3));
+            //carga de datos del resultado de la consulta
+            $data['personal'] = $respuesta;
+            //creacion de los linck de la paginacion
+            $data['paginacion'] = $this->pagination->create_links();
+            //FIN_PAGINACION...
+        } else {
+            $data['personal'] = NULL;
+        }
+        $this->load->view('plantilla', $data);
+    }
     public function validar() {
         $this->load->library('form_validation');
         $config = array(

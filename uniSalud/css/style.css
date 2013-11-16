@@ -85,6 +85,10 @@ footer a {color:#dfd2e7}
 {
 	background: url('http://localhost/unisalud/images/patternb-head.png');
 }
+#tabla tfoot tr
+{
+	background: url('http://localhost/unisalud/images/patternb-head.png');
+}
 #tabla th
 {
 	font-size: 13px;
@@ -120,6 +124,16 @@ footer a {color:#dfd2e7}
     margin-left: 1%;
     padding: 4px;
     display: inline;
+}
+#btnTabla.buscar{
+    background: url(../images/buscar.png);
+    color: transparent;
+    background-repeat: no-repeat;  /* make the background image appear only once */
+    background-position: 0px 0px;  /* equivalent to 'top left' */
+    border: #000;           /* assuming we don't want any borders */
+    height: 48px;
+    width: 48px;
+   cursor: pointer;
 }
 .boton:hover{
     cursor: pointer;

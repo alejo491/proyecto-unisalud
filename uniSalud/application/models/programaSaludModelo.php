@@ -46,5 +46,28 @@ class programaSaludModelo extends CI_Model {
         $this->db->limit(1);
         return $this->db->delete('programasalud');
     }
+    function buscarFiltradoProgramaSalud($filtro,$limite=NULL,$inicio=NULL ){
+        if($limite!=NULL){
+            $this->db->limit($limite,$inicio);
+        }
+        if(strcmp($filtro['tipo_servicio'], '')!=0){
+            $this->db->like('tipo_servicio',$filtro['tipo_servicio']);
+        }
+        if(strcmp($filtro['actividad'], '')!=0){
+            $this->db->like('actividad',$filtro['actividad']);
+        }
+        if(strcmp($filtro['costo'], '')!=0){
+            $this->db->like('costo',$filtro['costo']);
+        }
+        $this->db->select('id_programasalud,costo,tipo_servicio,actividad');
+        $this->db->from('programasalud');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+    }
 }
 ?>

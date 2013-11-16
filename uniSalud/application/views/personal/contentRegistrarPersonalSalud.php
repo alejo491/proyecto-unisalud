@@ -70,13 +70,13 @@
         </td>
         <td> <?php
             $data_form = array(
-                'name' => 'tipo_identificacion',
-                'id' => 'tipo_identificacion',
-                'size' => '40',
-                'value' => set_value('tipo_identificacion')
+                'cedula de ciudadania' => 'cedula de ciudadania',
+                'cedula extranjera' => 'cedula extranjera',
+                'tarjeta de identidad' => 'tarjeta de identidad',
+                'registro civil' => 'registro civil'
             );
             echo form_error('tipo_identificacion', '<b><p style="color:red;">', '</p></b>');
-            echo form_input($data_form);
+            echo form_dropdown('tipo_identificacion',$data_form,  set_value('tipo_identificacion'));
             ?>
         </td>
     </tr>
@@ -98,7 +98,7 @@
     </tr>
     <tr>
         <td>
-            * Numero de Tarjeta Profecional: 
+            * Numero de Tarjeta Profesional: 
         </td>
         <td> <?php
             $data_form = array(
@@ -136,11 +136,24 @@
         <td> <?php echo form_dropdown('consultorio', $consultorios);?></td>
     </tr>
     <tr>
+        
+        <td>
+            * Programa de Salud: 
+        </td>
+        <td> <?php 
+            $data_form=array();
+            foreach ($programas->result() as $programa):
+                $data_form[$programa->id_programasalud]=$programa->tipo_servicio;
+            endforeach;
+            echo form_dropdown('id_programasalud',$data_form);
+        ?></td>
+    </tr>
+    <tr>
         <td>
             <input id="btnAgregar" class="boton" type="submit" value="Agregar"/>
         </td>
         <td>
-            <button id ="btnAgregar" class="boton" onclick="location.href='<?php echo base_url()."/personalSaludControlador/mostrarPersonalSalud"; ?>'; return false;"> Cancelar</button>
+            <button id ="btnAgregar" class="boton" onclick="location.href='<?php echo base_url()."personalSaludControlador/mostrarPersonalSalud"; ?>'; return false;"> Cancelar</button>
         </td>
     </tr>
 </table>
