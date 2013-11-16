@@ -21,17 +21,19 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
-    function ingresarPersonalSalud($personal){
-        $programasalud=$personal['id_programasalud'];
+    function ingresarPersonalSalud($personal,$pro){
+        $progra=explode(',',$pro);
         unset($personal['id_programasalud']);
         $this->db->insert('personalsalud',$personal);
         $this->db->select('id_personalsalud');
         $this->db->limit(1);
-        $this->db->where('id_personalsalud',$personal['identificacion']);
+        $this->db->where('identificacion',$personal['identificacion']);
         $this->db->from('personalsalud');
         $personalsalud=$this->db->get()->row();
-        $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$personalsalud->id_personalsalud.",".$programasalud.")";
-        $this->db->query($query);
+        foreach ($progra as $programasalud):
+            $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$personalsalud->id_personalsalud.",".$programasalud.")";
+            $this->db->query($query);    
+       endforeach;
     }
     function buscarPersonal($id){
         $this->db->limit(1);
@@ -46,7 +48,32 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
-    function editarPersonalSalud($datos){
+    
+    function programasPersonal($id){
+        $this->db->limit(1);
+        $this->db->select('id_programasalud');
+        $this->db->where('id_personalsalud',$id);
+        $this->db->from('atiende');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta->row();
+        }
+        else{
+            return FALSE;
+        }
+    }
+    function editarPersonalSalud($datos,$pro){
+        $progra=explode(',',$pro);
+        $this->db->where('id_personalsalud',$datos['id_personalsalud']);
+        $this->db->delete('atiende');
+        foreach ($progra as $programasalud):
+            $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$datos['id_personalsalud'].",".$programasalud.")";
+            $this->db->query($query);    
+       endforeach;    
+        
+        foreach ($progra as $value) {
+            
+        }
         $this->db->where('id_personalsalud', $datos['id_personalsalud']);
         return $this->db->update('personalsalud', $datos);
     }

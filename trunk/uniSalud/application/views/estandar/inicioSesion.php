@@ -16,6 +16,10 @@
                 <td style=" text-align: right; padding-right: 5%;"><a  style="color:white" href=""><h4>Recuperar Contraseña</h4></a></td>
                 
             </tr>
+            <tr>
+                <td></td><td><?php echo form_error('email','<b><p style="color:yellow;">','</p></b>'); ?></td>
+                 <td></td><td><?php echo form_error('contrasena','<b><p style="color:yellow; ">','</p></b>'); ?></td>
+            <tr>
             <tbody>
         </table>
     <?php echo form_close();?>

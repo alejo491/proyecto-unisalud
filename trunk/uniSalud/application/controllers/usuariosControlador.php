@@ -18,8 +18,15 @@ class UsuariosControlador extends CI_Controller {
             $this->form_validation->set_message('valid_email', 'El campo %s debe ser un email');
             $this->form_validation->set_message('trim', 'No se admiten caracteres especiales');
             $this->form_validation->set_message('xss_clean', 'Codigo malicioso detectado');
-            
-            if ($this->form_validation->run() == TRUE) {
+            $data['header'] = 'includes/headerHome';
+                $data['menu'] = 'estandar/menu';
+                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
+                $data['topcontent']='estandar/topcontent';
+                $data['content'] = 'estandar/contentHome';
+                $data['footerMenu'] = 'estandar/footerMenu';
+            if ($this->form_validation->run() == FALSE) {
+                $data['errores'] = validation_errors();
+            }else{
                 $email = $this->input->post('email', true);
                 $contrasena = sha1($this->input->post('contrasena', true));
                 $usuarioActual = $this->usuarioModelo->login($email, $contrasena);
@@ -30,7 +37,7 @@ class UsuariosControlador extends CI_Controller {
                     $this->session->set_userdata('id_rol',$id_rol['id_rol']);
                 }
             }
-            redirect(base_url());
+            $this->load->view('plantilla',$data);
         }
     }
 

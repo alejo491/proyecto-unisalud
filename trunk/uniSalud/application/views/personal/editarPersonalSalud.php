@@ -137,6 +137,22 @@
         <td> <?php echo form_dropdown('consultorio', $consultorios);?></td>
     </tr>
     <tr>
+        
+        <td>
+            * Programa Salud: 
+        </td>
+        <td> <?php 
+            $i=0;
+            foreach ($programas->result() as $programa):
+                
+                    echo '<input type="checkbox" name="opcion['.$i.']" value="'.$programa->id_programasalud.'">'.$programa->tipo_servicio.'<br>';
+                
+                
+                $i=$i+1;
+            endforeach;
+        ?></td>
+    </tr>
+    <tr>
         <td>
             <input id="btnAgregar" class="boton" type="submit" value="Actualizar"/>
         </td>
