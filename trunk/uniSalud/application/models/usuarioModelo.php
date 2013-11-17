@@ -10,7 +10,7 @@ class usuarioModelo extends CI_Model {
     }
     function registrar($data) {
         $this->db->insert('usuario', $data);
-        $this->db->select('id_usuario')->from('usuario')->where('id_persona',$data['id_persona']);
+        $this->db->select('id_usuario')->from('usuario')->where('email',$data['email']);
         $this->db->limit(1);     
         $query=$this->db->get();
         if ($query->num_rows() > 0) {
@@ -20,6 +20,7 @@ class usuarioModelo extends CI_Model {
         }
         $insert='INSERT INTO POSEE (ID_USUARIO,ID_ROL)VALUES ('.$id_usu.', 1)';
         $this->db->query($insert);
+        return $id_usu;
     }
 
     public function login($str1, $str2) {

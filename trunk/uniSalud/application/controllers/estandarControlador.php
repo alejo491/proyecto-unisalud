@@ -51,9 +51,23 @@ class estandarControlador extends CI_Controller {
             if ($this->validar()==FALSE) {
                 $data['errores'] = validation_errors();
             } else {
-                   $data['estudiante'] = array(
+                $data['header'] = 'includes/header';
+                    $data['topcontent'] = 'estandar/topcontent';
+                    $data['content'] = 'estandar/contentHome';
+                    $data['footerMenu'] = 'estandar/footerMenu';
+                $data['usuario'] = array(
+                         
+                         'email' => $_POST['email'],
+                         'contrasena' => sha1($_POST['contrasena'])
+                     );
+                 $id =    $this->usuarioModelo->registrar($data['usuario']);
+                
+                
+                if ($id!=FALSE) {
+                       $data['estudiante'] = array(
                     'id_estudiante' => $_POST['codigoEstudiante'],
                     'id_programa' => $_POST['programas'],
+                    'id_usuario'=>$id,
                     'tipo_identificacion' => $_POST['tipoId'],
                     'identificacion' => $_POST['numId'],
                     'primer_nombre' => $_POST['primerNombre'],
@@ -62,20 +76,10 @@ class estandarControlador extends CI_Controller {
                     'segundo_apellido' => $_POST['segundoApellido'],
                     'genero' => $_POST['genero'],
                     'fecha_nacimiento' =>$_POST['fecha_nac']
-                );
-                $data['header'] = 'includes/header';
-                $data['topcontent'] = 'estandar/topcontent';
-                $data['content'] = 'estandar/contentHome';
-                $data['footerMenu'] = 'estandar/footerMenu';
-                $id = $this->estudianteModelo->registrar($data['estudiante']);
-                
-                if ($id!=FALSE) {
-                     $data['usuario'] = array(
-                         'id_persona'=>$id,
-                         'email' => $_POST['email'],
-                         'contrasena' => sha1($_POST['contrasena'])
-                     );
-                    $this->usuarioModelo->registrar($data['usuario']);
+                    );
+                        $this->estudianteModelo->registrar($data['estudiante']);
+                    
+                    
                     $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
                     $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
                     $this->session->set_userdata('email', $usuarioActual['email']);
@@ -92,7 +96,7 @@ class estandarControlador extends CI_Controller {
                 array(
                     'field' => 'codigoEstudiante',
                     'label' => 'Codigo Estudiante',
-                    'rules' => 'trim|required'
+                    'rules' => 'trim|required|is_unique[estudiante.id_estudiante]'
                 ),
                 array(
                     'field' => 'primerNombre',
@@ -125,8 +129,8 @@ class estandarControlador extends CI_Controller {
                     'rules' => 'trim|'
                 ),
                 array(
-                    'field' => 'programas',
-                    'label' => 'Programas',
+                    'field' => 'programa',
+                    'label' => 'Programa',
                     'rules' => 'trim|callback_isSelected'
                 ),
                 array(
@@ -163,7 +167,7 @@ class estandarControlador extends CI_Controller {
             $this->load->library('form_validation');
             $this->form_validation->set_rules($config);
             $this->form_validation->set_message('required', 'El campo %s es requerido');
-            $this->form_validation->set_message('is_unique', 'Este email ya esta registrado');
+            $this->form_validation->set_message('is_unique', 'Este %s ya esta registrado');
             $this->form_validation->set_message('matches', 'El campo %s no coincide');
             $this->form_validation->set_message('valid_email', 'El campo %s no corresponde a un Email');
             $this->form_validation->set_message('trim', 'Caracteres Invalidos');
@@ -208,9 +212,9 @@ class estandarControlador extends CI_Controller {
         }
     }
     function isSelected($str=NULL){
-        echo $str;
+        
         if($str==NULL){
-            $this->form_validation->set_message('isSelected', 'Debe seleccionar una opcio para %s');
+            $this->form_validation->set_message('isSelected', 'Debe seleccionar una opcion para %s');
             return FALSE;
         }
         else{
