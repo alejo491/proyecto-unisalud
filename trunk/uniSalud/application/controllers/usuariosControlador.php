@@ -12,8 +12,8 @@ class UsuariosControlador extends CI_Controller {
 
     public function login() {
        if ($_POST) {
-            $this->form_validation->set_rules('email', 'Buscar', 'trim|required|xss_clean|valid_email');
-            $this->form_validation->set_rules('contrasena', 'Buscar', 'trim|required|xss_clean');
+            $this->form_validation->set_rules('email', 'Email', 'trim|required|xss_clean|valid_email|callback_Existe');
+            $this->form_validation->set_rules('contrasena', 'Contraseña', 'trim|required|xss_clean|callback_Contra');
             $this->form_validation->set_message('required', 'El campo %s es requerido');
             $this->form_validation->set_message('valid_email', 'El campo %s debe ser un email');
             $this->form_validation->set_message('trim', 'No se admiten caracteres especiales');
@@ -44,5 +44,29 @@ class UsuariosControlador extends CI_Controller {
     public function logout() {
         $this->session->sess_destroy();
         redirect(base_url());
+    }
+    function Existe(){
+        $email = $this->input->post('email', true);
+        
+        if($this->usuarioModelo->Existe($email)){
+            $this->form_validation->set_message('Existe', 'No existe el usuario');
+            return FALSE;
+        }
+        else{
+            return TRUE;
+        }
+    }
+    function Contra(){
+        $email = $this->input->post('email', true);
+        $email = $this->input->post('email', true);
+        $contrasena = sha1($this->input->post('contrasena', true));
+                
+        if(!$this->usuarioModelo->login($email, $contrasena)){
+            $this->form_validation->set_message('Contra', 'Contraseña incorrecta');
+            return FALSE;
+        }
+        else{
+            return TRUE;
+        }
     }
 }

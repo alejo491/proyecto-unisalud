@@ -38,6 +38,20 @@ class usuarioModelo extends CI_Model {
         }
     }
     
+    public function Existe($e){
+        $email = mysql_real_escape_string($e);
+        $where = array(
+            'email' => $email,
+        );
+        $this->db->select()->from('usuario')->where($where);
+        $query = $this->db->get();
+        if ($query->num_rows() > 0) { 
+            return FALSE;
+        } else {
+            return TRUE;
+        }
+    }
+    
     function getRol($str) {
         $id_usuario =  mysql_real_escape_string($str);
         $this->db->limit(1);

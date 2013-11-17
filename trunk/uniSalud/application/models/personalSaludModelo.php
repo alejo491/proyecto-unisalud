@@ -48,7 +48,7 @@ class personalSaludModelo extends CI_Model {
             return $consulta->row();
         }
         else{
-            return FALSE;
+            return NULL;
         }
     }
     
