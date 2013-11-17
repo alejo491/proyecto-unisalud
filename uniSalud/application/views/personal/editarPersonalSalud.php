@@ -142,6 +142,7 @@
             * Programa Salud: 
         </td>
         <td> <?php 
+             echo form_error('programa_salud', '<b><p style="color:red;">', '</p></b>');
             $pro_per=array();
             foreach($programas_personal->result() as $pp):
                 array_push($pro_per, $pp->id_programasalud);

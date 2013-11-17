@@ -131,7 +131,7 @@ class personalSaludControlador extends CI_Controller {
 
     public function editarPersonalSalud() {
         if ($_POST) {
-            if ($this->validar() == FALSE) {
+            if ($this->validar_actualizar() == FALSE) {
                 $id = $_POST['id_personalsalud'];
                 $data['consultorios']=$this->consultorioModelo->obtenerConsultorios();
                 $data['personal'] = $this->personalSaludModelo->buscarPersonal($id);
@@ -275,6 +275,69 @@ class personalSaludControlador extends CI_Controller {
             array(
                 'field' => 'identificacion',
                 'label' => 'Numero de Identificacion',
+                'rules' => 'trim|required|xss_clean|numeric|is_unique[personalsalud.identificacion]'
+            ),
+            array(
+                'field' => 'numero_tarjeta',
+                'label' => 'Numero de Tarjeta Profecional',
+                'rules' => 'trim|required|xss_clean|numeric'
+            ),
+            array(
+                'field' => 'especialidad',
+                'label' => 'Especialidad',
+                'rules' => 'trim|required|xss_clean'
+            ),
+            array(
+                'field' => 'consultorio',
+                'label' => 'Consultorio',
+                'rules' => 'trim|required|xss_clean|numeric'
+            ),
+            array(
+                'field' => 'programa_salud',
+                'label' => 'Programa Salud',
+                'rules' => 'callback_isChecked'
+            ),
+        );
+
+        $this->form_validation->set_rules($config);
+        $this->form_validation->set_message('required', 'El campo %s es Obligatorio');
+        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+        $this->form_validation->set_message('numeric', 'El campo %s debe ser numerico');
+        $this->form_validation->set_message('is_unique', 'Esta identificacion ya esta registrada');
+        return $this->form_validation->run();
+    }
+
+    public function validar_actualizar() {
+        $this->load->library('form_validation');
+        $config = array(
+            array(
+                'field' => 'primer_nombre',
+                'label' => 'Primer Nombre',
+                'rules' => 'trim|required|xss_clean'
+            ),
+            array(
+                'field' => 'segundo_nombre',
+                'label' => 'Segundo Nombre',
+                'rules' => 'trim|xss_clean'
+            ),
+            array(
+                'field' => 'primer_apellido',
+                'label' => 'Primer Apellido',
+                'rules' => 'trim|required|xss_clean'
+            ),
+            array(
+                'field' => 'segundo_apellido',
+                'label' => 'Segundo Apellido',
+                'rules' => 'trim|xss_clean'
+            ),
+            array(
+                'field' => 'tipo_identificacion',
+                'label' => 'Tipo de Indentificacion',
+                'rules' => 'trim|required|xss_clean'
+            ),
+            array(
+                'field' => 'identificacion',
+                'label' => 'Numero de Identificacion',
                 'rules' => 'trim|required|xss_clean|numeric'
             ),
             array(
@@ -292,15 +355,31 @@ class personalSaludControlador extends CI_Controller {
                 'label' => 'Consultorio',
                 'rules' => 'trim|required|xss_clean|numeric'
             ),
+            array(
+                'field' => 'programa_salud',
+                'label' => 'Programa Salud',
+                'rules' => 'callback_isChecked'
+            ),
         );
 
         $this->form_validation->set_rules($config);
         $this->form_validation->set_message('required', 'El campo %s es Obligatorio');
         $this->form_validation->set_message('trim', 'Caracteres Invalidos');
         $this->form_validation->set_message('numeric', 'El campo %s debe ser numerico');
+    
         return $this->form_validation->run();
     }
-
+    
+    function isChecked($str=NULL){
+        
+        if(!isset($_POST['opcion'])){
+            $this->form_validation->set_message('isChecked', 'Debe seleccionar al menos una opcion para %s');
+            return FALSE;
+        }
+        else{
+            return TRUE;
+        }
+    }
 }
 
 ?>

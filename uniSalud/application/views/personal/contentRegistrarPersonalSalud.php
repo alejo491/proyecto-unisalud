@@ -142,6 +142,7 @@
         </td>
         <td> <strong>Escoja uno o varios programas de salud</strong><br />
             <?php 
+             echo form_error('programa_salud', '<b><p style="color:red;">', '</p></b>');
             $i=0;
             foreach ($programas->result() as $programa):
                 echo '<input type="checkbox" name="opcion['.$i.']" value="'.$programa->id_programasalud.'">'.$programa->tipo_servicio.'<br>';
