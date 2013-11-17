@@ -8,7 +8,7 @@ function carga_programa(ruta,div)
             var id = $('select#facultad').val(); 
            $.post(ruta,{id:id},function(resp)
            {
-                $('#programas').html(resp);
+                $('#programa').html(resp);
            });
         }
         

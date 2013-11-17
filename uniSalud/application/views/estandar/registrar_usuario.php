@@ -128,13 +128,13 @@
                          </tr>
                          <tr  style="height: 35px">
                              <td><strong>Programa:*</strong><br /></td>
-                             <td><select id="programas" name="programas" style="background:whitesmoke;border: 1px solid;width:273px" >
+                             <td><select id="programa" name="programa" style="background:whitesmoke;border: 1px solid;width:273px" >
                                 <option value="">Selecciona un programa</option>
                                 
                                 </select>
                              </td>   
                              <td>
-                                <?php echo form_error('facultad','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
+                                <?php echo form_error('programa','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>
                             </td>
                          </tr>
                          <tr  style="height: 35px">
