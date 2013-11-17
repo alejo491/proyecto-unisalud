@@ -38,13 +38,12 @@
         </td>
         <td> <?php
             $data_form = array(
-                'name' => 'actividad',
-                'id' => 'actividad',
-                'size' => '40',
-                'value' => set_value('actividad')
+                'asistencial' => 'Asistencial',
+                'prevencion y promocion' => 'Prevencion y Promocion',
+                'administrativas' => 'Administrativas'
             );
             echo form_error('actividad', '<b><p style="color:red;">', '</p></b>');
-            echo form_input($data_form);
+            echo form_dropdown('actividad',$data_form);
             ?>
         </td>
     </tr>

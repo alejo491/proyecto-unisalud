@@ -56,7 +56,7 @@
         <?php else: ?>
             <tfoot>
                 <tr>
-                    <td colspan="4">Ningun Programa Registrado</td>
+                    <td colspan="4">Ningun Horario de Atencion Registrado</td>
                 </tr>
             </tfoot>
         <?php endif; ?>

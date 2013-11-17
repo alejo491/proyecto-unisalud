@@ -175,7 +175,6 @@ class estandarControlador extends CI_Controller {
             return $this->form_validation->run();
     }
     public function cargarprograma(){
-        
         $id=$this->input->post("id",true);
         $datos=$this->estudianteModelo->cargarProgramas($id);
         echo '<option value="">Seleccione un programa</option>';
@@ -183,7 +182,6 @@ class estandarControlador extends CI_Controller {
              echo  '<option value="'.$row['id_programa'].'">'.$row['nombre_programa'].'</option>';
         }
     }
-    
     function validarPass($str){
         $banMin=FALSE;
         $banMay=FALSE;
@@ -212,7 +210,6 @@ class estandarControlador extends CI_Controller {
         }
     }
     function isSelected($str=NULL){
-        
         if($str==NULL){
             $this->form_validation->set_message('isSelected', 'Debe seleccionar una opcion para %s');
             return FALSE;
