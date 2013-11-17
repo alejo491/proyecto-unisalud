@@ -134,7 +134,7 @@
         <td>
             * Consultorio: 
         </td>
-        <td> <?php echo form_dropdown('consultorio', $consultorios);?></td>
+        <td> <?php echo form_dropdown('consultorio', $consultorios,$personal->id_consultorio);?></td>
     </tr>
     <tr>
         
@@ -145,8 +145,7 @@
              echo form_error('programa_salud', '<b><p style="color:red;">', '</p></b>');
             $pro_per=array();
             foreach($programas_personal->result() as $pp):
-                array_push($pro_per, $pp->id_programasalud);
-               
+                array_push($pro_per, $pp->id_programasalud); 
             endforeach;
             $i=0;
             foreach ($programas->result() as $programa):
