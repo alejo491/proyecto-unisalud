@@ -33,6 +33,12 @@ CREATE TABLE IF NOT EXISTS `atiende` (
   KEY `fk_atiende_atiende2_personal` (`id_personalsalud`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+
+INSERT INTO `atiende` (`id_programasalud`,`id_personalsalud`) VALUES
+(7,6),
+(8,6),
+(2,7),
+(3,8);
 -- --------------------------------------------------------
 
 --
@@ -52,6 +58,8 @@ CREATE TABLE IF NOT EXISTS `cita` (
   KEY `fk_cita_cita2_programa` (`id_programasalud`),
   KEY `fk_cita_cita3_personal` (`id_personalsalud`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
 
 -- --------------------------------------------------------
 
@@ -73,7 +81,8 @@ CREATE TABLE IF NOT EXISTS `consultorio` (
 INSERT INTO `consultorio` (`id_consultorio`, `numero_consultorio`, `descripcion`) VALUES
 (1, '1','Medico General'),
 (2, '2','Odontologia'),
-(3, '3','Sicologia');
+(3, '3','Enfermeria'),
+(4, '4','Sicologia');
 --
 -- Estructura de tabla para la tabla `estudiante`
 --
@@ -81,6 +90,7 @@ INSERT INTO `consultorio` (`id_consultorio`, `numero_consultorio`, `descripcion`
 CREATE TABLE IF NOT EXISTS `estudiante` (
   `id_estudiante` int(11) NOT NULL AUTO_INCREMENT,
   `id_programa` int(11) NOT NULL,
+ 
   `primer_nombre` varchar(256) NOT NULL,
   `segundo_nombre` varchar(256) DEFAULT NULL,
   `primer_apellido` varchar(256) NOT NULL,
@@ -93,6 +103,9 @@ CREATE TABLE IF NOT EXISTS `estudiante` (
   KEY `fk_estudian_pertenece_programa` (`id_programa`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46091095 ;
 
+
+INSERT INTO `estudiante` VALUES
+(46081098,42,'edwar','','giraldo','','1061741945','Cedula de ciudadania','m','1991-10-10');
 -- --------------------------------------------------------
 
 --
@@ -145,6 +158,7 @@ CREATE TABLE IF NOT EXISTS `horarioatencion` (
 CREATE TABLE IF NOT EXISTS `personalsalud` (
   `id_personalsalud` int(11) NOT NULL AUTO_INCREMENT,
   `id_consultorio` int(11) NOT NULL,
+  
   `primer_nombre` varchar(256) NOT NULL,
   `segundo_nombre` varchar(256) DEFAULT NULL,
   `primer_apellido` varchar(256) NOT NULL,
@@ -157,6 +171,10 @@ CREATE TABLE IF NOT EXISTS `personalsalud` (
   KEY `fk_personal_asignado_consulto` (`id_consultorio`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
+INSERT INTO `personalsalud` (`id_personalsalud`,`id_consultorio`, `primer_nombre`, `segundo_nombre`,`primer_apellido`,`segundo_apellido`,`identificacion`,`tipo_identificacion`,`numero_tarjeta`,`especialidad`) VALUES
+(6,3,'Margarita','','Alegria','Ramirez','25000123','Cedula de Ciudadania','15762258','Enfermeria'),
+(7,2,'Alvaro','Fernando','Martinez','Pabon','250234123','Cedula de Ciudadania','10962758','Odontologo'),
+(8,2,'Heli','Francisco','Forero','','1061234123','Cedula de Ciudadania','16022758','Odontologo');
 -- --------------------------------------------------------
 
 --
@@ -175,8 +193,9 @@ CREATE TABLE IF NOT EXISTS `posee` (
 --
 
 INSERT INTO `posee` (`id_usuario`, `id_rol`) VALUES
-(12, 3),
-(13, 3);
+(12, 1),
+(13, 3),
+(14,1);
 
 -- --------------------------------------------------------
 
@@ -255,6 +274,16 @@ CREATE TABLE IF NOT EXISTS `programasalud` (
   PRIMARY KEY (`id_programasalud`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
+
+INSERT INTO `programasalud` (`costo`, `tipo_servicio`, `actividad`) VALUES
+(6800,'Consulta Urgencias','Odontologia'),
+(3400,'Radiografias Intra orales','Odontologia'),
+(6800,'Obturacion de una superficie en amalgama','Odontologia'),
+(5800,'Consulta Medica General','Procedimientos Medico y de Enfermeria'),
+(5800,'Cosulta Psicologica','Procedimientos Medico y de Enfermeria'),
+(8000,'Lavado de oido','Procedimientos Medico y de Enfermeria'),
+(2400,'Inyectologia','Procedimientos Medico y de Enfermeria'),
+(7400,'Citologia','Procedimientos Medico y de Enfermeria');
 -- --------------------------------------------------------
 
 --
@@ -295,8 +324,8 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 
 INSERT INTO `usuario` (`id_usuario`, `id_persona`, `contrasena`, `email`) VALUES
 (12, -1, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'alexis@gmail.com'),
-(13, -1, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'alejo491@gmail.com');
-
+(13, -1, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'alejo491@gmail.com'),
+(14,46081098,'7c4a8d09ca3762af61e59520943dc26494f8941b','edwar@gmail.com');
 --
 -- Restricciones para tablas volcadas
 --
@@ -312,8 +341,8 @@ ALTER TABLE `atiende`
 -- Filtros para la tabla `cita`
 --
 ALTER TABLE `cita`
-  ADD CONSTRAINT `fk_cita_cita2_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`) ON DELETE SET NULL,
-  ADD CONSTRAINT `fk_cita_cita3_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_cita_cita2_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`) ,
+  ADD CONSTRAINT `fk_cita_cita3_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`) ,
   ADD CONSTRAINT `fk_cita_cita_estudian` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`);
 
 --

@@ -13,7 +13,7 @@
                 <td align="left">
                     <input value="Ingresar" type="submit" style=" cursor: pointer; width: 90%; color: #673f85;height: 100%;border-radius: 15% 15% 15% 15%;box-shadow:3px 3px 5px #402f55;"/></td>
                 <td style=" text-align: right;"><a  style="color:white" href="http://localhost/uniSalud/estandarControlador/registrarse"><h4>Registrarse</h4></a></td>
-                <td style=" text-align: right; padding-right: 5%;"><a  style="color:white" href=""><h4>Recuperar Contraseña</h4></a></td>
+                <td style=" text-align: right; padding-right: 5%;"><a  style="color:white" href=""><h4><!--Recuperar Contraseña--></h4></a></td>
                 
             </tr>
             <tr>

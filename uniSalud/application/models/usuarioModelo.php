@@ -20,7 +20,7 @@ class usuarioModelo extends CI_Model {
         }
         $insert='INSERT INTO POSEE (ID_USUARIO,ID_ROL)VALUES ('.$id_usu.', 1)';
         $this->db->query($insert);
-        return $id_usu;
+        
     }
 
     public function login($str1, $str2) {

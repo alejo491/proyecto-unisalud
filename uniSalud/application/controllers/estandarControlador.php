@@ -55,19 +55,10 @@ class estandarControlador extends CI_Controller {
                     $data['topcontent'] = 'estandar/topcontent';
                     $data['content'] = 'estandar/contentHome';
                     $data['footerMenu'] = 'estandar/footerMenu';
-                $data['usuario'] = array(
-                         
-                         'email' => $_POST['email'],
-                         'contrasena' => sha1($_POST['contrasena'])
-                     );
-                 $id =    $this->usuarioModelo->registrar($data['usuario']);
-                
-                
-                if ($id!=FALSE) {
-                       $data['estudiante'] = array(
+                $data['estudiante'] = array(
                     'id_estudiante' => $_POST['codigoEstudiante'],
-                    'id_programa' => $_POST['programas'],
-                    'id_usuario'=>$id,
+                    'id_programa' => $_POST['programa'],
+                    
                     'tipo_identificacion' => $_POST['tipoId'],
                     'identificacion' => $_POST['numId'],
                     'primer_nombre' => $_POST['primerNombre'],
@@ -77,7 +68,17 @@ class estandarControlador extends CI_Controller {
                     'genero' => $_POST['genero'],
                     'fecha_nacimiento' =>$_POST['fecha_nac']
                     );
-                        $this->estudianteModelo->registrar($data['estudiante']);
+                  $id = $this->estudianteModelo->registrar($data['estudiante']);
+                 
+                
+                
+                if ($id!=FALSE) {
+                    $data['usuario'] = array(
+                         'id_persona'=>$id,
+                         'email' => $_POST['email'],
+                         'contrasena' => sha1($_POST['contrasena'])
+                     );
+                      $this->usuarioModelo->registrar($data['usuario']); 
                     
                     
                     $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
