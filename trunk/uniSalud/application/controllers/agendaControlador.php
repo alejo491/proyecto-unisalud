@@ -198,14 +198,15 @@ class agendaControlador extends CI_Controller {
     public function eliminarHorarioAtencion() {
         $this->session->set_userdata('mensaje', NULL);
         $id = $this->uri->segment(3);
-        $respuesta = $this->agendaModelo->eliminarHorario($id);
-        if ($respuesta) {
-            $this->session->set_userdata('mensaje', 'Horario Eliminado Con Exito');
-            $this->session->set_userdata('exito', TRUE);
-        } else {
-            $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Horario');
-            $this->session->set_userdata('exito', FALSE);
-        }
+        
+            $respuesta = $this->agendaModelo->eliminarHorario($id);
+            if ($respuesta) {
+                $this->session->set_userdata('mensaje', 'Horario Eliminado Con Exito');
+                $this->session->set_userdata('exito', TRUE);
+            } else {
+                $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Horario');
+                $this->session->set_userdata('exito', FALSE);
+            }
         redirect('AgendaControlador/buscarDatos');
     }
 

@@ -112,5 +112,17 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
+    
+    function verificar_citas($id){
+        
+        $query="SELECT * FROM cita NATURAL JOIN personalsalud WHERE id_personalsalud =$id";
+        $consulta=$this->db->query($query);
+        if($consulta->num_rows()>0){
+            return FALSE;
+        }
+        else{
+            return TRUE;
+        }
+    }
 }
 ?>

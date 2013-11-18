@@ -25,7 +25,7 @@ function cancelar(ruta)
         }
 function eliminar(ruta,id) 
         {
-            if(confirm('Confirma que desea Eliminar este campo')){
+            if(confirm('Confirma que desea Eliminar este campo,\nSi esta información es necesaria en otro servicio del sistema, no se eliminara')){
                 window.location.href = ruta+"/"+id;
             }       
         }

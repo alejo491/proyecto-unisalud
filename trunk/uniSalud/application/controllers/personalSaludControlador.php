@@ -181,13 +181,20 @@ class personalSaludControlador extends CI_Controller {
         $this->session->set_userdata('mensaje', NULL);
         $this->load->model('personalSaludModelo');
         $id = $this->uri->segment(3);
-        $respuesta = $this->personalSaludModelo->eliminarPersonalSalud($id);
-        if ($respuesta) {
-            $this->session->set_userdata('mensaje', 'Personal Salud Eliminado Con Exito');
-            $this->session->set_userdata('exito', TRUE);
-        } else {
-            $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Personal de Salud');
-            $this->session->set_userdata('exito', FALSE);
+        $confirmacion=$this->personalSaludModelo->verificar_citas($id);
+        if($confirmacion){
+            $respuesta = $this->personalSaludModelo->eliminarPersonalSalud($id);
+            if ($respuesta) {
+                $this->session->set_userdata('mensaje', 'Personal Salud Eliminado Con Exito');
+                $this->session->set_userdata('exito', TRUE);
+            } else {
+                $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Personal de Salud');
+                $this->session->set_userdata('exito', FALSE);
+            }
+        }else{
+                $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Personal de Salud, hay citas por atender');
+                $this->session->set_userdata('exito', FALSE);
+            
         }
         redirect('personalSaludControlador/mostrarPersonalSalud');
     }
