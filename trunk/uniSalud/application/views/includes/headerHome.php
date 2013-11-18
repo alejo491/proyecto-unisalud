@@ -22,11 +22,9 @@
                 <div class="wrapper">
                     <article class="col1 pad_left2">
                         <div class="text1">Division De Salud Integral <span>Universidad Del Cauca</span></div>
-                        <p>Aqui va una descripcion general de la aplicacion. 
-                            Aqui va una descripcion general de la aplicacion.
-                            Aqui va una descripcion general de la aplicacion.
-                            Aqui va una descripcion general de la aplicacion.
-                            Aqui va una descripcion general de la aplicacion.</p>
+                        <p>En esta pagina se encontrara informacion sobre los servicios
+                        ofrecidos por la division de salud integral de la Universidad del Cauca,
+                        el personal de salud que lo compone y la realizacion de citas medicas.</p>
                     </article>
                 </div>
             </header>
