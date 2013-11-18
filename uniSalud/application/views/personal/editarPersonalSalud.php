@@ -143,6 +143,7 @@
         </td>
         <td> <?php 
              echo form_error('programa_salud', '<b><p style="color:red;">', '</p></b>');
+            if($programas_personal){
             $pro_per=array();
             foreach($programas_personal->result() as $pp):
                 array_push($pro_per, $pp->id_programasalud); 
@@ -158,6 +159,19 @@
                 
                 $i=$i+1;
             endforeach;
+            }else{
+               $i=0;
+            foreach ($programas->result() as $programa):
+                
+                       
+                       
+                             echo '<input type="checkbox" name="opcion['.$i.']" value="'.$programa->id_programasalud.'">'.$programa->tipo_servicio.'<br>';
+                        
+                
+                $i=$i+1;
+            endforeach; 
+                
+            }
         ?></td>
     </tr>
     <tr>

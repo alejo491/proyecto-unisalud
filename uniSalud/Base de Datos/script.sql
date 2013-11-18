@@ -312,8 +312,8 @@ ALTER TABLE `atiende`
 -- Filtros para la tabla `cita`
 --
 ALTER TABLE `cita`
-  ADD CONSTRAINT `fk_cita_cita2_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`),
-  ADD CONSTRAINT `fk_cita_cita3_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`),
+  ADD CONSTRAINT `fk_cita_cita2_programa` FOREIGN KEY (`id_programasalud`) REFERENCES `programasalud` (`id_programasalud`) ON DELETE SET NULL,
+  ADD CONSTRAINT `fk_cita_cita3_personal` FOREIGN KEY (`id_personalsalud`) REFERENCES `personalsalud` (`id_personalsalud`) ON DELETE SET NULL,
   ADD CONSTRAINT `fk_cita_cita_estudian` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`);
 
 --
