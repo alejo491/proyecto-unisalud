@@ -129,11 +129,16 @@
         </td>
     </tr>
     <tr>
-        
         <td>
             * Consultorio: 
         </td>
-        <td> <?php echo form_dropdown('consultorio', $consultorios);?></td>
+        <td> 
+            <?php 
+            foreach ($consultorios->result_array() as $consultorio):
+                $data[$consultorio['id_consultorio']]=($consultorio['descripcion']);
+            endforeach;
+            echo form_dropdown('consultorio', $data);?>
+        </td>
     </tr>
     <tr>
         
