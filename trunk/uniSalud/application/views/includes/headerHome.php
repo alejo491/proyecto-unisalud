@@ -24,7 +24,8 @@
                         <div class="text1">Division De Salud Integral <span>Universidad Del Cauca</span></div>
                         <p>En esta pagina se encontrara informacion sobre los servicios
                         ofrecidos por la division de salud integral de la Universidad del Cauca,
-                        el personal de salud que lo compone y la realizacion de citas medicas.</p>
+                        el personal de salud que lo compone y la realizacion de citas medicas.
+                        </p>
                     </article>
                 </div>
             </header>

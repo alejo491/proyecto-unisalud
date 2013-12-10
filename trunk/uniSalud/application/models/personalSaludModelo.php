@@ -124,5 +124,59 @@ class personalSaludModelo extends CI_Model {
             return TRUE;
         }
     }
+    function buscarPersonalSaludPrograma($idPrograma){
+        $this->db->select('atiende.id_personalsalud AS id_personalsalud, primer_nombre,primer_apellido');
+        $this->db->from('personalsalud');
+        $this->db->join('atiende', 'atiende.id_personalsalud = personalsalud.id_personalsalud');
+        $this->db->where('atiende.id_programasalud',$idPrograma);
+        $data = $this->db->get();
+        if ($data->num_rows() > 0) {
+            return $data;
+        } else {
+            return FALSE;
+        }
+    }
+    function obtenerCitas($idPersonal,$fecha){
+        $this->db->select('hora_inicio','hora_fin');
+        $this->db->from('cita');
+        $this->db->order_by("hora_inicio", "asc");
+        $this->db->where('id_personalsalud',$idPersonal);
+        $this->db->where('dia',$fecha);
+        $data=$this->db->get();
+        $str=$this->db->last_query();
+        echo "<script>alert('$str');</script>";
+        if ($data->num_rows() > 0) {
+            return $data;
+        } else {
+            return FALSE;
+        }
+    }
+    function obtenerDiasDisp($idPersonal){
+        $this->db->select('id_agenda,id_personalsalud,dia');
+        $this->db->where('id_personalsalud',$idPersonal);
+        $this->db->group_by('dia');
+        $this->db->from('horarioatencion');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+    }
+    function obtenerHorarioDia($dia,$idPersonal){
+        $this->db->select('dia,hora_inicial,hora_final');
+        $this->db->where('id_personalsalud',$idPersonal);
+        $this->db->where('dia',$dia);
+        $this->db->order_by('hora_inicial','asc');
+        $this->db->from('horarioatencion');
+        $consulta=  $this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+    }
 }
 ?>

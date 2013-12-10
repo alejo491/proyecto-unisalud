@@ -7,18 +7,65 @@ class consultorioModelo extends CI_Model {
         function __construct() {
         parent::__construct();
     }
-function obtenerConsultorios() {
-        $sql = "SELECT id_consultorio,numero_consultorio FROM consultorio ORDER BY numero_consultorio";
-        $query = $this->db->query($sql);
-        $data = array();
-        if ($query->num_rows() > 0) {
-            foreach ($query->result_array() as $row) {
-                $data[$row['id_consultorio']] = ($row['numero_consultorio']);
-            }
-            return $data;
+    function obtenerConsultorios($limite=NULL,$inicio=NULL){
+        if($limite!=NULL){
+            $this->db->limit($limite,$inicio);
         }
-        $query->free_result();
-        return $data;
+        $this->db->select('id_consultorio,numero_consultorio,descripcion');
+        $this->db->from('consultorio');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
     }
+    function ingresarConsultorio($consultorio){
+        return $this->db->insert('consultorio',$consultorio);
+    }
+    function buscarConsultorio($id){
+        $this->db->limit(1);
+        $this->db->select('id_consultorio,numero_consultorio,descripcion');
+        $this->db->where('id_consultorio',$id);
+        $this->db->from('consultorio');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta->row();
+        }
+        else{
+            return FALSE;
+        }
+    }
+    function editarConsultorio($data){
+        $this->db->where('id_consultorio', $data['id_consultorio']);
+        return $this->db->update('consultorio', $data);
+    }
+    function eliminarConsultorio($id){
+        $this->db->where('id_consultorio', $id);
+        $this->db->limit(1);
+        return $this->db->delete('consultorio');
+    }
+    function buscarFiltradoConsultorio($filtro,$limite=NULL,$inicio=NULL ){
+        if($limite!=NULL){
+            $this->db->limit($limite,$inicio);
+        }
+        if(strcmp($filtro['numero_consultorio'], '')!=0){
+            $this->db->like('numero_consultorio',$filtro['numero_consultorio']);
+        }
+        if(strcmp($filtro['descripcion'], '')!=0){
+            $this->db->like('descripcion',$filtro['descripcion']);
+        }
+        $this->db->select('id_consultorio,numero_consultorio,descripcion');
+        $this->db->from('consultorio');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+    }
+    
 }
 ?>
