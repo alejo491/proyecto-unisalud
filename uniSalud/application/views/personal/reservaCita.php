@@ -1,11 +1,14 @@
-<?php echo form_open('personalSaludControlador/aniadirDatos/'); ?>
+<?php echo form_open('citaControlador/reservar_Cita/'); ?>
 <table id="tablaForm">
     <tr>
         <td>
             <b> Codigo:</b>
         </td>
         <td> 
-            <?php echo $estudiante->id_estudiante; ?>
+            <?php echo $estudiante->id_estudiante; echo form_hidden('id_estudiante', $estudiante->id_estudiante);?>
+        </td>
+        <td>
+            <?php echo form_error('id_estudiante', '<b><p style="color:red; padding-left: 10%;">', '</p></b>'); ?>
         </td>
     </tr>
     <tr>
@@ -13,7 +16,7 @@
             <b> Programa: </b>
         </td>
         <td> 
-            Falta Cargarlo segun el Codigo del Programa.
+            <?php echo $estudiante->id_programa; ?>
         </td>
     </tr>
     <tr>
@@ -76,7 +79,7 @@
     </tr>
     <tr>
         <td>
-            Fecha de Consulta: 
+            <strong>Fecha de Consulta: </strong>
         </td>
         <td>
           <select name="fecha" id="fecha" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_horas('<?php echo base_url() ?>citaControlador/obtenerHoras');">
@@ -89,7 +92,7 @@
     </tr>
     <tr>
         <td>
-            Hora de Consulta: 
+            <strong>Hora de Consulta:</strong> 
         </td>
         <td>
         <select name="hora" id="hora" style="background:whitesmoke;border: 1px solid;width:273px">
@@ -102,10 +105,31 @@
     </tr>
     <tr>
         <td>
+            <strong>Observaciones:</strong>
+        </td>
+        <td>
+        <?php
+          $data_form = array(
+                'name' => 'observacion',
+                'id' => 'observacion',
+                'type'=>'textarea'
+                
+                
+            );
+             
+          echo form_input($data_form);
+          ?>
+        </td>
+        <td>
+            <?php echo form_error('observacion', '<b><p style="color:red; padding-left: 10%;">', '</p></b>'); ?>
+        </td>
+    </tr>
+    <tr>
+        <td>
             <input id="btnAgregar" class="boton" type="submit" value="Agregar"/>
         </td>
         <td>
-            <button id ="btnAgregar" class="boton" onclick="location.href = '<?php echo base_url() . "personalSaludControlador/mostrarPersonalSalud"; ?>';
+            <button id ="btnAgregar" class="boton" onclick="location.href = '<?php echo base_url() . "estudianteControlador"; ?>';
                     return false;"> Cancelar</button>
         </td>
     </tr>

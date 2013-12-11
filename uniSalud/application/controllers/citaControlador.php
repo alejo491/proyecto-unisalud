@@ -24,7 +24,7 @@ class citaControlador extends CI_Controller {
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'personal/reservaCita';
         $data['footerMenu'] = 'personal/footerMenu';
-        $data['title'] = "Editar Programa";
+        $data['title'] = "Reservar Cita";
         $this->load->view('plantilla', $data);
     }
 
@@ -183,6 +183,125 @@ class citaControlador extends CI_Controller {
                 break;
         }
         return $diaL;
+    }
+    
+    public function reservar_Cita(){
+        $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
+        $data['estudiante'] = $this->estudianteModelo->buscarEstudiante($_POST['id_estudiante']);
+        $this->load->model('citaModelo');
+            if($_POST){
+                $data['header'] = 'includes/header';
+                $data['menu'] = 'estandar/menu';
+                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
+                $data['topcontent']='estandar/topcontent';
+                $data['content'] = 'personal/reservaCita';
+                $data['footerMenu'] = 'estandar/footerMenu';
+                if($this->validar()==FALSE){
+                    $data['errores'] = validation_errors();
+                }else{
+                    $data['header'] = 'includes/header';
+                $data['menu'] = 'estandar/menu';
+                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
+                $data['topcontent']='estandar/topcontent';
+                $data['content'] = 'personal/contentEstudiantes';
+                $data['footerMenu'] = 'estandar/footerMenu';
+                    $hora=explode(':',$_POST['hora']);
+                    if($hora[1]+20<60){
+                       $hora[1]=$hora[1]+20;
+
+                    }else{
+
+                        $hora[0]++;
+                        $hora[1]='00';
+                    }
+                    $hora_fin=implode(':',$hora);
+                    $data['reserva']=array(
+                       'id_estudiante'=>$_POST['id_estudiante'],
+                       'id_programasalud'=>$_POST['programa'],
+                       'id_personalsalud'=>$_POST['personal'],
+                       'dia'=>$_POST['fecha'],
+                       'hora_inicio'=>$_POST['hora'],
+                       'hora_fin'=>$hora_fin,
+                       'estado'=>2,//estados de la cita 1=>activado,2=>reservado,3=>atendido,4=>cancelado
+                       'observaciones'=>$_POST['observacion'],
+
+                    );
+                    $id = $this->citaModelo->ingresarReservaCita($data['reserva']);
+                    redirect(base_url()."estudianteControlador");
+                }
+                 $this->load->view('plantilla',$data);   
+            }
+            
+    }
+    
+    public function validar(){
+        
+        $config = array(
+                array(
+                    'field' => 'id_estudiante',
+                    'label' => 'identficador estudiante',
+                    'rules' => 'trim|callback_tieneCita'
+                ),
+                
+                array(
+                    'field' => 'programa',
+                    'label' => 'Programa',
+                    'rules' => 'trim|callback_isSelected'
+                ),
+                array(
+                    'field' => 'personal',
+                    'label' => 'Personal',
+                    'rules' => 'trim|callback_isSelected'
+                ),
+                array(
+                    'field' => 'fecha',
+                    'label' => 'Fecha',
+                    'rules' => 'trim|callback_isSelected'
+                ),
+                array(
+                    'field' => 'hora',
+                    'label' => 'Hora',
+                    'rules' => 'trim|callback_isSelected'
+                ),
+                array(
+                    'field' => 'observacion',
+                    'label' => 'Observacion',
+                    'rules' => 'trim|required|is_unique[estudiante.identificacion]'
+                ),
+                
+            );
+            $this->load->library('form_validation');
+            $this->form_validation->set_rules($config);
+            $this->form_validation->set_message('required', 'El campo %s es requerido');
+           
+            
+            
+            $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+           
+            return $this->form_validation->run();
+    }
+    
+    function isSelected($str=NULL){
+        if($str==NULL){
+            $this->form_validation->set_message('isSelected', 'Debe seleccionar una opcion para %s');
+            return FALSE;
+        }
+        else{
+            return TRUE;
+        }
+    }
+    function tieneCita($str=NULL){
+        $this->load->model('citaModelo');   
+        $est = $this->input->post('id_estudiante', true);
+        $id = $this->citaModelo->tieneCita($est);
+        if($id){
+            $this->form_validation->set_message('tieneCita', 'Ya tiene una cita programada');
+            return FALSE;
+            
+        }else{
+            
+            return TRUE;
+        }
     }
 
 }

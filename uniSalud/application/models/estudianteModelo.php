@@ -84,7 +84,8 @@ class estudianteModelo extends CI_Model {
     //Copiado desde programaSaludModelo
     //
     //
-    //
+    ///*
+    
     function obtenerEstudiantes($limite=NULL,$inicio=NULL){
         if($limite!=NULL){
             $this->db->limit($limite,$inicio);
