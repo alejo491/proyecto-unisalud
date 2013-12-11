@@ -24,7 +24,7 @@ class estandarControlador extends CI_Controller {
         
         //controlar registrarse segun el rol
         $data['header'] = 'includes/header';
-        $data['menu'] = 'estandar/menu';
+        
         //$data['topcontent'] = 'estandar/topcontentRegistrarse';
         $data['topcontent']='estandar/topcontent';
         $data['content'] = 'estandar/registrar_usuario';
@@ -34,15 +34,22 @@ class estandarControlador extends CI_Controller {
     }
     
     public function cancelar() {
-        redirect(base_url());
+        $user = $this->session->all_userdata();
+        if(isset($user['id_usuario'])){
+        redirect(base_url()."estudianteControlador");
+        }else{
+            
+            redirect(base_url());
+        }
     }
     public function registrar(){
+        $user = $this->session->all_userdata();
         
         $this->load->model('usuarioModelo');   
         $this->load->model('estudianteModelo'); 
         $data['facultades']=$this->estudianteModelo->CargarFacultad();
         if ($_POST) {
-            $data['header'] = 'includes/header';
+                $data['header'] = 'includes/header';
                 $data['menu'] = 'estandar/menu';
                 //$data['topcontent'] = 'estandar/topcontentRegistrarse';
                 $data['topcontent']='estandar/topcontent';
@@ -51,22 +58,22 @@ class estandarControlador extends CI_Controller {
             if ($this->validar()==FALSE) {
                 $data['errores'] = validation_errors();
             } else {
-                $data['header'] = 'includes/header';
+                    $data['header'] = 'includes/header';
                     $data['topcontent'] = 'estandar/topcontent';
                     $data['content'] = 'estandar/contentHome';
                     $data['footerMenu'] = 'estandar/footerMenu';
-                $data['estudiante'] = array(
-                    'id_estudiante' => $_POST['codigoEstudiante'],
-                    'id_programa' => $_POST['programa'],
-                    
-                    'tipo_identificacion' => $_POST['tipoId'],
-                    'identificacion' => $_POST['numId'],
-                    'primer_nombre' => $_POST['primerNombre'],
-                    'segundo_nombre' => $_POST['segundoNombre'],
-                    'primer_apellido' => $_POST['primerApellido'],
-                    'segundo_apellido' => $_POST['segundoApellido'],
-                    'genero' => $_POST['genero'],
-                    'fecha_nacimiento' =>$_POST['fecha_nac']
+                    $data['estudiante'] = array(
+                        'id_estudiante' => $_POST['codigoEstudiante'],
+                        'id_programa' => $_POST['programa'],
+
+                        'tipo_identificacion' => $_POST['tipoId'],
+                        'identificacion' => $_POST['numId'],
+                        'primer_nombre' => $_POST['primerNombre'],
+                        'segundo_nombre' => $_POST['segundoNombre'],
+                        'primer_apellido' => $_POST['primerApellido'],
+                        'segundo_apellido' => $_POST['segundoApellido'],
+                        'genero' => $_POST['genero'],
+                        'fecha_nacimiento' =>$_POST['fecha_nac']
                     );
                   $id = $this->estudianteModelo->registrar($data['estudiante']);
                  
@@ -78,18 +85,30 @@ class estandarControlador extends CI_Controller {
                          'email' => $_POST['email'],
                          'contrasena' => sha1($_POST['contrasena'])
                      );
-                      $this->usuarioModelo->registrar($data['usuario']); 
+                      $this->usuarioModelo->registrar($data['usuario']);
+                      
+                   
+                    if (!isset($user['id_usuario'])) {
                     
                     
-                    $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
-                    $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
-                    $this->session->set_userdata('email', $usuarioActual['email']);
-                    $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
-                    $this->session->set_userdata('id_rol',$id_rol['id_rol']);
+                        $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
+                        $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
+                        $this->session->set_userdata('email', $usuarioActual['email']);
+                        $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
+                        $this->session->set_userdata('id_rol',$id_rol['id_rol']);
+                        
+                    }
                 }
             }
             
-            $this->load->view('plantilla',$data);
+            
+                if($user['id_rol']==3){
+                    redirect(base_url()."estudianteControlador"); 
+                }else{
+                
+                    redirect(base_url()); 
+                }
+            
         }
     }
     public function validar(){

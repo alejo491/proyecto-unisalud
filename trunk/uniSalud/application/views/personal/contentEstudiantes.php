@@ -1,6 +1,6 @@
 <section id="content">
     <div>
-        <button id ="btnAgregar" class="boton" onclick="location.href = '<?php echo base_url() . " "; ?>';
+        <button id ="btnAgregar" class="boton" onclick="location.href = '<?php echo base_url() . "estandarControlador/registrarse"; ?>';
                 return false;"> Añadir Estudiante</button>
     </div>
     <div id="paginacion" align="center">
