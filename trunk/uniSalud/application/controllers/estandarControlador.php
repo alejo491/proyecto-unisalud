@@ -96,18 +96,22 @@ class estandarControlador extends CI_Controller {
                         $this->session->set_userdata('email', $usuarioActual['email']);
                         $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
                         $this->session->set_userdata('id_rol',$id_rol['id_rol']);
+                        redirect(base_url());
                         
+                    }else{
+                        
+                        redirect(base_url()."estudianteControlador");
                     }
                 }
             }
             
             
-                if($user['id_rol']==3){
-                    redirect(base_url()."estudianteControlador"); 
-                }else{
                 
-                    redirect(base_url()); 
-                }
+                    $this->load->view('plantilla',$data); 
+                
+                
+                     $this->load->view('plantilla',$data); 
+                
             
         }
     }

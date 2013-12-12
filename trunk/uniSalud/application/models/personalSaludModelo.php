@@ -24,18 +24,27 @@ class personalSaludModelo extends CI_Model {
     function ingresarPersonalSalud($personal,$pro=NULL){
         
         unset($personal['id_programasalud']);
-        $this->db->insert('personalsalud',$personal);
-        if($pro!=NULL){
-            $this->db->select('id_personalsalud');
-            $this->db->limit(1);
-            $this->db->where('identificacion',$personal['identificacion']);
-            $this->db->from('personalsalud');
-            $personalsalud=$this->db->get()->row();
-            $progra=explode(',',$pro);
-            foreach ($progra as $programasalud):
-                $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$personalsalud->id_personalsalud.",".$programasalud.")";
-                $this->db->query($query);    
-            endforeach;
+        $bandera=$this->db->insert('personalsalud',$personal);
+        if($bandera){
+            if($pro!=NULL){
+                $this->db->select('id_personalsalud');
+                $this->db->limit(1);
+                $this->db->where('identificacion',$personal['identificacion']);
+                $this->db->from('personalsalud');
+                $personalsalud=$this->db->get()->row();
+                $progra=explode(',',$pro);
+                foreach ($progra as $programasalud):
+                    $query="INSERT INTO atiende (id_personalsalud,id_programasalud) VALUES (".$personalsalud->id_personalsalud.",".$programasalud.")";
+                    $this->db->query($query);    
+                endforeach;
+                return TRUE;
+            }else{
+                
+                return FALSE;
+            }
+        }else{
+            
+            return FALSE;
         }
     }
     function buscarPersonal($id){
