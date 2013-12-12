@@ -100,6 +100,7 @@ class personalSaludControlador extends CI_Controller {
                 $pro=substr(implode(',', $this->input->post('opcion')), 0);
                 }else{$pro=NULL;}
                 $id = $this->personalSaludModelo->ingresarPersonalSalud($personal,$pro);
+                
                 if ($id) {
                     $this->session->set_userdata('mensaje', 'Personal Ingresado Con Exito');
                     $this->session->set_userdata('exito', TRUE);
