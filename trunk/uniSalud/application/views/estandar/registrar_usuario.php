@@ -78,7 +78,7 @@
                             </td>
                          </tr>
                          <tr style="height: 35px ">
-                            <td style="width: 200px"><strong>Segundo Apellido:* </strong><br /></td>
+                            <td style="width: 200px"><strong>Segundo Apellido:</strong><br /></td>
                             <td><?php
                                 $data_form=array(
                                     'id'        => 'segundoApellido',

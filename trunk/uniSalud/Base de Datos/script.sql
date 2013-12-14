@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `consultorio` (
 -- Volcado de datos para la tabla `consultorio`
 -- 
 INSERT INTO `consultorio` (`id_consultorio`, `numero_consultorio`, `descripcion`) VALUES
-(1, '1','Medico General'),
+(1, '1','Medicina General'),
 (2, '2','Odontologia'),
 (3, '3','Enfermeria'),
 (4, '4','Sicologia');

@@ -8,7 +8,7 @@
     <table id="tabla">
         <thead align="center">
             <tr>
-                <th scope="col"><b>Numero de Consultorio </b></th>
+                <th scope="col"><b>Nombre de Consultorio </b></th>
                 <th scope="col"><b>Descripcion</b></th>
                 <th scope="col" colspan="3"><b>Accion</b></th>
             </tr>

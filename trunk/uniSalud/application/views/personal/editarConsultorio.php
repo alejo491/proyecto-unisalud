@@ -1,8 +1,10 @@
 <?php echo form_open('consultorioControlador/editarConsultorio/'); ?>
+<h1 style="font-size: 25px;color: black">Editar Consultorio</h1><br /><br /><br />
+            <h4 style="font-size: 15px;color: grey">Los campos marcados con (*) son obligatorios</h2><br /><br />
 <table id="tablaForm">
     <tr>
         <td>
-            * Costo: 
+            Nombre Consultorio:* 
         </td>
         <td> <?php
             echo form_hidden('id_consultorio', $consultorio->id_consultorio);
@@ -19,7 +21,7 @@
     </tr>
     <tr>
         <td>
-            * Tipo de Servicio: 
+            Descripcion:* 
         </td>
         <td> <?php
             $data_form = array(
