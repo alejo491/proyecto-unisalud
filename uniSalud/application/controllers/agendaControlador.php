@@ -27,7 +27,7 @@ class agendaControlador extends CI_Controller {
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'personal/contentHorarioAtencion';
         $data['footerMenu'] = 'personal/footerMenu';
-        $data['title'] = "Editar Personal Salud";
+        $data['title'] = "Horario de Atencion";
         $agenda= $this->agendaModelo->obtenerAgenda($id);
         if ($agenda != FALSE) {
             //CONFIGURACION DE LA PAGINACION...
@@ -70,7 +70,7 @@ class agendaControlador extends CI_Controller {
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'personal/contentRegistrarHorarioAtencion';
         $data['footerMenu'] = 'personal/footerMenu';
-        $data['title'] = "Agregar Personal de Salud";
+        $data['title'] = "Agregar Horario de Atencion";
         $this->load->view('plantilla', $data);
     }
 
@@ -84,7 +84,7 @@ class agendaControlador extends CI_Controller {
                 $data['topcontent'] = 'estandar/topcontent';
                 $data['content'] = 'personal/contentRegistrarHorarioAtencion';
                 $data['footerMenu'] = 'personal/footerMenu';
-                $data['title'] = "Agregar Horario Atencion";
+                $data['title'] = "Horario de Atencion";
                 $this->load->view('plantilla', $data);
             } else {
                 $horario['id_personalsalud'] = $_POST['id_personalsalud'];
@@ -159,7 +159,7 @@ class agendaControlador extends CI_Controller {
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'personal/editarHorarioAtencion';
         $data['footerMenu'] = 'personal/footerMenu';
-        $data['title'] = "Editar Personal Salud";
+        $data['title'] = "Editar Horario de Atencion";
         $this->load->view('plantilla', $data);
     }
 

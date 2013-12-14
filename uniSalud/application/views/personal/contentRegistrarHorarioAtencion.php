@@ -1,4 +1,6 @@
 <?php echo form_open('agendaControlador/aniadirDatos/'); ?>
+<h1 style="font-size: 25px;color: black">Agregar Horario de Atencion</h1><br /><br /><br />
+            <h4 style="font-size: 15px;color: grey">Los campos marcados con (*) son obligatorios</h2><br /><br />
 <table id="tablaForm">
     <tr>
         <?php echo form_hidden('id_personalsalud', $id_personalsalud) ?>

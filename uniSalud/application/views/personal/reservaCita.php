@@ -1,5 +1,11 @@
 <?php echo form_open('citaControlador/reservar_Cita/'); ?>
+<h1 style="font-size: 25px;color: black">Reservar Cita</h1><br /><br /><br />
+            <h4 style="font-size: 15px;color: grey">Los campos marcados con (*) son obligatorios</h2><br /><br />
 <table id="tablaForm">
+    
+            
+        
+    
     <tr>
         <td>
             <b> Codigo:</b>
@@ -46,7 +52,7 @@
     <tr>
 
         <td>
-            <strong>Programa de Salud: </strong> 
+            <strong>Programa de Salud:* </strong> 
         </td>
         <td>
             <select name="programa" id="programa" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_personal('<?php echo base_url() ?>citaControlador/obtenerPersonalSalud');">
@@ -65,7 +71,7 @@
     </tr>
     <tr>
         <td>
-            <strong>Personal de Salud: </strong><br />
+            <strong>Personal de Salud:* </strong><br />
         </td>
         <td>
             <select name="personal" id="personal" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_fecha('<?php echo base_url() ?>citaControlador/obtenerFechas');">
@@ -79,7 +85,7 @@
     </tr>
     <tr>
         <td>
-            <strong>Fecha de Consulta: </strong>
+            <strong>Fecha de Consulta:* </strong>
         </td>
         <td>
           <select name="fecha" id="fecha" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_horas('<?php echo base_url() ?>citaControlador/obtenerHoras');">
@@ -92,7 +98,7 @@
     </tr>
     <tr>
         <td>
-            <strong>Hora de Consulta:</strong> 
+            <strong>Hora de Consulta:*</strong> 
         </td>
         <td>
         <select name="hora" id="hora" style="background:whitesmoke;border: 1px solid;width:273px">
@@ -105,7 +111,7 @@
     </tr>
     <tr>
         <td>
-            <strong>Observaciones:</strong>
+            <strong>Observaciones:*</strong>
         </td>
         <td>
         <?php
@@ -126,7 +132,7 @@
     </tr>
     <tr>
         <td>
-            <input id="btnAgregar" class="boton" type="submit" value="Agregar"/>
+            <input id="btnAgregar" class="boton" type="submit" value="Reservar"/>
         </td>
         <td>
             <button id ="btnAgregar" class="boton" onclick="location.href = '<?php echo base_url() . "estudianteControlador"; ?>';

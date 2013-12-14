@@ -44,7 +44,24 @@ class consultorioModelo extends CI_Model {
     function eliminarConsultorio($id){
         $this->db->where('id_consultorio', $id);
         $this->db->limit(1);
+        
         return $this->db->delete('consultorio');
+        
+    }
+    
+    function validar_e($id){
+        $this->db->limit(1);
+        $this->db->select('id_consultorio');
+        $this->db->where('id_consultorio',$id);
+        $this->db->from('personalsalud');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return FALSE;
+        }
+        else{
+            return TRUE;
+        }
+        
     }
     function buscarFiltradoConsultorio($filtro,$limite=NULL,$inicio=NULL ){
         if($limite!=NULL){

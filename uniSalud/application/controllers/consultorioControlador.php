@@ -144,12 +144,18 @@ class consultorioControlador extends CI_Controller {
     public function eliminarConsultorio() {
         $this->session->set_userdata('mensaje', NULL);
         $id = $this->uri->segment(3);
+        if($this->validar_eliminar($id)){
+        
             $respuesta = $this->consultorioModelo->eliminarConsultorio($id);
             if ($respuesta) {
                 $this->session->set_userdata('mensaje', 'Consultorio Eliminado Con Exito');
                 $this->session->set_userdata('exito', TRUE);
             } else {
                 $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Consultorio');
+                $this->session->set_userdata('exito', FALSE);
+            }
+        }else{
+                $this->session->set_userdata('mensaje', 'Fallo al Eliminar, hay personal de salud que atiende en este consultorio');
                 $this->session->set_userdata('exito', FALSE);
             }
         redirect('consultorioControlador/mostrarConsultorios');
@@ -227,6 +233,11 @@ class consultorioControlador extends CI_Controller {
         $this->form_validation->set_message('numeric', 'El campo %s debe ser numerico');
         $this->form_validation->set_message('is_unique', 'Esta identificacion ya esta registrada');
         return $this->form_validation->run();
+    }
+    
+    function validar_eliminar($str){
+        
+        return $this->consultorioModelo->validar_e($str);
     }
 
 }

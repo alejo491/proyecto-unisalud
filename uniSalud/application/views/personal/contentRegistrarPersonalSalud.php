@@ -1,4 +1,6 @@
 <?php echo form_open('personalSaludControlador/aniadirDatos/'); ?>
+<h1 style="font-size: 25px;color: black">Registrar Personal de Salud</h1><br /><br /><br />
+            <h4 style="font-size: 15px;color: grey">Los campos marcados con (*) son obligatorios</h2><br /><br />
 <table id="tablaForm">
     <tr>
         <td>
@@ -157,7 +159,7 @@
     </tr>
     <tr>
         <td>
-            <input id="btnAgregar" class="boton" type="submit" value="Agregar"/>
+            <input id="btnAgregar" class="boton" type="submit" value="Registrar"/>
         </td>
         <td>
             <button id ="btnAgregar" class="boton" onclick="location.href='<?php echo base_url()."personalSaludControlador/mostrarPersonalSalud"; ?>'; return false;"> Cancelar</button>
