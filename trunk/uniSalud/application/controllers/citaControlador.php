@@ -287,7 +287,7 @@ class citaControlador extends CI_Controller {
                 array(
                     'field' => 'programa',
                     'label' => 'Programa',
-                    'rules' => 'trim|callback_isSelected'
+                    'rules' => 'trim|callback_isSelected|callback_igualActividad'
                 ),
                 array(
                     'field' => 'personal',
@@ -334,7 +334,8 @@ class citaControlador extends CI_Controller {
     function tieneCita($str=NULL){
         $this->load->model('citaModelo');   
         $est = $this->input->post('id_estudiante', true);
-        $id = $this->citaModelo->tieneCita($est);
+        $med =$this->input->post('personal',true);
+        $id = $this->citaModelo->tieneCita($est,$med);
         if($id){
             $this->form_validation->set_message('tieneCita', 'Ya tiene una cita programada');
             return FALSE;
@@ -344,6 +345,26 @@ class citaControlador extends CI_Controller {
             return TRUE;
         }
     }
+    
+     function igualActividad($str=NULL){
+         
+         $this->load->model('citaModelo');
+         $this->load->model('programaSaludModelo');
+         $act= $this->input->post('programa', true);
+         
+         $actividad=$this->programaSaludModelo->buscarPrograma($act);
+         $b=$this->citaModelo->verificarActividad($actividad->actividad);
+         
+         if($b){
+             $this->form_validation->set_message('igualActividad', 'Ya tiene cita en esta actividad');
+            return FALSE;
+             
+         }else{
+             return TRUE;
+             
+         }
+        
+     }
 
 }
 

@@ -118,7 +118,7 @@
           $data_form = array(
                 'name' => 'observacion',
                 'id' => 'observacion',
-                'type'=>'textarea'
+                'type'=>'textarea',
                 
                 
             );
