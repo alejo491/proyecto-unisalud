@@ -102,7 +102,7 @@
                     </td>
                     
                     <td colspan="3">
-                            <input id="btnTabla" type="submit" value="Buscar" class="boton"/>
+                            <!--<input id="btnTabla" type="submit" value="Buscar" class="boton"/>-->
                             <?php echo form_close(); ?>
                     </td>
                 </tr>

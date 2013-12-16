@@ -13,11 +13,33 @@ class citaControlador extends CI_Controller {
     public function index() {
         $this->session->set_userdata('mensaje', NULL);
     }
+    
+    public function citasEstudiante(){
+        $data['header'] = 'includes/header';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'estudiante/contentCitas';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Citas";
+        $this->load->view('plantilla', $data);
+    }
 
     public function buscarEstudiante() {
         $this->session->set_userdata('mensaje', NULL);
-        $id = $_POST['id_estudiante'];
+        $id=0;
+        $user = $this->session->all_userdata();
+        if($user['id_rol']==3){
+          $id = $_POST['id_estudiante'];
+        }
+        if($user['id_rol']==1){
+            $this->load->model('usuarioModelo');
+            
+            $id =$this->usuarioModelo->getId($user['id_usuario']);
+            
+        }
+        
+        
         $data['estudiante'] = $this->estudianteModelo->buscarEstudiante($id);
+        $data['programa_est']=$this->estudianteModelo->programaEstudiante($data['estudiante']->id_programa);
         $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
@@ -188,6 +210,7 @@ class citaControlador extends CI_Controller {
     public function reservar_Cita(){
         $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
         $data['estudiante'] = $this->estudianteModelo->buscarEstudiante($_POST['id_estudiante']);
+        $data['programa_est']=$this->estudianteModelo->programaEstudiante($data['estudiante']->id_programa);
         $this->load->model('citaModelo');
             if($_POST){
                 $data['header'] = 'includes/header';
@@ -227,7 +250,15 @@ class citaControlador extends CI_Controller {
 
                     );
                     $id = $this->citaModelo->ingresarReservaCita($data['reserva']);
-                    redirect(base_url()."estudianteControlador");
+                    $user = $this->session->all_userdata();
+                    if($user['id_rol']==3){
+                      redirect(base_url()."estudianteControlador");
+                    }
+                    if($user['id_rol']==1){
+                        redirect(base_url()."citaControlador/citasEstudiante");
+
+                    }
+                    
                 }
                  $this->load->view('plantilla',$data);   
             }

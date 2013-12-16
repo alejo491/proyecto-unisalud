@@ -22,7 +22,7 @@
             <b> Programa: </b>
         </td>
         <td> 
-            <?php echo $estudiante->id_programa; ?>
+            <?php echo $programa_est; ?>
         </td>
     </tr>
     <tr>
