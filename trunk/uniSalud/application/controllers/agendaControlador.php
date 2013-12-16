@@ -88,8 +88,8 @@ class agendaControlador extends CI_Controller {
                 $this->load->view('plantilla', $data);
             } else {
                 $horario['id_personalsalud'] = $_POST['id_personalsalud'];
-                $horario['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':'.$_POST['seg_i'];
-                $horario['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':'.$_POST['seg_f'];
+                $horario['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':00';
+                $horario['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':00';
                 $horario['dia'] = $_POST['dia'];
                 
                 $id = $this->agendaModelo->ingresarHorarioAgenda($horario);

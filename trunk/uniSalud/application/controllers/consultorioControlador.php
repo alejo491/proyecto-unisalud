@@ -218,7 +218,7 @@ class consultorioControlador extends CI_Controller {
             array(
                 'field' => 'numero_consultorio',
                 'label' => 'Numero de Consultorio',
-                'rules' => 'trim|required|numeric| xss_clean'
+                'rules' => 'trim|required| xss_clean'
             ),
             array(
                 'field' => 'descripcion',
