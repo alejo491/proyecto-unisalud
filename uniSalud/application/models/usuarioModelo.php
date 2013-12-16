@@ -63,5 +63,19 @@ class usuarioModelo extends CI_Model {
         } else {
             return FALSE;
         }
-    }   
+    }
+    function getId($str){
+        
+        $this->db->select('id_persona')->from('usuario')->where('id_usuario',$str);
+        $this->db->limit(1);     
+        $query=$this->db->get();
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row){
+               return $row->id_persona;
+            }
+        }else{
+            
+            return FALSE;
+        }
+    }
 }

@@ -77,6 +77,22 @@ class estudianteModelo extends CI_Model {
         }
         
     }
+    
+    function programaEstudiante($str){
+       
+        $this->db->select('nombre_programa')->from('programa')->where('id_programa',$str);
+        $this->db->limit(1);     
+        $query=$this->db->get();
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row){
+                return $row->nombre_programa;
+            }
+        }
+        else{
+            return FALSE;
+        }
+        
+    }
 
     //
     //
