@@ -150,10 +150,16 @@ class citaControlador extends CI_Controller {
                     echo '<option value="' . $horaAux . ':' . $min . ':00'.'">' . $horaAux . ':' . $min . ':00' . '</option>';
                 }
                 $minAux=$minAux+20;
-                if($minAux>=60){
-                    $horaAux++;
-                    $minAux=0;
-                }
+                if($minAux>60){
+                        if($minAux==60){
+                            $horaAux++;
+                            $minAux=0;
+                        }else{
+                            $horaAux++;
+                            $minAux=$minAux-60;
+                        }
+                    }
+                
             }
         }
     }
@@ -232,10 +238,14 @@ class citaControlador extends CI_Controller {
                     if($hora[1]+20<60){
                        $hora[1]=$hora[1]+20;
 
-                    }else{
-
-                        $hora[0]++;
-                        $hora[1]='00';
+                   }else{
+                        if($hora[1]+20==60){
+                            $hora[0]++;
+                            $hora[1]='00';
+                        }else{
+                            $hora[0]++;
+                            $hora[1]=$hora[1]+20-60;
+                        }
                     }
                     $hora_fin=implode(':',$hora);
                     $data['reserva']=array(
