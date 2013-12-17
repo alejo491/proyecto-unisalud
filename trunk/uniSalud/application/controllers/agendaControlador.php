@@ -5,30 +5,48 @@ if (!defined('BASEPATH'))
 
 class agendaControlador extends CI_Controller {
 
+    //constructor de la clase
     function __construct() {
         parent::__construct();
         $this->load->database();
     }
+    public function set_session($var,$cont=NULL){
+        $this->session->set_userdata($var, $cont);
+    }
+    public function get_session(){
+        return $this->session->all_userdata();
+    }
+
+    //funcion principal del controlador
     public function index(){
-        $this->session->set_userdata('mensaje', NULL);
+        //configurando la variable de sesion que almacena los mensajes
+        $this->set_session('mensaje',NULL);
+        //llamado a la funcion que se encarga de cargar los datos del personal de salud
         $this->buscarDatos();
     }
+    //funcion utilizada para cargar los datos del personal de salud y su respectivo horario de atencion
     function buscarDatos(){
+        //Obtener el identificador del personal de salud segun sea el caso
         if(isset($_POST['id_personalsalud'])){
             $id = $_POST['id_personalsalud'];
-            $this->session->set_userdata('id_personalsalud',$id);
+            $this->set_session('id_personalsalud',$id);
         }else{
-            $session=$this->session->all_userdata();
+            $session=$this->get_session();
             $id=$session['id_personalsalud'];
         }
+        
+        //Se obtiene la informacion mediante el modelo del personal de salud
         $data['personal'] = $this->personalSaludModelo->buscarPersonal($id);
+        //configuracion de la interfaz de usuario que se mostrara en cuanto se carguen los datos
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'personal/contentHorarioAtencion';
         $data['footerMenu'] = 'personal/footerMenu';
         $data['title'] = "Horario de Atencion";
+        //Se obtiene la informacion del horario de antecion que actualmente tiene el personal mediante el modelo
         $agenda= $this->agendaModelo->obtenerAgenda($id);
+        //se comprueba que se obtubieron resultados
         if ($agenda != FALSE) {
             //CONFIGURACION DE LA PAGINACION...
             $opciones = array();
@@ -59,11 +77,13 @@ class agendaControlador extends CI_Controller {
         } else {
             $data['agenda'] = NULL;
         }
+        //se carga la vista pertinente y se le envian las variables necesarias
         $this->load->view('plantilla', $data);
     }
+    //funcion que se encarga de configurar la vista para registrar un horario de atencion
     public function agregarHorarioAtencion() {
-        //definicion de la interface...
-        $this->session->set_userdata('mensaje', NULL);
+        //definicion de la interfaz de usuario
+        $this->set_session('mensaje', NULL);
         $data['id_personalsalud']=$_POST['id_personalsalud'];
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
@@ -71,13 +91,16 @@ class agendaControlador extends CI_Controller {
         $data['content'] = 'personal/contentRegistrarHorarioAtencion';
         $data['footerMenu'] = 'personal/footerMenu';
         $data['title'] = "Agregar Horario de Atencion";
+        //se carga la vista pertinente y se le envian las variables necesarias
         $this->load->view('plantilla', $data);
     }
-
+    //funcion que hace el llamado respectivo al modelo con el fin de que se registren los datos en la bd obtenidos en el formaulario
     public function aniadirDatos() {
-        $this->load->library('form_validation');
+        //se comprueba si se obtubieron datos desde el formulario
         if ($_POST) {
+            //se corren las validaciones de los campos del formulario
             if ($this->validar() == FALSE) {
+                //en el caso de que la validacion falle se configura nuevamente la vista para ser mostrada
                 $data['id_personalsalud']=$_POST['id_personalsalud'];
                 $data['header'] = 'includes/header';
                 $data['menu'] = 'personal/menu';
@@ -85,27 +108,32 @@ class agendaControlador extends CI_Controller {
                 $data['content'] = 'personal/contentRegistrarHorarioAtencion';
                 $data['footerMenu'] = 'personal/footerMenu';
                 $data['title'] = "Horario de Atencion";
+                //se carga la vista pertinente y se le envian las variables necesarias
                 $this->load->view('plantilla', $data);
             } else {
+                //si son validos los campos, se procede a recuperar su contenido mendiante POST
                 $horario['id_personalsalud'] = $_POST['id_personalsalud'];
                 $horario['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':00';
                 $horario['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':00';
                 $horario['dia'] = $_POST['dia'];
                 
+                //se hace el llamado al modelo para ingresar los datos a la bd
                 $id = $this->agendaModelo->ingresarHorarioAgenda($horario);
+                //se comprueba si tubo o no exito el ingreso y se cargan los mensajes pertinentes
                 if ($id) {
-                    $this->session->set_userdata('mensaje', 'Horario Ingresado Con Exito');
-                    $this->session->set_userdata('exito', TRUE);
+                    $this->set_session('mensaje', 'Horario Ingresado Con Exito');
+                    $this->set_session('exito', TRUE);
                 } else {
-                    $this->session->set_userdata('mensaje', 'Fallo al Ingresar el Horario');
-                    $this->session->set_userdata('exito', FALSE);
+                    $this->set_session('mensaje', 'Fallo al Ingresar el Horario');
+                    $this->set_session('exito', FALSE);
                 }
                 //$this->buscarDatos();
                 redirect('agendaControlador/buscarDatos');
             }
         }
     }
-
+    
+    //
     public function buscarHorarioPersonal() {
         $this->session->set_userdata('mensaje', NULL);
         $id = $_POST['id_agenda'];
@@ -160,6 +188,7 @@ class agendaControlador extends CI_Controller {
         $data['content'] = 'personal/editarHorarioAtencion';
         $data['footerMenu'] = 'personal/footerMenu';
         $data['title'] = "Editar Horario de Atencion";
+        //se carga la vista pertinente y se le envian las variables necesarias
         $this->load->view('plantilla', $data);
     }
 
@@ -174,6 +203,7 @@ class agendaControlador extends CI_Controller {
                 $data['content'] = 'personal/contentRegistrarHorarioAtencion';
                 $data['footerMenu'] = 'personal/footerMenu';
                 $data['title'] = "Agregar Horario Atencion";
+                //se carga la vista pertinente y se le envian las variables necesarias
                 $this->load->view('plantilla', $data);
             } else {
                 $data['id_agenda'] = $_POST['id_agenda'];

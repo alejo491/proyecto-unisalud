@@ -69,5 +69,18 @@ class programaSaludModelo extends CI_Model {
             return FALSE;
         }
     }
+    function obtenerActividad($idProg){
+        $this->db->select('actividad');
+        $this->db->where('id_programasalud',$idProg);
+        $this->db->from('programasalud');
+        $this->db->limit(1);
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta->row();
+        }
+        else{
+            return FALSE;
+        }
+    }
 }
 ?>

@@ -44,5 +44,17 @@ class citaModelo extends CI_Model {
         }
         
     }
+    function obtenerProgramas($idEst){
+        $this->db->select('id_programasalud');
+        $this->db->where('id_estudiante',$idEst);
+        $this->db->from('cita');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+    }
 }
 ?>
