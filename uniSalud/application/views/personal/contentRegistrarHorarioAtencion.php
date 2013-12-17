@@ -21,7 +21,7 @@
     </tr>
     <tr>
         <td>
-            * Hora Inicial (HH:mm:ss): 
+            * Hora Inicial (HH:mm): 
         </td>
         <td> <?php
             for ($i = 0; $i < 24; $i++):
@@ -33,21 +33,17 @@
             echo form_dropdown('hora_i', $hora);
             echo ":";
             echo form_dropdown('min_i', $minseg);
-            echo ":";
-            echo form_dropdown('seg_i', $minseg);
             ?>
         </td>
     </tr>
     <tr>
         <td>
-            * Hora Final (HH:mm:ss): 
+            * Hora Final (HH:mm): 
         </td>
         <td> <?php
             echo form_dropdown('hora_f', $hora);
             echo ":";
             echo form_dropdown('min_f', $minseg);
-            echo ":";
-            echo form_dropdown('seg_f', $minseg);
             ?>
         </td>
     </tr>

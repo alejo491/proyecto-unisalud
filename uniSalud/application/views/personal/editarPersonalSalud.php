@@ -139,7 +139,7 @@
             
             <?php 
             foreach ($consultorios->result_array() as $consultorio):
-                $data[$consultorio['id_consultorio']]=($consultorio['descripcion']);
+                $data[$consultorio['id_consultorio']]=($consultorio['numero_consultorio']);
             endforeach;
                 echo form_dropdown('consultorio', $data,$personal->id_consultorio);
              ?>

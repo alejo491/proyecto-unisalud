@@ -139,7 +139,7 @@
                          </tr>
                          <tr  style="height: 35px">
                              <td><strong>Fecha de Nacimiento:*</strong>(YYYY-MM-DD)<br /></td>
-                             <td><input type="text" id="fecha_nac" size="15" name= "fecha_nac" readonly/>
+                             <td><input type="text" id="fecha_nac" size="15" style="border-style:solid;border-width:1px;"name= "fecha_nac" readonly/>
                              </td>
                              <td>
                                 <?php echo form_error('fecha_nac','<b><p style="color:red; padding-left: 10%;">','</p></b>'); ?>

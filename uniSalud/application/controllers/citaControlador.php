@@ -53,7 +53,12 @@ class citaControlador extends CI_Controller {
     public function obtenerPersonalSalud() {
         $idPrograma = $this->input->post("id", true);
         $personal = $this->personalSaludModelo->buscarPersonalSaludPrograma($idPrograma);
-        echo '<option value="">Seleccione una opcion </option>';
+        if($personal!=FALSE){
+            echo '<option value="">Seleccione una opcion </option>';
+        }
+        else {
+            echo '<option value="">No Hay Personal Disponible</option>';
+        }
         foreach ($personal->result_array() as $row) {
             echo '<option value="' . $row['id_personalsalud'] . '">' . $row['primer_nombre'] . ' ' . $row['primer_apellido'] . '</option>';
         }
@@ -63,52 +68,56 @@ class citaControlador extends CI_Controller {
         $idPersonal = $this->input->post("id", true);
         $this->session->set_userdata('idPersonal', $idPersonal);
         $diasDisp = $this->personalSaludModelo->obtenerDiasDisp($idPersonal);
-        $diaSemNum = date('N', $timestamp = time());
-        $dia = date('j', $timestamp = time());
-        $mes = date('n', $timestamp = time());
-        $anio = date('Y', $timestamp = time());
-        echo '<option value="">Seleccione una opcion </option>';
-        for ($i = 0; $i < 8; $i++) {
-            $diaSemNum++;
-            $dia++;
-            if ($diaSemNum >= 8) {
-                $diaSemNum = 1;
+        if($diasDisp!=FALSE){
+            $diaSemNum = date('N', $timestamp = time());
+            $dia = date('j', $timestamp = time());
+            $mes = date('n', $timestamp = time());
+            $anio = date('Y', $timestamp = time());
+            echo '<option value="">Seleccione una opcion </option>';
+            for ($i = 0; $i < 8; $i++) {
+                $diaSemNum++;
+                $dia++;
+                if ($diaSemNum >= 8) {
+                    $diaSemNum = 1;
+                }
+                $ban = false;
+                foreach ($diasDisp->result() as $diaD):
+                    if ($diaSemNum == $this->diaEnNumeros($diaD->dia)) {
+                        $ban = true;
+                        break;
+                    }
+                endforeach;
+                if ($ban) {
+                    if ($mes == 1 || $mes == 3 || $mes == 5 || $mes == 7 || $mes == 8 || $mes == 10) {
+                        if ($dia > 31) {
+                            $mes = $mes + 1;
+                            $dia = 1;
+                        }
+                    }
+                    if ($mes == 4 || $mes == 6 || $mes == 9 || $mes == 11) {
+                        if ($dia > 30) {
+                            $mes = $mes + 1;
+                            $dia = 1;
+                        }
+                    }
+                    if ($mes == 2) {
+                        if ($dia > 28 && date('L', $timestamp = time()) == 0) {
+                            $mes = $mes + 1;
+                            $dia = 1;
+                        }
+                    }
+                    if ($mes == 12) {
+                        if ($dia > 31) {
+                            $anio = $anio + 1;
+                            $mes = 1;
+                            $dia = 1;
+                        }
+                    }
+                    echo '<option value="' . $anio . '-' . $mes . '-' .  $dia. '">' . $dia . '/' . $mes . '/' . $anio . '</option>';
+                }
             }
-            $ban = false;
-            foreach ($diasDisp->result() as $diaD):
-                if ($diaSemNum == $this->diaEnNumeros($diaD->dia)) {
-                    $ban = true;
-                    break;
-                }
-            endforeach;
-            if ($ban) {
-                if ($mes == 1 || $mes == 3 || $mes == 5 || $mes == 7 || $mes == 8 || $mes == 10) {
-                    if ($dia > 31) {
-                        $mes = $mes + 1;
-                        $dia = 1;
-                    }
-                }
-                if ($mes == 4 || $mes == 6 || $mes == 9 || $mes == 11) {
-                    if ($dia > 30) {
-                        $mes = $mes + 1;
-                        $dia = 1;
-                    }
-                }
-                if ($mes == 2) {
-                    if ($dia > 28 && date('L', $timestamp = time()) == 0) {
-                        $mes = $mes + 1;
-                        $dia = 1;
-                    }
-                }
-                if ($mes == 12) {
-                    if ($dia > 21) {
-                        $anio = $anio + 1;
-                        $mes = 1;
-                        $dia = 1;
-                    }
-                }
-                echo '<option value="' . $anio . '-' . $mes . '-' .  $dia. '">' . $dia . '/' . $mes . '/' . $anio . '</option>';
-            }
+        }else{
+            echo '<option value="">No Tiene Agenda Programada</option>';
         }
     }
     public function obtenerHoras(){
@@ -120,7 +129,7 @@ class citaControlador extends CI_Controller {
         $diaLet=  $this->diaEnLetras($diaNum);
         $horarioDia=$this->personalSaludModelo->obtenerHorarioDia($diaLet,$idPersonal);
         $horarioCitas=$this->personalSaludModelo->obtenerCitas($idPersonal,$fecha);
-        echo '<option value="">Seleccione una opcion </option>';
+        $horas='';
             foreach ($horarioDia->result() as $disp){
             $horaini=$disp->hora_inicial;
             $horaAux=(int)($horaini[0].$horaini[1]);
@@ -128,7 +137,7 @@ class citaControlador extends CI_Controller {
             $horafin=$disp->hora_final;
             $horaF=(int)($horafin[0].$horafin[1]);
             $minF=(int)($horafin[3].$horafin[4]);            
-            while($horaAux<$horaF){
+            while($horaAux<=$horaF){
                 $ban=false;
                 if($horarioCitas!=FALSE){
                     foreach ($horarioCitas->result() as $ocup){
@@ -147,7 +156,8 @@ class citaControlador extends CI_Controller {
                     }else{
                         $min=$minAux;
                     }
-                    echo '<option value="' . $horaAux . ':' . $min . ':00'.'">' . $horaAux . ':' . $min . ':00' . '</option>';
+                    if($horaAux<$horaF || ($horaAux==$horaF && $minAux<$minF))
+                        $horas=$horas.'<option value="' . $horaAux . ':' . $min . ':00'.'">' . $horaAux . ':' . $min . ':00' . '</option>';
                 }
                 $minAux=$minAux+20;
                 if($minAux>60){
@@ -159,8 +169,14 @@ class citaControlador extends CI_Controller {
                             $minAux=$minAux-60;
                         }
                     }
-                
             }
+        }
+        if(strcmp($horas,"")!=0){
+            echo '<option value="">Seleccione una opcion </option>';
+            echo $horas;
+        }
+        else{
+            echo '<option value="">La Agenda esta llena para esta fecha</option>';
         }
     }
     public function diaEnNumeros($dia) {
