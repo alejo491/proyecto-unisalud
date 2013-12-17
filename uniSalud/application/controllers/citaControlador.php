@@ -160,7 +160,7 @@ class citaControlador extends CI_Controller {
                         $horas=$horas.'<option value="' . $horaAux . ':' . $min . ':00'.'">' . $horaAux . ':' . $min . ':00' . '</option>';
                 }
                 $minAux=$minAux+20;
-                if($minAux>60){
+                if($minAux>=60){
                         if($minAux==60){
                             $horaAux++;
                             $minAux=0;
@@ -362,7 +362,7 @@ class citaControlador extends CI_Controller {
         }
     }
     
-     function igualActividad($str=NULL){
+     /*function igualActividad($str=NULL){
          
          $this->load->model('citaModelo');
          $this->load->model('programaSaludModelo');
@@ -380,8 +380,28 @@ class citaControlador extends CI_Controller {
              
          }
         
-     }
-
+     }*/
+    function igualActividad($str=NULL){
+        $idEst = $this->input->post('id_estudiante', true);
+        $progCita=$this->citaModelo->obtenerProgramas($idEst);
+        $progEleg=$this->input->post('programa',true);
+        $ban=false;
+        if($progCita!=false){
+            $actEleg=$this->programaSaludModelo->obtenerActividad($progEleg);
+            foreach ($progCita->result() as $prog):
+                $actCita=  $this->programaSaludModelo->obtenerActividad($prog->id_programasalud);
+                if(strcmp($actEleg->actividad, $actCita->actividad)==0){
+                    $ban=true;
+                }
+            endforeach;
+        }
+        if($ban){
+            $this->form_validation->set_message('igualActividad', 'Ya tiene cita en esta actividad');
+            return FALSE;
+        }else{
+            return TRUE;
+        }
+    }
 }
 
 ?>
