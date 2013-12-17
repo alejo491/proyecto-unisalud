@@ -75,7 +75,7 @@
         </td>
         <td>
             <select name="personal" id="personal" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_fecha('<?php echo base_url() ?>citaControlador/obtenerFechas');">
-            <option value="">Selecciona una opcion</option>
+            <option value="">Seleccione Primero un Programa</option>
 
             </select>
         </td>   
@@ -89,7 +89,7 @@
         </td>
         <td>
           <select name="fecha" id="fecha" style="background:whitesmoke;border: 1px solid;width:273px" onchange="carga_horas('<?php echo base_url() ?>citaControlador/obtenerHoras');">
-                <option value="">Selecciona una Opcion</option> 
+                <option value="">Seleccione Primero un Personal</option> 
           </select>
         </td>
         <td>
@@ -102,7 +102,7 @@
         </td>
         <td>
         <select name="hora" id="hora" style="background:whitesmoke;border: 1px solid;width:273px">
-                <option value="">Selecciona una Opcion</option> 
+                <option value="">Seleccione Primero una Fecha</option> 
             </select>
         </td>
         <td>
@@ -119,11 +119,11 @@
                 'name' => 'observacion',
                 'id' => 'observacion',
                 'type'=>'textarea',
-                
+                'style'=>'border-style:solid;border-width:1px;'
                 
             );
              
-          echo form_input($data_form);
+          echo form_textarea($data_form);
           ?>
         </td>
         <td>

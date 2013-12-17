@@ -55,7 +55,7 @@
             </tbody>
             <tfoot>
                 <?php echo form_open(' ') ?>
-                <tr>
+                <!--<tr>
                     <td>
                         <?php
                         $data_form = array(
@@ -102,10 +102,10 @@
                     </td>
                     
                     <td colspan="3">
-                            <!--<input id="btnTabla" type="submit" value="Buscar" class="boton"/>-->
+                            <!--<input id="btnTabla" type="submit" value="Buscar" class="boton"/>
                             <?php echo form_close(); ?>
                     </td>
-                </tr>
+                </tr>-->
             </tfoot>
 <?php else: ?>
             <tfoot>
