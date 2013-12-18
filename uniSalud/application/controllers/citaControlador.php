@@ -5,16 +5,17 @@ if (!defined('BASEPATH'))
 
 class citaControlador extends CI_Controller {
 
+    /*Constructor de la clase*/
     function __construct() {
         parent::__construct();
         $this->load->database();
     }
-
+    /*Funcion principal de la clase la cual es invocada en cuanto se hace el llamado al controlador*/
     public function index() {
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
     }
-    
-    public function citasEstudiante(){
+    /*Carga  la vista para realizar la reserva de una cita por parte de un estudiante*/
+    public function citasEstudiante() {
         $data['header'] = 'includes/header';
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'estudiante/contentCitas';
@@ -22,24 +23,23 @@ class citaControlador extends CI_Controller {
         $data['title'] = "Citas";
         $this->load->view('plantilla', $data);
     }
-
+    /*Busca y carga los datos necesarios para cargar el formulario que permite hacer la reserva de una cita*/
     public function buscarEstudiante() {
-        $this->session->set_userdata('mensaje', NULL);
-        $id=0;
-        $user = $this->session->all_userdata();
-        if($user['id_rol']==3){
-          $id = $_POST['id_estudiante'];
+        $this->set_session('mensaje', NULL);
+        $id = 0;
+        $user = $this->get_session();
+        if ($user['id_rol'] == 3) {
+            $id = $_POST['id_estudiante'];
         }
-        if($user['id_rol']==1){
+        if ($user['id_rol'] == 1) {
             $this->load->model('usuarioModelo');
-            
-            $id =$this->usuarioModelo->getId($user['id_usuario']);
-            
+
+            $id = $this->usuarioModelo->getId($user['id_usuario']);
         }
-        
-        
+
+
         $data['estudiante'] = $this->estudianteModelo->buscarEstudiante($id);
-        $data['programa_est']=$this->estudianteModelo->programaEstudiante($data['estudiante']->id_programa);
+        $data['programa_est'] = $this->estudianteModelo->programaEstudiante($data['estudiante']->id_programa);
         $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
@@ -49,26 +49,29 @@ class citaControlador extends CI_Controller {
         $data['title'] = "Reservar Cita";
         $this->load->view('plantilla', $data);
     }
-
+    /*Funcion que obtiene de forma dinamica el personal de salud al que esta asociado el programa que se seleccione
+     *  en el formulario correpondiente a reservar cita
+     */
     public function obtenerPersonalSalud() {
         $idPrograma = $this->input->post("id", true);
         $personal = $this->personalSaludModelo->buscarPersonalSaludPrograma($idPrograma);
-        if($personal!=FALSE){
+        if ($personal != FALSE) {
             echo '<option value="">Seleccione una opcion </option>';
-        }
-        else {
+        } else {
             echo '<option value="">No Hay Personal Disponible</option>';
         }
         foreach ($personal->result_array() as $row) {
             echo '<option value="' . $row['id_personalsalud'] . '">' . $row['primer_nombre'] . ' ' . $row['primer_apellido'] . '</option>';
         }
     }
-
+/*Funcion que obtiene de forma dinamica las fechas en las cuales el personal de salud elegido
+ * tiene asignado su horario de atencion, esto solo los proximos 8 dias a partir de la fecha.
+ */
     public function obtenerFechas() {
         $idPersonal = $this->input->post("id", true);
-        $this->session->set_userdata('idPersonal', $idPersonal);
+        $this->set_session('idPersonal', $idPersonal);
         $diasDisp = $this->personalSaludModelo->obtenerDiasDisp($idPersonal);
-        if($diasDisp!=FALSE){
+        if ($diasDisp != FALSE) {
             $diaSemNum = date('N', $timestamp = time());
             $dia = date('j', $timestamp = time());
             $mes = date('n', $timestamp = time());
@@ -113,72 +116,75 @@ class citaControlador extends CI_Controller {
                             $dia = 1;
                         }
                     }
-                    echo '<option value="' . $anio . '-' . $mes . '-' .  $dia. '">' . $dia . '/' . $mes . '/' . $anio . '</option>';
+                    echo '<option value="' . $anio . '-' . $mes . '-' . $dia . '">' . $dia . '/' . $mes . '/' . $anio . '</option>';
                 }
             }
-        }else{
+        } else {
             echo '<option value="">No Tiene Agenda Programada</option>';
         }
     }
-    public function obtenerHoras(){
+    /*Funcion que obtiene dinamicamente las horas en las cuales el personal de salud seleccionado,
+     * en la fecha seleccionada, tiene disponibilidad para atender una cita 
+     */
+    public function obtenerHoras() {
         $fecha = $this->input->post("id", true);
-        $session=$this->session->all_userdata();
-        $idPersonal=$session['idPersonal'];
+        $session = $this->get_session();
+        $idPersonal = $session['idPersonal'];
         $i = strtotime($fecha);
-        $diaNum= jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m",$i),date("d",$i), date("Y",$i)) , 0 );
-        $diaLet=  $this->diaEnLetras($diaNum);
-        $horarioDia=$this->personalSaludModelo->obtenerHorarioDia($diaLet,$idPersonal);
-        $horarioCitas=$this->personalSaludModelo->obtenerCitas($idPersonal,$fecha);
-        $horas='';
-            foreach ($horarioDia->result() as $disp){
-            $horaini=$disp->hora_inicial;
-            $horaAux=(int)($horaini[0].$horaini[1]);
-            $minAux=(int)($horaini[3].$horaini[4]);
-            $horafin=$disp->hora_final;
-            $horaF=(int)($horafin[0].$horafin[1]);
-            $minF=(int)($horafin[3].$horafin[4]);            
-            while($horaAux<=$horaF){
-                $ban=false;
-                if($horarioCitas!=FALSE){
-                    foreach ($horarioCitas->result() as $ocup){
-                        $horacita=$ocup->hora_inicio;
-                        $horaO=(int)($horacita[0].$horacita[1]);
-                        $minO=(int)($horacita[3].$horacita[4]);
-                        if($horaO==$horaAux && $minO==$minAux){
-                            $ban=true;
+        $diaNum = jddayofweek(cal_to_jd(CAL_GREGORIAN, date("m", $i), date("d", $i), date("Y", $i)), 0);
+        $diaLet = $this->diaEnLetras($diaNum);
+        $horarioDia = $this->personalSaludModelo->obtenerHorarioDia($diaLet, $idPersonal);
+        $horarioCitas = $this->personalSaludModelo->obtenerCitas($idPersonal, $fecha);
+        $horas = '';
+        foreach ($horarioDia->result() as $disp) {
+            $horaini = $disp->hora_inicial;
+            $horaAux = (int) ($horaini[0] . $horaini[1]);
+            $minAux = (int) ($horaini[3] . $horaini[4]);
+            $horafin = $disp->hora_final;
+            $horaF = (int) ($horafin[0] . $horafin[1]);
+            $minF = (int) ($horafin[3] . $horafin[4]);
+            while ($horaAux <= $horaF) {
+                $ban = false;
+                if ($horarioCitas != FALSE) {
+                    foreach ($horarioCitas->result() as $ocup) {
+                        $horacita = $ocup->hora_inicio;
+                        $horaO = (int) ($horacita[0] . $horacita[1]);
+                        $minO = (int) ($horacita[3] . $horacita[4]);
+                        if ($horaO == $horaAux && $minO == $minAux) {
+                            $ban = true;
                             break;
                         }
                     }
                 }
-                if($ban==false){
-                    if($minAux<10){
-                        $min="0".$minAux;
-                    }else{
-                        $min=$minAux;
+                if ($ban == false) {
+                    if ($minAux < 10) {
+                        $min = "0" . $minAux;
+                    } else {
+                        $min = $minAux;
                     }
-                    if($horaAux<$horaF || ($horaAux==$horaF && $minAux<$minF))
-                        $horas=$horas.'<option value="' . $horaAux . ':' . $min . ':00'.'">' . $horaAux . ':' . $min . ':00' . '</option>';
+                    if ($horaAux < $horaF || ($horaAux == $horaF && $minAux < $minF))
+                        $horas = $horas . '<option value="' . $horaAux . ':' . $min . ':00' . '">' . $horaAux . ':' . $min . ':00' . '</option>';
                 }
-                $minAux=$minAux+20;
-                if($minAux>=60){
-                        if($minAux==60){
-                            $horaAux++;
-                            $minAux=0;
-                        }else{
-                            $horaAux++;
-                            $minAux=$minAux-60;
-                        }
+                $minAux = $minAux + 20;
+                if ($minAux >= 60) {
+                    if ($minAux == 60) {
+                        $horaAux++;
+                        $minAux = 0;
+                    } else {
+                        $horaAux++;
+                        $minAux = $minAux - 60;
                     }
+                }
             }
         }
-        if(strcmp($horas,"")!=0){
+        if (strcmp($horas, "") != 0) {
             echo '<option value="">Seleccione una opcion </option>';
             echo $horas;
-        }
-        else{
+        } else {
             echo '<option value="">La Agenda esta llena para esta fecha</option>';
         }
     }
+/*Obtiene los dias en cadena de su correspodiente en numeros del 1 al 7 siendo 1 el lunes*/
     public function diaEnNumeros($dia) {
         $diaN = 0;
         switch ($dia) {
@@ -203,8 +209,8 @@ class citaControlador extends CI_Controller {
         }
         return $diaN;
     }
-    
-     public function diaEnLetras($dia) {
+/*obtiene en una cadena el dia que corresponda al numero de la semana del 1 al 7 siendo 1 lunes */
+    public function diaEnLetras($dia) {
         $diaL = 0;
         switch ($dia) {
             case 1:
@@ -228,179 +234,189 @@ class citaControlador extends CI_Controller {
         }
         return $diaL;
     }
-    
-    public function reservar_Cita(){
+/*Funcion que obtiene y valida los datos ingresados por el usuario en el 
+ * formulario correspondiente a reservar cita, y procede que valiendose del modelo
+ * a ingresar dichos datos a la base de datos
+ */
+    public function reservar_Cita() {
         $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
         $data['estudiante'] = $this->estudianteModelo->buscarEstudiante($_POST['id_estudiante']);
-        $data['programa_est']=$this->estudianteModelo->programaEstudiante($data['estudiante']->id_programa);
+        $data['programa_est'] = $this->estudianteModelo->programaEstudiante($data['estudiante']->id_programa);
         $this->load->model('citaModelo');
-            if($_POST){
+        if ($_POST) {
+            $data['header'] = 'includes/header';
+            $data['menu'] = 'estandar/menu';
+            //$data['topcontent'] = 'estandar/topcontentRegistrarse';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/reservaCita';
+            $data['footerMenu'] = 'estandar/footerMenu';
+            if ($this->validar() == FALSE) {
+                $data['errores'] = validation_errors();
+            } else {
                 $data['header'] = 'includes/header';
                 $data['menu'] = 'estandar/menu';
                 //$data['topcontent'] = 'estandar/topcontentRegistrarse';
-                $data['topcontent']='estandar/topcontent';
-                $data['content'] = 'personal/reservaCita';
-                $data['footerMenu'] = 'estandar/footerMenu';
-                if($this->validar()==FALSE){
-                    $data['errores'] = validation_errors();
-                }else{
-                    $data['header'] = 'includes/header';
-                $data['menu'] = 'estandar/menu';
-                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
-                $data['topcontent']='estandar/topcontent';
+                $data['topcontent'] = 'estandar/topcontent';
                 $data['content'] = 'personal/contentEstudiantes';
                 $data['footerMenu'] = 'estandar/footerMenu';
-                    $hora=explode(':',$_POST['hora']);
-                    if($hora[1]+20<60){
-                       $hora[1]=$hora[1]+20;
-
-                   }else{
-                        if($hora[1]+20==60){
-                            $hora[0]++;
-                            $hora[1]='00';
-                        }else{
-                            $hora[0]++;
-                            $hora[1]=$hora[1]+20-60;
-                        }
+                $hora = explode(':', $_POST['hora']);
+                if ($hora[1] + 20 < 60) {
+                    $hora[1] = $hora[1] + 20;
+                } else {
+                    if ($hora[1] + 20 == 60) {
+                        $hora[0]++;
+                        $hora[1] = '00';
+                    } else {
+                        $hora[0]++;
+                        $hora[1] = $hora[1] + 20 - 60;
                     }
-                    $hora_fin=implode(':',$hora);
-                    $data['reserva']=array(
-                       'id_estudiante'=>$_POST['id_estudiante'],
-                       'id_programasalud'=>$_POST['programa'],
-                       'id_personalsalud'=>$_POST['personal'],
-                       'dia'=>$_POST['fecha'],
-                       'hora_inicio'=>$_POST['hora'],
-                       'hora_fin'=>$hora_fin,
-                       'estado'=>2,//estados de la cita 1=>activado,2=>reservado,3=>atendido,4=>cancelado
-                       'observaciones'=>$_POST['observacion'],
-
-                    );
-                    $id = $this->citaModelo->ingresarReservaCita($data['reserva']);
-                    $user = $this->session->all_userdata();
-                    if($user['id_rol']==3){
-                      redirect(base_url()."estudianteControlador");
-                    }
-                    if($user['id_rol']==1){
-                        redirect(base_url()."citaControlador/citasEstudiante");
-
-                    }
-                    
                 }
-                 $this->load->view('plantilla',$data);   
+                $hora_fin = implode(':', $hora);
+                $data['reserva'] = array(
+                    'id_estudiante' => $_POST['id_estudiante'],
+                    'id_programasalud' => $_POST['programa'],
+                    'id_personalsalud' => $_POST['personal'],
+                    'dia' => $_POST['fecha'],
+                    'hora_inicio' => $_POST['hora'],
+                    'hora_fin' => $hora_fin,
+                    'estado' => 2, //estados de la cita 1=>activado,2=>reservado,3=>atendido,4=>cancelado
+                    'observaciones' => $_POST['observacion'],
+                );
+                $id = $this->citaModelo->ingresarReservaCita($data['reserva']);
+                $user = $this->get_session();
+                if ($id) {
+                    $this->set_session('mensaje', 'Cita Reservada Con Exito');
+                    $this->set_session('exito', TRUE);
+                } else {
+                    $this->set_session('mensaje', 'Fallo al Reservar la Cita');
+                    $this->set_session('exito', FALSE);
+                }
+                if ($user['id_rol'] == 3) {
+                    redirect(base_url() . "estudianteControlador/mostrarEstudiantes");
+                }
+                if ($user['id_rol'] == 1) {
+                    redirect(base_url() . "citaControlador/citasEstudiante");
+                }
             }
-            
+            $this->load->view('plantilla', $data);
+        }
     }
-    
-    public function validar(){
-        
+/*Funcion que realiza la validacion respectiva del formulario de reserva de cita*/
+    public function validar() {
+
         $config = array(
-                array(
-                    'field' => 'id_estudiante',
-                    'label' => 'identficador estudiante',
-                    'rules' => 'trim|callback_tieneCita'
-                ),
-                
-                array(
-                    'field' => 'programa',
-                    'label' => 'Programa',
-                    'rules' => 'trim|callback_isSelected|callback_igualActividad'
-                ),
-                array(
-                    'field' => 'personal',
-                    'label' => 'Personal',
-                    'rules' => 'trim|callback_isSelected'
-                ),
-                array(
-                    'field' => 'fecha',
-                    'label' => 'Fecha',
-                    'rules' => 'trim|callback_isSelected'
-                ),
-                array(
-                    'field' => 'hora',
-                    'label' => 'Hora',
-                    'rules' => 'trim|callback_isSelected'
-                ),
-                array(
-                    'field' => 'observacion',
-                    'label' => 'Observacion',
-                    'rules' => 'trim|required|is_unique[estudiante.identificacion]'
-                ),
-                
-            );
-            $this->load->library('form_validation');
-            $this->form_validation->set_rules($config);
-            $this->form_validation->set_message('required', 'El campo %s es requerido');
-           
-            
-            
-            $this->form_validation->set_message('trim', 'Caracteres Invalidos');
-           
-            return $this->form_validation->run();
+            array(
+                'field' => 'id_estudiante',
+                'label' => 'identficador estudiante',
+                'rules' => 'trim|callback_tieneCita'
+            ),
+            array(
+                'field' => 'programa',
+                'label' => 'Programa',
+                'rules' => 'trim|callback_isSelected|callback_igualActividad'
+            ),
+            array(
+                'field' => 'personal',
+                'label' => 'Personal',
+                'rules' => 'trim|callback_isSelected'
+            ),
+            array(
+                'field' => 'fecha',
+                'label' => 'Fecha',
+                'rules' => 'trim|callback_isSelected'
+            ),
+            array(
+                'field' => 'hora',
+                'label' => 'Hora',
+                'rules' => 'trim|callback_isSelected'
+            ),
+            array(
+                'field' => 'observacion',
+                'label' => 'Observacion',
+                'rules' => 'trim|required|is_unique[estudiante.identificacion]'
+            ),
+        );
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($config);
+        $this->form_validation->set_message('required', 'El campo %s es requerido');
+
+
+
+        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+
+        return $this->form_validation->run();
     }
-    
-    function isSelected($str=NULL){
-        if($str==NULL){
+/*Funcion que comprueba si un item fue o no seleccionado desde un combobox*/
+    function isSelected($str = NULL) {
+        if ($str == NULL) {
             $this->form_validation->set_message('isSelected', 'Debe seleccionar una opcion para %s');
             return FALSE;
-        }
-        else{
+        } else {
             return TRUE;
         }
     }
-    function tieneCita($str=NULL){
-        $this->load->model('citaModelo');   
+/*Funcion que comprueba si el estudiante tiene o no una cita ya reservada con el mismo personal de salud*/
+    function tieneCita($str = NULL) {
+        $this->load->model('citaModelo');
         $est = $this->input->post('id_estudiante', true);
-        $med =$this->input->post('personal',true);
-        $id = $this->citaModelo->tieneCita($est,$med);
-        if($id){
+        $med = $this->input->post('personal', true);
+        $id = $this->citaModelo->tieneCita($est, $med);
+        if ($id) {
             $this->form_validation->set_message('tieneCita', 'Ya tiene una cita programada');
             return FALSE;
-            
-        }else{
-            
+        } else {
+
             return TRUE;
         }
     }
-    
-     /*function igualActividad($str=NULL){
-         
-         $this->load->model('citaModelo');
-         $this->load->model('programaSaludModelo');
-         $act= $this->input->post('programa', true);
-         
-         $actividad=$this->programaSaludModelo->buscarPrograma($act);
-         $b=$this->citaModelo->verificarActividad($actividad->actividad);
-         
-         if($b){
-             $this->form_validation->set_message('igualActividad', 'Ya tiene cita en esta actividad');
-            return FALSE;
-             
-         }else{
-             return TRUE;
-             
-         }
-        
-     }*/
-    function igualActividad($str=NULL){
+
+    /* function igualActividad($str=NULL){
+
+      $this->load->model('citaModelo');
+      $this->load->model('programaSaludModelo');
+      $act= $this->input->post('programa', true);
+
+      $actividad=$this->programaSaludModelo->buscarPrograma($act);
+      $b=$this->citaModelo->verificarActividad($actividad->actividad);
+
+      if($b){
+      $this->form_validation->set_message('igualActividad', 'Ya tiene cita en esta actividad');
+      return FALSE;
+
+      }else{
+      return TRUE;
+
+      }
+
+      } */
+/*Funcion que valida el hecho de que no se puede tener a la vez dos citas que correspondan a programas con actividades similares*/
+    function igualActividad($str = NULL) {
         $idEst = $this->input->post('id_estudiante', true);
-        $progCita=$this->citaModelo->obtenerProgramas($idEst);
-        $progEleg=$this->input->post('programa',true);
-        $ban=false;
-        if($progCita!=false){
-            $actEleg=$this->programaSaludModelo->obtenerActividad($progEleg);
+        $progCita = $this->citaModelo->obtenerProgramas($idEst);
+        $progEleg = $this->input->post('programa', true);
+        $ban = false;
+        if ($progCita != false) {
+            $actEleg = $this->programaSaludModelo->obtenerActividad($progEleg);
             foreach ($progCita->result() as $prog):
-                $actCita=  $this->programaSaludModelo->obtenerActividad($prog->id_programasalud);
-                if(strcmp($actEleg->actividad, $actCita->actividad)==0){
-                    $ban=true;
+                $actCita = $this->programaSaludModelo->obtenerActividad($prog->id_programasalud);
+                if (strcmp($actEleg->actividad, $actCita->actividad) == 0) {
+                    $ban = true;
                 }
             endforeach;
         }
-        if($ban){
+        if ($ban) {
             $this->form_validation->set_message('igualActividad', 'Ya tiene cita en esta actividad');
             return FALSE;
-        }else{
+        } else {
             return TRUE;
         }
+    }
+    //funciones para acceder y modificar las variables de session
+    public function set_session($var,$cont=NULL){
+        $this->session->set_userdata($var, $cont);
+    }
+    public function get_session(){
+        return $this->session->all_userdata();
     }
 }
 

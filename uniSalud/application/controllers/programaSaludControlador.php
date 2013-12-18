@@ -5,14 +5,18 @@ if (!defined('BASEPATH'))
 
 class programaSaludControlador extends CI_Controller {
 
+    /*Constructor de la clase*/
     function __construct() {
         parent::__construct();
         $this->load->database();
     }
+    /*Funcion Principal del controlador*/
     public function index(){
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $this->mostrarProgramas();
     }
+    
+    /*Funcion Encargada de cargar la tabla donde se muestran los programas de salud con su respectiva paginacion y posibles acciones*/
     public function mostrarProgramas() {
         //Definicion de la interface
         $this->load->library('pagination');
@@ -56,10 +60,11 @@ class programaSaludControlador extends CI_Controller {
         }
         $this->load->view('plantilla', $data);
     }
-
+    
+/*Funcion que se encarga de cargar los datos necesarios para cargar el formulario de registro de un programa de salud*/
     public function agregarProgramaSalud() {
         //definicion de la interface...
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'estandar/topcontent';
@@ -70,6 +75,9 @@ class programaSaludControlador extends CI_Controller {
         $this->load->view('plantilla', $data);
     }
 
+    /*Funcion que obtiene y valida los datos obtenidos del formulario por medio del metodo
+     * POST, seguido a esto se vale del modelo para ingresar los datos respectivos en la Base de Datos
+     */
     public function aniadirDatos() {
 
         $this->load->model('programaSaludModelo');
@@ -89,19 +97,22 @@ class programaSaludControlador extends CI_Controller {
                 $programa['actividad'] = $_POST['actividad'];
                 $id = $this->programaSaludModelo->ingresarProgramaSalud($programa);
                 if ($id) {
-                    $this->session->set_userdata('mensaje', 'Programa Ingresado Con Exito');
-                    $this->session->set_userdata('exito', TRUE);
+                    $this->set_session('mensaje', 'Programa Ingresado Con Exito');
+                    $this->set_session('exito', TRUE);
                 } else {
-                    $this->session->set_userdata('mensaje', 'Fallo al Ingresar el Programa');
-                    $this->session->set_userdata('exito', FALSE);
+                    $this->set_session('mensaje', 'Fallo al Ingresar el Programa');
+                    $this->set_session('exito', FALSE);
                 }
                 redirect('programaSaludControlador/mostrarProgramas');
             }
         }
     }
 
+    /*Funcion que carga segun el item seleccionado en la interfaz de usuario, los
+     * datos correspondientes al mismo, en un formulario donde se podran editar
+     */
     public function actualizarProgramaSalud() {
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $this->load->model('programaSaludModelo');
 
         $id = $_POST['id_programasalud'];
@@ -115,6 +126,9 @@ class programaSaludControlador extends CI_Controller {
         $this->load->view('plantilla', $data);
     }
 
+    /*Funcion que obtiene y valida los datos obtenidos del formulario por medio del metodo
+     * POST, seguido a esto se vale del modelo para editar los datos respectivos en la Base de Datos
+     */
     public function editarProgramaSalud() {
         $this->load->model('programaSaludModelo');
 
@@ -136,33 +150,37 @@ class programaSaludControlador extends CI_Controller {
                 $datos['id_programasalud'] = $_POST['id_programasalud'];
                 $respuesta = $this->programaSaludModelo->editarProgramaSalud($datos);
                 if ($respuesta) {
-                    $this->session->set_userdata('mensaje', 'Programa Actualizado Con Exito');
-                    $this->session->set_userdata('exito', TRUE);
+                    $this->set_session('mensaje', 'Programa Actualizado Con Exito');
+                    $this->set_session('exito', TRUE);
                 } else {
-                    $this->session->set_userdata('mensaje', 'Fallo al Actualizar el Programa');
-                    $this->session->set_userdata('exito', FALSE);
+                    $this->set_session('mensaje', 'Fallo al Actualizar el Programa');
+                    $this->set_session('exito', FALSE);
                 }
                 redirect('programaSaludControlador/mostrarProgramas');
             }
         }
     }
 
+    /*Funcion que despues de confirmar la eliminacion de una tupla, realiza el eliminado de la misma en la base
+ * de datos valiendose del modelo.
+ */
     public function eliminarProgramaSalud() {
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $this->load->model('programaSaludModelo');
         //$id = $_POST['id_programasalud'];
         $id=$this->uri->segment(3);
         $respuesta = $this->programaSaludModelo->eliminarProgramaSalud($id);
         if ($respuesta) {
-            $this->session->set_userdata('mensaje', 'Programa Eliminado Con Exito');
-            $this->session->set_userdata('exito', TRUE);
+            $this->set_session('mensaje', 'Programa Eliminado Con Exito');
+            $this->set_session('exito', TRUE);
         } else {
-            $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Programa');
-            $this->session->set_userdata('exito', FALSE);
+            $this->set_session('mensaje', 'Fallo al Eliminar el Programa');
+            $this->set_session('exito', FALSE);
         }
         redirect('programaSaludControlador/mostrarProgramas');
     }
-    //Definicion de la interface
+    
+    /*Funcion que filtra y carga las tuplas que se muestran en la interfaz de usuario, segun uno o varios criterios de busqueda */
     public function buscarProgramaSalud(){
         $this->load->library('pagination');
         $data['header'] = 'includes/header';
@@ -175,7 +193,7 @@ class programaSaludControlador extends CI_Controller {
             $filtro['tipo_servicio']=$_POST['tipo_servicio'];
             $filtro['actividad']=$_POST['actividad'];
             $filtro['costo']=$_POST['costo'];
-            $this->session->set_userdata('filtro',$filtro);
+            $this->set_session('filtro',$filtro);
         }else{
                $session=$this->session->all_userdata();
                $filtro=$session['filtro'];
@@ -213,6 +231,10 @@ class programaSaludControlador extends CI_Controller {
             }
         $this->load->view('plantilla', $data);
 }
+
+/*Funcion encargada de validar todosl los campos que son ingresados mediante los formularios de ingreso o edicion,
+ * considerando unas reglas predefinidas para cada campo.
+ */
     public function validar() {
         $this->load->library('form_validation');
         $config = array(
@@ -245,6 +267,13 @@ class programaSaludControlador extends CI_Controller {
         foreach ($programas->result_array() as $row) {
              echo  '<option value="'.$row['id_programasalud'].'">'.$row['tipo_servicio'].'</option>';
         }
+    }
+    //funciones para acceder y modificar las variables de session
+    public function set_session($var,$cont=NULL){
+        $this->session->set_userdata($var, $cont);
+    }
+    public function get_session(){
+        return $this->session->all_userdata();
     }
 }
 ?>

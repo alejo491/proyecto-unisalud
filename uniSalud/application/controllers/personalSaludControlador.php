@@ -5,14 +5,18 @@ if (!defined('BASEPATH'))
 
 class personalSaludControlador extends CI_Controller {
 
+    /*Constructor de la clase*/
     function __construct() {
         parent::__construct();
         $this->load->database();
     }
+    /*Funcion Principal del controlador*/
     public function  index(){
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $this->mostrarPersonalSalud();
     }
+    
+    /*Funcion Encargada de cargar la tabla donde se muestran el personal de salud con su respectiva paginacion y posibles acciones*/
     public function mostrarPersonalSalud() {
         //Definicion de la interface
         $this->load->library('pagination');
@@ -55,10 +59,10 @@ class personalSaludControlador extends CI_Controller {
         }
         $this->load->view('plantilla', $data);
     }
-
+/*Funcion que se encarga de cargar los datos necesarios para cargar el formulario de registro de un miembro del personal de salud*/
     public function agregarPersonalSalud() {
         //definicion de la interface...
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $this->load->model('consultorioModelo');
         $data['consultorios']=$this->consultorioModelo->obtenerConsultorios();
         $data['programas']=$this->programaSaludModelo->obtenerProgramas();
@@ -72,6 +76,9 @@ class personalSaludControlador extends CI_Controller {
         $this->load->view('plantilla', $data);
     }
 
+    /*Funcion que obtiene y valida los datos obtenidos del formulario por medio del metodo
+     * POST, seguido a esto se vale del modelo para ingresar los datos respectivos en la Base de Datos
+     */
     public function aniadirDatos() {
         $this->load->library('form_validation');
         if ($_POST) {
@@ -102,19 +109,22 @@ class personalSaludControlador extends CI_Controller {
                 $id = $this->personalSaludModelo->ingresarPersonalSalud($personal,$pro);
                 
                 if ($id) {
-                    $this->session->set_userdata('mensaje', 'Personal Ingresado Con Exito');
-                    $this->session->set_userdata('exito', TRUE);
+                    $this->set_session('mensaje', 'Personal Ingresado Con Exito');
+                    $this->set_session('exito', TRUE);
                 } else {
-                    $this->session->set_userdata('mensaje', 'Fallo al Ingresar el Personal');
-                    $this->session->set_userdata('exito', FALSE);
+                    $this->set_session('mensaje', 'Fallo al Ingresar el Personal');
+                    $this->set_session('exito', FALSE);
                 }
                 redirect('personalSaludControlador/mostrarPersonalSalud');
             }
         }
     }
 
+    /*Funcion que carga segun el item seleccionado en la interfaz de usuario, los
+     * datos correspondientes al mismo, en un formulario donde se podran editar
+     */
     public function actualizarPersonalSalud() {
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $this->load->model('consultorioModelo');
         $id = $_POST['id_personalsalud'];
         $data['consultorios']=$this->consultorioModelo->obtenerConsultorios();
@@ -129,7 +139,10 @@ class personalSaludControlador extends CI_Controller {
         $data['title'] = "Editar Personal Salud";
         $this->load->view('plantilla', $data);
     }
-
+    
+    /*Funcion que obtiene y valida los datos obtenidos del formulario por medio del metodo
+     * POST, seguido a esto se vale del modelo para editar los datos respectivos en la Base de Datos
+     */
     public function editarPersonalSalud() {
         if ($_POST) {
             if ($this->validar_actualizar() == FALSE) {
@@ -167,38 +180,43 @@ class personalSaludControlador extends CI_Controller {
                 $respuesta = $this->personalSaludModelo->editarPersonalSalud($datos,$pro);
                 
                 if ($respuesta) {
-                    $this->session->set_userdata('mensaje', 'Personal de Salud Actualizado Con Exito');
-                    $this->session->set_userdata('exito', TRUE);
+                    $this->set_session('mensaje', 'Personal de Salud Actualizado Con Exito');
+                    $this->set_session('exito', TRUE);
                 } else {
-                    $this->session->set_userdata('mensaje', 'Fallo al Actualizar el Personal de Salud');
-                    $this->session->set_userdata('exito', FALSE);
+                    $this->set_session('mensaje', 'Fallo al Actualizar el Personal de Salud');
+                    $this->set_session('exito', FALSE);
                 }
                 redirect('personalSaludControlador/mostrarPersonalSalud');
             }
         }
     }
 
+    /*Funcion que despues de confirmar la eliminacion de una tupla, realiza el eliminado de la misma en la base
+ * de datos valiendose del modelo.
+ */
     public function eliminarPersonalSalud() {
-        $this->session->set_userdata('mensaje', NULL);
+        $this->set_session('mensaje', NULL);
         $this->load->model('personalSaludModelo');
         $id = $this->uri->segment(3);
         $confirmacion=$this->personalSaludModelo->verificar_citas($id);
         if($confirmacion){
             $respuesta = $this->personalSaludModelo->eliminarPersonalSalud($id);
             if ($respuesta) {
-                $this->session->set_userdata('mensaje', 'Personal Salud Eliminado Con Exito');
-                $this->session->set_userdata('exito', TRUE);
+                $this->set_session('mensaje', 'Personal Salud Eliminado Con Exito');
+                $this->set_session('exito', TRUE);
             } else {
-                $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Personal de Salud');
-                $this->session->set_userdata('exito', FALSE);
+                $this->set_session('mensaje', 'Fallo al Eliminar el Personal de Salud');
+                $this->set_session('exito', FALSE);
             }
         }else{
-                $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Personal de Salud, hay citas por atender');
-                $this->session->set_userdata('exito', FALSE);
+                $this->set_session('mensaje', 'Fallo al Eliminar el Personal de Salud, hay citas por atender');
+                $this->set_session('exito', FALSE);
             
         }
         redirect('personalSaludControlador/mostrarPersonalSalud');
     }
+    
+    /*Funcion que filtra y carga las tuplas que se muestran en la interfaz de usuario, segun uno o varios criterios de busqueda */
     public function buscarPersonalSalud(){
         //Definicion de la interface
         $this->load->library('pagination');
@@ -213,10 +231,10 @@ class personalSaludControlador extends CI_Controller {
             $filtro['primer_apellido']=$_POST['primer_apellido'];
             $filtro['identificacion']=$_POST['identificacion'];
             $filtro['especialidad']=$_POST['especialidad'];
-            $this->session->set_userdata('filtro',$filtro);
+            $this->set_session('filtro',$filtro);
         }
         else{
-            $session=$this->session->all_userdata();
+            $session=$this->get_session();
             $filtro=$session['filtro'];
         }
         $respuesta = $this->personalSaludModelo->buscarFiltradoPersonalSalud($filtro);
@@ -252,6 +270,10 @@ class personalSaludControlador extends CI_Controller {
         }
         $this->load->view('plantilla', $data);
     }
+    
+    /*Funcion encargada de validar todosl los campos que son ingresados mediante los formularios de ingreso o edicion,
+ * considerando unas reglas predefinidas para cada campo.
+ */
     public function validar() {
         $this->load->library('form_validation');
         $config = array(
@@ -315,6 +337,9 @@ class personalSaludControlador extends CI_Controller {
         return $this->form_validation->run();
     }
 
+    /*Funcion encargada de validar todosl los campos que son ingresados mediante los formularios de ingreso o edicion,
+ * considerando unas reglas predefinidas para cada campo.
+ */
     public function validar_actualizar() {
         $this->load->library('form_validation');
         $config = array(
@@ -377,7 +402,7 @@ class personalSaludControlador extends CI_Controller {
     
         return $this->form_validation->run();
     }
-    
+    /*Funcion que valida si un campo tiplo check box en el formulario fue o no checkeado*/
     function isChecked($str=NULL){
         
         if(!isset($_POST['opcion'])){
@@ -387,6 +412,13 @@ class personalSaludControlador extends CI_Controller {
         else{
             return TRUE;
         }
+    }
+    //funciones para acceder y modificar las variables de session
+    public function set_session($var,$cont=NULL){
+        $this->session->set_userdata($var, $cont);
+    }
+    public function get_session(){
+        return $this->session->all_userdata();
     }
 }
 

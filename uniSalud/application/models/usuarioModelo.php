@@ -5,9 +5,12 @@ if (!defined('BASEPATH'))
 
 class usuarioModelo extends CI_Model {
 
+    //constructor de la clase
     function __construct() {
         parent::__construct();
     }
+    
+    //ingresa una tupla en la tabla usuario y posee
     function registrar($data) {
         $this->db->insert('usuario', $data);
         $this->db->select('id_usuario')->from('usuario')->where('email',$data['email']);
@@ -23,6 +26,7 @@ class usuarioModelo extends CI_Model {
         
     }
 
+    //verifica el inicio de sesion
     public function login($str1, $str2) {
         $email = mysql_real_escape_string($str1);
         $contrasena = mysql_real_escape_string($str2);

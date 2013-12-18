@@ -4,13 +4,18 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class citaModelo extends CI_Model {
+    
+    //constructor de la clase
     function __construct() {
         parent::__construct();
     }
+    
+    //ingresa una cita a la base de datos
     function ingresarReservaCita($info_reserva){
         return $this->db->insert('cita',$info_reserva);
     }
     
+    //verifica si el estudiante tiene cita con un personal de salud especifico
     function tieneCita($id,$id2){
         
         $where=array(
@@ -44,6 +49,7 @@ class citaModelo extends CI_Model {
         }
         
     }
+    //obtiene los programas en los cuales el estudiante ha reservado una cita
     function obtenerProgramas($idEst){
         $this->db->select('id_programasalud');
         $this->db->where('id_estudiante',$idEst);

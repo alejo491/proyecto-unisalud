@@ -5,6 +5,7 @@ if (!defined('BASEPATH'))
 
 class Cuenta extends CI_Controller {
 
+    /*Constructor de la clase*/
     function _construct() {
         parent::_construct();
     }
