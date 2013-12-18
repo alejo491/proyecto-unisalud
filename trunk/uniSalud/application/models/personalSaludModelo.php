@@ -4,9 +4,12 @@ if (!defined('BASEPATH'))
 
 class personalSaludModelo extends CI_Model {
     
+    //constructor de la clase
         function __construct() {
         parent::__construct();
     }
+    
+    //obtiene las tuplas de la tabla personal de salud en la base de datos
      function obtenerPersonalSalud($limite=NULL,$inicio=NULL){
         if($limite!=NULL){
             $this->db->limit($limite,$inicio);
@@ -21,6 +24,8 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
+    
+    //ingresa una tupla en la tabla programasalud en la base de datos
     function ingresarPersonalSalud($personal,$pro=NULL){
         
         unset($personal['id_programasalud']);
@@ -47,6 +52,8 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
+    
+    //busca los datos en la tabla personalsalud con un id especifico en la base de datos
     function buscarPersonal($id){
         $this->db->limit(1);
         $this->db->select('id_personalsalud,id_consultorio,primer_nombre,segundo_nombre,primer_apellido,segundo_apellido,identificacion,tipo_identificacion,numero_tarjeta,especialidad');
@@ -61,6 +68,7 @@ class personalSaludModelo extends CI_Model {
         }
     }
     
+    //obtiene la lista de programas deste la tabla atiende, de un personal de salud especifico
     function programasPersonal($id){
         
         $this->db->select('id_programasalud');
@@ -74,6 +82,7 @@ class personalSaludModelo extends CI_Model {
             return FALSE;
         }
     }
+    //edita una tupla en la tabla personalsalud en la base de datos
     function editarPersonalSalud($datos,$pro=NULL){
         
         
@@ -90,11 +99,14 @@ class personalSaludModelo extends CI_Model {
         $this->db->where('id_personalsalud', $datos['id_personalsalud']);
         return $this->db->update('personalsalud', $datos);
     }
+    //elimina una tupla especifica de la tabla personalsalud en la base de datos
     function eliminarPersonalSalud($id){
         $this->db->where('id_personalsalud', $id);
         $this->db->limit(1);
         return $this->db->delete('personalsalud');
     }
+    
+    //busca mediante un filtro las tuplas que se acomoden al mismo de la tabla personalsalud en la base de datos
     function buscarFiltradoPersonalSalud($filtro,$limite=NULL,$inicio=NULL){
         if($limite!=NULL){
             $this->db->limit($limite,$inicio);

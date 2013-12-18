@@ -10,13 +10,6 @@ class agendaControlador extends CI_Controller {
         parent::__construct();
         $this->load->database();
     }
-    public function set_session($var,$cont=NULL){
-        $this->session->set_userdata($var, $cont);
-    }
-    public function get_session(){
-        return $this->session->all_userdata();
-    }
-
     //funcion principal del controlador
     public function index(){
         //configurando la variable de sesion que almacena los mensajes
@@ -133,13 +126,18 @@ class agendaControlador extends CI_Controller {
         }
     }
     
-    //
+    //Funcion que carga el horario de antencion de un personal de salud
     public function buscarHorarioPersonal() {
+        //se coloca el mensaje de accion como vacio
         $this->session->set_userdata('mensaje', NULL);
+        //se recibe el identificador de la agenda por medio de POST
         $id = $_POST['id_agenda'];
+        //se consulta mediante el modelo  el horario q corresponde al identificador
         $data['horario']=$this->agendaModelo->obtenerHorarioAtencion($id);
+        //declaracion de variables usadas como auxiliares
         $str='';
         $i=0;
+        //se rrecorre la consulta y se guardan uno a uno los valores del horario
         while(strcmp($data['horario']->hora_inicial[$i],":")!=0 && $i<strlen($data['horario']->hora_inicial)){
             $str=$str.$data['horario']->hora_inicial[$i];
             $i++;
@@ -181,7 +179,7 @@ class agendaControlador extends CI_Controller {
             $i++;
         }
         $data['seg_f']=(int)$str;
-        
+        //configuracion de la interfaz de usuario
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'estandar/topcontent';
@@ -191,9 +189,8 @@ class agendaControlador extends CI_Controller {
         //se carga la vista pertinente y se le envian las variables necesarias
         $this->load->view('plantilla', $data);
     }
-
+//funcion que obtiene los datos del horario desde un formulario, los valida y edita los datos en la base de datos a travez del modelo 
     public function editarHorarioAtencion() {
-        $this->load->library('form_validation');
         if ($_POST) {
             if ($this->validar() == FALSE) {
                 $data['id_personalsalud']=$_POST['id_personalsalud'];
@@ -224,7 +221,9 @@ class agendaControlador extends CI_Controller {
             }
         }
     }
-
+/*Funcion que despues de confirmar la eliminacion de una tupla, realiza el eliminado de la misma en la base
+ * de datos valiendose del modelo.
+ */
     public function eliminarHorarioAtencion() {
         $this->session->set_userdata('mensaje', NULL);
         $id = $this->uri->segment(3);
@@ -239,7 +238,9 @@ class agendaControlador extends CI_Controller {
             }
         redirect('AgendaControlador/buscarDatos');
     }
-
+/*Funcion encargada de validar todosl los campos que son ingresados mediante el formulario,
+ * en este caso el formulario del horario de antencion y su respectiva edicion
+ */
     public function validar() {
         $this->load->library('form_validation');
         $config = array(
@@ -264,6 +265,13 @@ class agendaControlador extends CI_Controller {
         $this->form_validation->set_message('required', 'El campo %s es Obligatorio');
         $this->form_validation->set_message('trim', 'Caracteres Invalidos');
         return $this->form_validation->run();
+    }
+   //funciones para acceder y modificar las variables de session
+    public function set_session($var,$cont=NULL){
+        $this->session->set_userdata($var, $cont);
+    }
+    public function get_session(){
+        return $this->session->all_userdata();
     }
 }
 

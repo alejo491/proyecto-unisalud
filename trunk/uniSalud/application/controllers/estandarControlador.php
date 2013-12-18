@@ -5,12 +5,14 @@ if (!defined('BASEPATH'))
 
 class estandarControlador extends CI_Controller {
 
+    /*Constructor de la clase*/
     function __construct() {
         parent::__construct();
         $this->load->database();
         $this->load->model('estudianteModelo');
         $this->load->library('grocery_CRUD');
     }
+    /*Funcion Principal del controlador*/
     public function index(){
         $data['header'] = 'includes/headerHome';
         $data['menu'] = 'estandar/menu';
@@ -20,6 +22,7 @@ class estandarControlador extends CI_Controller {
         $data['facultades']=$this->estudianteModelo->CargarFacultad();
         $this->load->view('plantilla',$data);
     }
+    /*Funcion que se encarga de cargar los datos necesarios para cargar el formulario de registro de un estudiante*/
     public function registrarse(){
         
         //controlar registrarse segun el rol
@@ -34,7 +37,7 @@ class estandarControlador extends CI_Controller {
     }
     
     public function cancelar() {
-        $user = $this->session->all_userdata();
+        $user = $this->get_session();
         if(isset($user['id_usuario'])){
         redirect(base_url()."estudianteControlador");
         }else{
@@ -42,8 +45,11 @@ class estandarControlador extends CI_Controller {
             redirect(base_url());
         }
     }
+    /*Funcion que obtiene y valida los datos obtenidos del formulario por medio del metodo
+     * POST, seguido a esto se vale del modelo para ingresar los datos respectivos en la Base de Datos
+     */
     public function registrar(){
-        $user = $this->session->all_userdata();
+        $user = $this->get_session();
         
         $this->load->model('usuarioModelo');   
         $this->load->model('estudianteModelo'); 
@@ -92,10 +98,10 @@ class estandarControlador extends CI_Controller {
                     
                     
                         $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
-                        $this->session->set_userdata('id_usuario', $usuarioActual['id_usuario']);
-                        $this->session->set_userdata('email', $usuarioActual['email']);
+                        $this->set_session('id_usuario', $usuarioActual['id_usuario']);
+                        $this->set_session('email', $usuarioActual['email']);
                         $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
-                        $this->session->set_userdata('id_rol',$id_rol['id_rol']);
+                        $this->set_session('id_rol',$id_rol['id_rol']);
                         redirect(base_url());
                         
                     }else{
@@ -115,6 +121,10 @@ class estandarControlador extends CI_Controller {
             
         }
     }
+    
+    /*Funcion encargada de validar todosl los campos que son ingresados mediante los formularios de ingreso o edicion,
+ * considerando unas reglas predefinidas para cada campo.
+ */
     public function validar(){
         $config = array(
                 array(
@@ -198,6 +208,7 @@ class estandarControlador extends CI_Controller {
             $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos 6 caracteres');
             return $this->form_validation->run();
     }
+    /*Funcion que carga dinamicamente los programas que tiene la facultad escogida*/
     public function cargarprograma(){
         $id=$this->input->post("id",true);
         $datos=$this->estudianteModelo->cargarProgramas($id);
@@ -206,6 +217,8 @@ class estandarControlador extends CI_Controller {
              echo  '<option value="'.$row['id_programa'].'">'.$row['nombre_programa'].'</option>';
         }
     }
+    
+    /*Funcion que valida el password segun unos estandares considerados para la seguridad*/
     function validarPass($str){
         $banMin=FALSE;
         $banMay=FALSE;
@@ -241,6 +254,13 @@ class estandarControlador extends CI_Controller {
         else{
             return TRUE;
         }
+    }
+    //funciones para acceder y modificar las variables de session
+    public function set_session($var,$cont=NULL){
+        $this->session->set_userdata($var, $cont);
+    }
+    public function get_session(){
+        return $this->session->all_userdata();
     }
 }
 ?>

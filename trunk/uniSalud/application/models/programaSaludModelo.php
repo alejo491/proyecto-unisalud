@@ -4,9 +4,12 @@ if (!defined('BASEPATH'))
 
 class programaSaludModelo extends CI_Model {
     
+    //constructor de la clase
         function __construct() {
         parent::__construct();
     }
+    
+    //obtiene la lista de los programas de salud de la tabla programasalud en la base de datos
      function obtenerProgramas($limite=NULL,$inicio=NULL){
         if($limite!=NULL){
             $this->db->limit($limite,$inicio);
@@ -21,6 +24,8 @@ class programaSaludModelo extends CI_Model {
             return FALSE;
         }
     }
+    
+    //ingresa una tupla en la tabla programasalud en la base de datos
     function ingresarProgramaSalud($programa){
         return $this->db->insert('programasalud',$programa);
     }
@@ -37,15 +42,18 @@ class programaSaludModelo extends CI_Model {
             return FALSE;
         }
     }
+    //edita una tupla especifica en la tabla programasalud
     function editarProgramaSalud($datos){
         $this->db->where('id_programasalud', $datos['id_programasalud']);
         return $this->db->update('programasalud', $datos);
     }
+    //elimina un programa de salud especifico en la tabla programasalud
     function eliminarProgramaSalud($id){
         $this->db->where('id_programasalud', $id);
         $this->db->limit(1);
         return $this->db->delete('programasalud');
     }
+    //busca mediante un filtro la lista de programas de salud que lo cumplan en la tabla programasalud
     function buscarFiltradoProgramaSalud($filtro,$limite=NULL,$inicio=NULL ){
         if($limite!=NULL){
             $this->db->limit($limite,$inicio);

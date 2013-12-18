@@ -54,15 +54,15 @@
     <?php endforeach; ?>
             </tbody>
             <tfoot>
-                <?php echo form_open(' ') ?>
-                <!--<tr>
+                <?php echo form_open('estudianteControlador/buscarEstudiante') ?>
+                <tr>
                     <td>
                         <?php
                         $data_form = array(
                             'name' => 'id_estudiante',
                             'id' => 'id_estudiante',
                             'size' => '20',
-                            'value' => set_value('id_estudiante')
+                            'value' => ''
                         );
                         echo form_input($data_form);
                         ?>
@@ -73,7 +73,7 @@
                             'name' => 'primer_nombre',
                             'id' => 'primer_nombre',
                             'size' => '20',
-                            'value' => set_value('primer_nombre')
+                            'value' => ''
                         );
                         echo form_input($data_form);
                         ?>
@@ -84,7 +84,7 @@
                             'name' => 'primer_apellido',
                             'id' => 'primer_apellido',
                             'size' => '20',
-                            'value' => set_value('primer_apellido')
+                            'value' => ''
                         );
                         echo form_input($data_form);
                         ?>
@@ -95,17 +95,16 @@
                             'name' => 'identificacion',
                             'id' => 'identificacion',
                             'size' => '20',
-                            'value' => set_value('identificacion')
+                            'value' => ''
                         );
                         echo form_input($data_form);
                         ?>
                     </td>
-                    
                     <td colspan="3">
-                            <!--<input id="btnTabla" type="submit" value="Buscar" class="boton"/>
+                            <input id="btnTabla" type="submit" value="Buscar" class="boton"/>
                             <?php echo form_close(); ?>
                     </td>
-                </tr>-->
+                </tr>
             </tfoot>
 <?php else: ?>
             <tfoot>
