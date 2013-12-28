@@ -55,3 +55,15 @@ function eliminar(ruta,id)
                 window.location.href = ruta+"/"+id;
             }       
         }
+function activar(ruta,id) 
+        {
+            if(confirm('Confirma que desea Activar esta cita,\nSi esta información es necesaria en otro servicio del sistema, no se eliminara')){
+                window.location.href = ruta+"/"+id;
+            }       
+        }
+function cancelar(ruta,id) 
+        {
+            if(confirm('Confirma que desea Cancelar esta cita,\nSi esta información es necesaria en otro servicio del sistema, no se eliminara')){
+                window.location.href = ruta+"/"+id;
+            }       
+        }

@@ -34,6 +34,7 @@ class UsuariosControlador extends CI_Controller {
                if (isset($usuarioActual)) {
                     $this->set_session('id_usuario', $usuarioActual['id_usuario']);
                     $this->set_session('email', $usuarioActual['email']);
+                    $this->set_session('id_persona', $usuarioActual['id_persona']);
                     $id_rol=$this->usuarioModelo->getRol($usuarioActual['id_usuario']);
                     $this->set_session('id_rol',$id_rol['id_rol']);
                 }
