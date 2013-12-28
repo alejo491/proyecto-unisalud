@@ -1,8 +1,4 @@
 <section id="content">
-    <div>
-        <button id ="btnAgregar" class="boton" onclick="location.href = '<?php echo base_url() . "citaControlador/buscarEstudiante"; ?>';
-                return false;"> Reservar Cita</button>
-    </div>
     <div id="paginacion" align="center">
         <?php if(isset($paginacion))echo $paginacion?>
     </div>
@@ -52,11 +48,13 @@
                             <input id="btnTabla" type="submit" value="Cancelar" onclick="cancelar('<?php echo base_url()?>citaControlador/cancelarCita','<?php echo $cita->id_estudiante.':'.$cita->id_personalsalud.':'.$cita->id_programasalud?>');" class="boton"/>
                        
                         </td>
+                        <td>
+                            <input id="btnTabla" type="submit" value="Activar" onclick="activar('<?php echo base_url()?>citaControlador/activarCita','<?php echo $cita->id_estudiante.':'.$cita->id_personalsalud.':'.$cita->id_programasalud?>');" class="boton"/>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
-            <tfoot>
-                <!--
+            <tfoot><!--
                 <?php echo form_open('consultorioControlador/filtrarConsultorio') ?>
                 <tr>
                     <td>
@@ -90,7 +88,7 @@
         <?php else: ?>
             <tfoot>
                 <tr>
-                    <td colspan="4">No hay Citas</td>
+                    <td colspan="4">No hay Citas </td>
                 </tr>
             </tfoot>
         <?php endif; ?>

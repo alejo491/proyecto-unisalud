@@ -62,5 +62,47 @@ class citaModelo extends CI_Model {
             return FALSE;
         }
     }
+    
+    function obtenerCitas($limite=NULL,$inicio=NULL,$id=NULL){
+        if($limite!=NULL){
+            $this->db->limit($limite,$inicio);
+        }
+        if($id!=NULL){
+            $this->db->where('cita.id_estudiante',$id);
+        }
+        $this->db->select('cita.id_estudiante,cita.id_programasalud,cita.id_personalsalud,cita.hora_inicio,cita.hora_fin,cita.estado,cita.dia, estudiante.primer_nombre AS pnestudiante,estudiante.primer_apellido AS paestudiante, estudiante.identificacion AS idestudiante, personalsalud.primer_nombre AS pnpersonal, personalsalud.primer_apellido AS papersonal, personalsalud.identificacion AS idpersonal,programasalud.tipo_servicio AS tipo_servicio, programasalud.actividad AS actividad ');
+        $this->db->from('cita');
+        $this->db->join('estudiante','cita.id_estudiante=estudiante.id_estudiante');
+        $this->db->join('personalsalud','cita.id_personalsalud=personalsalud.id_personalsalud');
+        $this->db->join('programasalud','cita.id_programasalud=programasalud.id_programasalud');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+    }
+    function activarCita($id_cita){
+        $id_estudiante=$id_cita[0];
+        $id_personalsalud=$id_cita[1];
+        $id_programasalud=$id_cita[2];
+        $this->db->limit(1);
+        $this->db->where('id_estudiante', $id_estudiante);
+        $this->db->where('id_personalsalud', $id_personalsalud);
+        $this->db->where('id_programasalud', $id_programasalud);
+        return $this->db->update('cita','estado = 1');
+    }
+    
+    function cancelarCita($id_cita){
+        $id_estudiante=$id_cita[0];
+        $id_personalsalud=$id_cita[1];
+        $id_programasalud=$id_cita[2];
+        $this->db->limit(1);
+        $this->db->where('id_estudiante', $id_estudiante);
+        $this->db->where('id_personalsalud', $id_personalsalud);
+        $this->db->where('id_programasalud', $id_programasalud);
+        return $this->db->delete('cita');
+    }
 }
 ?>

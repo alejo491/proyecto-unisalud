@@ -13,14 +13,52 @@ class citaControlador extends CI_Controller {
     /*Funcion principal de la clase la cual es invocada en cuanto se hace el llamado al controlador*/
     public function index() {
         $this->set_session('mensaje', NULL);
+        $this->mostrarCitas();
     }
     /*Carga  la vista para realizar la reserva de una cita por parte de un estudiante*/
     public function citasEstudiante() {
+        $session=  $this->get_session();
+        $id=$session['id_persona'];
+        
+        //Definicion de la interface
+        $this->load->library('pagination');
         $data['header'] = 'includes/header';
+        $data['menu'] = 'estudiante/menu';
         $data['topcontent'] = 'estandar/topcontent';
         $data['content'] = 'estudiante/contentCitas';
-        $data['footerMenu'] = 'personal/footerMenu';
-        $data['title'] = "Citas";
+        $data['footerMenu'] = 'estudiante/footerMenu';
+        $data['title'] = "Mis Citas";
+        $citas = $this->citaModelo->obtenerCitas();
+        if ($citas != FALSE) {
+            //CONFIGURACION DE LA PAGINACION...
+            $opciones = array();
+            //numero de items por pagina
+            $opciones['per_page'] = 5;
+            //linck de la paginacion
+            $opciones['base_url'] = base_url() . '/citaControlador/misCitas/';
+            //numero total de tuplas en la base de datos
+            $opciones['total_rows'] = $citas->num_rows();
+            //segmento que se usara para pasar los datos de la paginacion
+            $opciones['uri_segment'] = 3;
+            //numero de links mostrados en la paginacion antes y despues de la pagina actual
+            $opciones['num_links'] = 2;
+            //nombre de la primera y ultima pagina
+            $opciones['first_link'] = 'Primero';
+            $opciones['last_link'] = 'Ultimo';
+            $opciones['full_tag_open'] = '<h3>';
+            $opciones['full_tag_close'] = '</h3>';
+            //inicializacion de la paginacion
+            $this->pagination->initialize($opciones);
+            //consulta a la base de datos segun paginacion
+            $citas = $this->citaModelo->obtenerCitas($opciones['per_page'], $this->uri->segment(3),$id);
+            //carga de datos del resultado de la consulta
+            $data['citas'] = $citas;
+            //creacion de los linck de la paginacion
+            $data['paginacion'] = $this->pagination->create_links();
+            //FIN_PAGINACION...
+        } else {
+            $data['citas'] = NULL;
+        }
         $this->load->view('plantilla', $data);
     }
     /*Busca y carga los datos necesarios para cargar el formulario que permite hacer la reserva de una cita*/
@@ -418,6 +456,75 @@ class citaControlador extends CI_Controller {
     public function get_session(){
         return $this->session->all_userdata();
     }
+    
+    public function mostrarCitas(){
+    
+        //Definicion de la interface
+        $this->load->library('pagination');
+        $data['header'] = 'includes/header';
+        $data['menu'] = 'personal/menu';
+        $data['topcontent'] = 'estandar/topcontent';
+        $data['content'] = 'personal/contentCita';
+        $data['footerMenu'] = 'personal/footerMenu';
+        $data['title'] = "Citas Programadas";
+        $citas = $this->citaModelo->obtenerCitas();
+        if ($citas != FALSE) {
+            //CONFIGURACION DE LA PAGINACION...
+            $opciones = array();
+            //numero de items por pagina
+            $opciones['per_page'] = 5;
+            //linck de la paginacion
+            $opciones['base_url'] = base_url() . '/citaControlador/mostrarCitas/';
+            //numero total de tuplas en la base de datos
+            $opciones['total_rows'] = $citas->num_rows();
+            //segmento que se usara para pasar los datos de la paginacion
+            $opciones['uri_segment'] = 3;
+            //numero de links mostrados en la paginacion antes y despues de la pagina actual
+            $opciones['num_links'] = 2;
+            //nombre de la primera y ultima pagina
+            $opciones['first_link'] = 'Primero';
+            $opciones['last_link'] = 'Ultimo';
+            $opciones['full_tag_open'] = '<h3>';
+            $opciones['full_tag_close'] = '</h3>';
+            //inicializacion de la paginacion
+            $this->pagination->initialize($opciones);
+            //consulta a la base de datos segun paginacion
+            $citas = $this->citaModelo->obtenerCitas($opciones['per_page'], $this->uri->segment(3));
+            //carga de datos del resultado de la consulta
+            $data['citas'] = $citas;
+            //creacion de los linck de la paginacion
+            $data['paginacion'] = $this->pagination->create_links();
+            //FIN_PAGINACION...
+        } else {
+            $data['citas'] = NULL;
+        }
+        $this->load->view('plantilla', $data);
+    }
+    public function activarCita(){
+        $id_cita = explode(':', $this->uri->segment(3));
+        $respuesta=  $this->citaModelo->activarCita($id_cita);
+         if ($respuesta) {
+                $this->set_session('mensaje', 'Cita Activada Con Exito');
+                $this->set_session('exito', TRUE);
+            } else {
+                $this->set_session('mensaje', 'Fallo al Activar la Cita');
+                $this->set_session('exito', FALSE);
+            }
+            redirect('citaControlador/mostrarCitas');
+    }
+    public function cancelarCita(){
+        $id_cita = explode(':', $this->uri->segment(3));
+        $respuesta=  $this->citaModelo->cancelarCita($id_cita);
+         if ($respuesta) {
+                $this->set_session('mensaje', 'Cita Cancelada Con Exito');
+                $this->set_session('exito', TRUE);
+            } else {
+                $this->set_session('mensaje', 'Fallo al Cancelar la Cita');
+                $this->set_session('exito', FALSE);
+            }
+            redirect('citaControlador/mostrarCitas');
+    }
 }
+
 
 ?>
