@@ -13,22 +13,36 @@ class citaControlador extends CI_Controller {
     /*Funcion principal de la clase la cual es invocada en cuanto se hace el llamado al controlador*/
     public function index() {
         $this->set_session('mensaje', NULL);
-        $this->mostrarCitas();
+        $this->citasEstudiante();
     }
     /*Carga  la vista para realizar la reserva de una cita por parte de un estudiante*/
     public function citasEstudiante() {
         $session=  $this->get_session();
-        $id=$session['id_persona'];
-        
-        //Definicion de la interface
-        $this->load->library('pagination');
-        $data['header'] = 'includes/header';
-        $data['menu'] = 'estudiante/menu';
-        $data['topcontent'] = 'estandar/topcontent';
-        $data['content'] = 'estudiante/contentCitas';
-        $data['footerMenu'] = 'estudiante/footerMenu';
-        $data['title'] = "Mis Citas";
-        $citas = $this->citaModelo->obtenerCitas();
+        if($session['id_rol']==3){
+            if(isset($session['id_estudiante']) && $session['id_estudiante']!=NULL){
+                $id=$session['id_estudiante'];
+            }else{
+                $id=$this->input->POST('id_estudiante');
+                $this->set_session('id_estudiante',$id);
+            }
+            $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/contentCita';
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Citas Estudiante";
+        }
+        else{
+            $id=$session['id_persona'];
+            //Definicion de la interface
+            $data['header'] = 'includes/header';
+            $data['menu'] = 'estudiante/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'estudiante/contentCitas';
+            $data['footerMenu'] = 'estudiante/footerMenu';
+            $data['title'] = "Mis Citas";
+        }
+        $citas = $this->citaModelo->obtenerCitas($id);
         if ($citas != FALSE) {
             //CONFIGURACION DE LA PAGINACION...
             $opciones = array();
@@ -50,7 +64,7 @@ class citaControlador extends CI_Controller {
             //inicializacion de la paginacion
             $this->pagination->initialize($opciones);
             //consulta a la base de datos segun paginacion
-            $citas = $this->citaModelo->obtenerCitas($opciones['per_page'], $this->uri->segment(3),$id);
+            $citas = $this->citaModelo->obtenerCitas($id,$opciones['per_page'], $this->uri->segment(3));
             //carga de datos del resultado de la consulta
             $data['citas'] = $citas;
             //creacion de los linck de la paginacion
@@ -408,25 +422,6 @@ class citaControlador extends CI_Controller {
         }
     }
 
-    /* function igualActividad($str=NULL){
-
-      $this->load->model('citaModelo');
-      $this->load->model('programaSaludModelo');
-      $act= $this->input->post('programa', true);
-
-      $actividad=$this->programaSaludModelo->buscarPrograma($act);
-      $b=$this->citaModelo->verificarActividad($actividad->actividad);
-
-      if($b){
-      $this->form_validation->set_message('igualActividad', 'Ya tiene cita en esta actividad');
-      return FALSE;
-
-      }else{
-      return TRUE;
-
-      }
-
-      } */
 /*Funcion que valida el hecho de que no se puede tener a la vez dos citas que correspondan a programas con actividades similares*/
     function igualActividad($str = NULL) {
         $idEst = $this->input->post('id_estudiante', true);
@@ -510,7 +505,7 @@ class citaControlador extends CI_Controller {
                 $this->set_session('mensaje', 'Fallo al Activar la Cita');
                 $this->set_session('exito', FALSE);
             }
-            redirect('citaControlador/mostrarCitas');
+            redirect('citaControlador/citasEstudiante');
     }
     public function cancelarCita(){
         $id_cita = explode(':', $this->uri->segment(3));
@@ -522,7 +517,7 @@ class citaControlador extends CI_Controller {
                 $this->set_session('mensaje', 'Fallo al Cancelar la Cita');
                 $this->set_session('exito', FALSE);
             }
-            redirect('citaControlador/mostrarCitas');
+            redirect('citaControlador/citasEstudiante');
     }
 }
 

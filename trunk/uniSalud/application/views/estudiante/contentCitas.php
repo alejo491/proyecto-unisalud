@@ -90,7 +90,7 @@
         <?php else: ?>
             <tfoot>
                 <tr>
-                    <td colspan="4">No hay Citas</td>
+                    <td colspan="6">No hay Citas</td>
                 </tr>
             </tfoot>
         <?php endif; ?>

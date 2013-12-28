@@ -57,13 +57,13 @@ function eliminar(ruta,id)
         }
 function activar(ruta,id) 
         {
-            if(confirm('Confirma que desea Activar esta cita,\nSi esta información es necesaria en otro servicio del sistema, no se eliminara')){
+            if(confirm('Confirma que desea Activar esta cita,\n')){
                 window.location.href = ruta+"/"+id;
             }       
         }
 function cancelar(ruta,id) 
         {
-            if(confirm('Confirma que desea Cancelar esta cita,\nSi esta información es necesaria en otro servicio del sistema, no se eliminara')){
+            if(confirm('Confirma que desea Cancelar esta cita,\n')){
                 window.location.href = ruta+"/"+id;
             }       
         }

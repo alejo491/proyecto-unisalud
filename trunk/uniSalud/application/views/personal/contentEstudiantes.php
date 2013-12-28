@@ -32,22 +32,17 @@
                         <td>
         <?php echo $estudiante->identificacion; ?>
                         </td>
-                        <!--<td>
-                            <?php echo form_open(' ') ?>
-                            <?php echo form_hidden('id_estudiante', $estudiante->id_estudiante); ?>
-                            <input id="btnTabla" type="submit" value="Editar" class="boton"/>
-        <?php echo form_close(); ?>
-                        </td>
-                        <td>
-                            <?php //echo form_open('programaSaludControlador/eliminarProgramaSalud') ?>
-                            <?php //echo form_hidden('id_programasalud', $programa->id_programasalud); ?>
-                            <input id="btnTabla" type="submit" value="Eliminar" onclick="eliminar('<?php echo base_url()?>programaSaludControlador/eliminarProgramaSalud','<?php echo $estudiante->id_estudiante?>');" class="boton"/>
-        <?php //echo form_close(); ?>
-                        </td>-->
+                        
                         <td>
                             <?php echo form_open('citaControlador/buscarEstudiante') ?>
                             <?php echo form_hidden('id_estudiante', $estudiante->id_estudiante); ?>
                             <input id="btnTabla" type="submit" value="Cita Medica" class="boton"/>
+        <?php echo form_close(); ?>
+                        </td>
+                        <td>
+                            <?php echo form_open('citaControlador') ?>
+                            <?php echo form_hidden('id_estudiante', $estudiante->id_estudiante); ?>
+                            <input id="btnTabla" type="submit" value="Citas" class="boton"/>
         <?php echo form_close(); ?>
                         </td>
                     </tr>

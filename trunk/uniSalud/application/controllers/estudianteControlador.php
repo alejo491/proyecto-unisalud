@@ -19,7 +19,7 @@ class estudianteControlador extends CI_Controller {
     /*Funcion Encargada de cargar la tabla donde se muestran los estudiantes con su respectiva paginacion y posibles acciones*/
     public function mostrarEstudiantes() {
         //Definicion de la interface
-        $this->load->library('pagination');
+        $this->set_session('id_estudiante',NULL);
         $data['header'] = 'includes/header';
         $data['menu'] = 'personal/menu';
         $data['topcontent'] = 'estandar/topcontent';

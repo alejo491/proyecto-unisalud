@@ -63,7 +63,7 @@ class citaModelo extends CI_Model {
         }
     }
     
-    function obtenerCitas($limite=NULL,$inicio=NULL,$id=NULL){
+    function obtenerCitas($id=NULL,$limite=NULL,$inicio=NULL){
         if($limite!=NULL){
             $this->db->limit($limite,$inicio);
         }
