@@ -49,7 +49,9 @@
                        
                         </td>
                         <td>
+                            <?php if($cita->estado == 2):?>
                             <input id="btnTabla" type="submit" value="Activar" onclick="activar('<?php echo base_url()?>citaControlador/activarCita','<?php echo $cita->id_estudiante.':'.$cita->id_personalsalud.':'.$cita->id_programasalud?>');" class="boton"/>
+                            <?php endif;?>
                         </td>
                     </tr>
                 <?php endforeach; ?>
