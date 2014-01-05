@@ -9,6 +9,7 @@ class citaControlador extends CI_Controller {
     function __construct() {
         parent::__construct();
         $this->load->database();
+        $this->load->model('citaModelo');
     }
     /*Funcion principal de la clase la cual es invocada en cuanto se hace el llamado al controlador*/
     public function index() {
@@ -518,6 +519,181 @@ class citaControlador extends CI_Controller {
                 $this->set_session('exito', FALSE);
             }
             redirect('citaControlador/citasEstudiante');
+    }
+    
+    function reporteEstudiantesPrograma(){
+        $this->set_session('mensaje', NULL);
+        $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/generarReportes';
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Reportes";
+            $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
+            $data['personal']=$this->personalSaludModelo->obtenerPersonalSalud();
+            
+        if($this->validar_reporte_programa()==FALSE){
+            $data['errores'] = validation_errors();
+            
+        }else{
+            $this->set_session('mensaje', NULL);
+            $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/contentReportes';
+            $data['titulo_reporte']='Numero de estudiantes que usan el servicio <br /> '.$_POST['programa'].',clasificados por programa';
+            $data['tipo_reporte']='1';
+            $data['reporte']=$this->citaModelo->estudiantesPorPrograma($_POST['programa']);
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Reportes";
+            
+        }
+        $this->load->view('plantilla', $data);
+    }
+    
+    function reporteEstudiantesPorFecha(){
+        $this->set_session('mensaje', NULL);
+        $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/generarReportes';
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Reportes";
+            $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
+            $data['personal']=$this->personalSaludModelo->obtenerPersonalSalud();
+            
+        if($this->validar_reporte_medico()==FALSE){
+            $data['errores'] = validation_errors();
+            
+        }else{
+            $this->set_session('mensaje', NULL);
+            $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/contentReportes';
+            $data['titulo_reporte']='Lista estudiantes por atender en una fecha';
+            $data['tipo_reporte']='2';
+            $data['reporte']=$this->citaModelo->estudiantesPorFecha($_POST['fecha_nac'],$_POST['personal']);
+          
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Reportes";
+            
+        }
+        $this->load->view('plantilla', $data);
+    }
+    
+    function reporteEstudiantesFacultad(){
+        $this->set_session('mensaje', NULL);
+        $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/generarReportes';
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Reportes";
+            $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
+            $data['personal']=$this->personalSaludModelo->obtenerPersonalSalud();
+            
+        if($this->validar_reporte_facultad()==FALSE){
+            $data['errores'] = validation_errors();
+            
+        }else{
+            $this->set_session('mensaje', NULL);
+            $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/contentReportes';
+            $data['titulo_reporte']='Numero de estudiantes que usan el servicio<br /> '.$_POST['programa1'].', clasificados por facultad';
+            $data['tipo_reporte']='3';
+            $data['reporte']=$this->citaModelo->estudiantesPorFacultad($_POST['programa1']);
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Reportes";
+            
+        }
+        $this->load->view('plantilla', $data);
+    }
+    
+    function reporteServicioMasSolicitado(){
+        
+            $this->set_session('mensaje', NULL);
+            $data['header'] = 'includes/header';
+            $data['menu'] = 'personal/menu';
+            $data['topcontent'] = 'estandar/topcontent';
+            $data['content'] = 'personal/contentReportes';
+            $data['titulo_reporte']='Servicio mas solicitado';
+            $data['tipo_reporte']='4';
+            $data['reporte']=$this->citaModelo->servicioMasSolicitado();
+            $data['footerMenu'] = 'personal/footerMenu';
+            $data['title'] = "Reportes";
+            
+        
+            
+        
+        $this->load->view('plantilla', $data);
+    }
+    
+    
+    function validar_reporte_programa(){
+        $config = array(
+            
+            array(
+                'field' => 'programa',
+                'label' => 'Programa',
+                'rules' => 'trim|callback_isSelected'
+            )
+        );
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($config);
+        
+
+
+
+        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+
+        return $this->form_validation->run();
+    }
+    
+    function validar_reporte_facultad(){
+        $config = array(
+            
+            array(
+                'field' => 'programa1',
+                'label' => 'Programa',
+                'rules' => 'trim|callback_isSelected'
+            )
+        );
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($config);
+        
+
+
+
+        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+
+        return $this->form_validation->run();
+    }
+    
+    function validar_reporte_medico(){
+        
+        $config = array(
+            
+            array(
+                'field' => 'personal',
+                'label' => 'Personal',
+                'rules' => 'trim|callback_isSelected'
+            ),
+            array('field' => 'fecha_nac',
+                'label' => 'Fecha',
+                'rules' => 'trim|required')
+        );
+        $this->load->library('form_validation');
+        $this->form_validation->set_rules($config);
+        
+
+
+
+        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+        $this->form_validation->set_message('required', 'El campo %s es requerido');
+        return $this->form_validation->run();
     }
 }
 
