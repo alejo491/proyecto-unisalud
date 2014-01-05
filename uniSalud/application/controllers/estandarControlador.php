@@ -14,6 +14,8 @@ class estandarControlador extends CI_Controller {
     }
     /*Funcion Principal del controlador*/
     public function index(){
+        $this->set_session('mensaje', NULL);
+        
         $data['header'] = 'includes/headerHome';
         $data['menu'] = 'estandar/menu';
         $data['topcontent'] = 'estandar/topcontent';

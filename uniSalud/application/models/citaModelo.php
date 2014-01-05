@@ -104,5 +104,81 @@ class citaModelo extends CI_Model {
         $this->db->where('id_programasalud', $id_programasalud);
         return $this->db->delete('cita');
     }
+    
+    function estudiantesPorPrograma($tipo_servicio){
+        $this->db->select('COUNT( identificacion ) as numero , nombre_programa');
+        $this->db->from('estudiante');
+        $this->db->join('cita','estudiante.id_estudiante=cita.id_estudiante');
+        $this->db->join('programa','estudiante.id_programa=programa.id_programa');
+        $this->db->join('programasalud','cita.id_programasalud=programasalud.id_programasalud');
+        $this->db->where('tipo_servicio', $tipo_servicio);
+        $this->db->group_by('programa.id_programa');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+        
+    }
+    function estudiantesPorFacultad($tipo_servicio){
+        $this->db->select('COUNT( identificacion ) as numero , nombre_facultad');
+        $this->db->from('estudiante');
+        
+        $this->db->join('cita','estudiante.id_estudiante=cita.id_estudiante');
+        $this->db->join('programa','estudiante.id_programa=programa.id_programa');
+        $this->db->join('programasalud','cita.id_programasalud=programasalud.id_programasalud');
+        $this->db->join('facultad','programa.id_facultad=facultad.id_facultad');
+        $this->db->where('tipo_servicio', $tipo_servicio);
+        $this->db->group_by('facultad.id_facultad');
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+        
+    }
+    
+    function servicioMasSolicitado(){
+        
+        $sql = "SELECT tipo_servicio FROM ( SELECT * FROM ( SELECT COUNT( id_estudiante ) AS numero1, tipo_servicio FROM cita NATURAL JOIN programasalud GROUP BY id_programasalud ) AS t ) AS x WHERE numero1 = ( SELECT MAX( numero ) AS numero2 FROM ( SELECT COUNT( id_estudiante ) AS numero FROM cita NATURAL JOIN programasalud GROUP BY id_programasalud ) AS tabla ) ";
+        $query = $this->db->query($sql);
+        
+        if ($query->num_rows() > 0) {
+            
+            return $query;
+        }
+        else{
+            return FALSE;
+        }
+        
+    }
+    
+    function estudiantesPorFecha($dia,$medico){
+        
+        $this->db->select('identificacion,primer_nombre,primer_apellido,hora_inicio,observaciones');
+        $this->db->from('cita');
+        $this->db->join('estudiante','estudiante.id_estudiante=cita.id_estudiante');
+        $where=array(
+            'dia'=>$dia,
+            'estado'=>0,
+            'id_personalsalud'=>$medico
+        );
+        
+        $this->db->where($where);
+        
+        
+        $consulta=$this->db->get();
+        if($consulta->num_rows()>0){
+            return $consulta;
+        }
+        else{
+            return FALSE;
+        }
+        
+    } 
 }
 ?>
