@@ -543,6 +543,8 @@ class citaControlador extends CI_Controller {
             $data['content'] = 'personal/contentReportes';
             $data['titulo_reporte']='Numero de estudiantes que usan el servicio <br /> '.$_POST['programa'].',clasificados por programa';
             $data['tipo_reporte']='1';
+            $data['enlace']=  site_url('reporteControlador/reporteEstudiantesProgramaPDF/'.$_POST['programa']);
+            $this->set_session('titulo_reporte', $data['titulo_reporte']);
             $data['reporte']=$this->citaModelo->estudiantesPorPrograma($_POST['programa']);
             $data['footerMenu'] = 'personal/footerMenu';
             $data['title'] = "Reportes";
@@ -571,10 +573,12 @@ class citaControlador extends CI_Controller {
             $data['menu'] = 'personal/menu';
             $data['topcontent'] = 'estandar/topcontent';
             $data['content'] = 'personal/contentReportes';
-            $data['titulo_reporte']='Lista estudiantes por atender en una fecha';
+            $personal=$this->personalSaludModelo->buscarPersonal($_POST['personal']);
+            $data['titulo_reporte']='Lista estudiantes por atender <br /><br />'.$personal->primer_nombre.' '.$personal->primer_apellido.' <br /><br />'.$_POST['fecha_nac'];
             $data['tipo_reporte']='2';
             $data['reporte']=$this->citaModelo->estudiantesPorFecha($_POST['fecha_nac'],$_POST['personal']);
-          
+            $data['enlace']=  site_url('reporteControlador/reporteEstudiantesPorFechaPDF/'.$_POST['fecha_nac'].'/'.$_POST['personal']);
+            $this->set_session('titulo_reporte', $data['titulo_reporte']);
             $data['footerMenu'] = 'personal/footerMenu';
             $data['title'] = "Reportes";
             
@@ -604,6 +608,8 @@ class citaControlador extends CI_Controller {
             $data['content'] = 'personal/contentReportes';
             $data['titulo_reporte']='Numero de estudiantes que usan el servicio<br /> '.$_POST['programa1'].', clasificados por facultad';
             $data['tipo_reporte']='3';
+            $data['enlace']=  site_url('reporteControlador/reporteEstudiantesFacultadPDF/'.$_POST['programa1']);
+            $this->set_session('titulo_reporte', $data['titulo_reporte']);
             $data['reporte']=$this->citaModelo->estudiantesPorFacultad($_POST['programa1']);
             $data['footerMenu'] = 'personal/footerMenu';
             $data['title'] = "Reportes";
