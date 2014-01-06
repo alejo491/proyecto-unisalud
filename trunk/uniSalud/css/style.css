@@ -27,6 +27,7 @@ p {padding-bottom:20px }
 /* header */
 header {width:100%;overflow:hidden;padding-bottom:22px}
 #logo {display:block;background:url(../images/logo.png) no-repeat;width:192px;height:58px;text-indent:-5000px}
+
 #menu {float:left;padding-top:25px;padding-bottom:5px;padding-left: 200px}
 #menu li {float:left;padding-right:9px;background:url(../images/menu_line.png) right 6px no-repeat;margin-right:8px}
 #menu .bg_none {background:none;padding:0;margin:0}

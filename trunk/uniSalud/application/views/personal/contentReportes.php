@@ -131,10 +131,10 @@
             endforeach;
         }else{
 
-            echo ('El servicio mas solicitado es: <br />');
+            echo ('<h2>El servicio mas solicitado es:</h2> <br />');
             foreach ($reporte->result() as $rep): 
 
-                echo '<strong>'.$rep->tipo_servicio.'</strong><br />';
+                echo '<h4 style="font-size: 15px;color: grey"><strong>'.$rep->tipo_servicio.'</strong></h4><br />';
             endforeach;
         }
     }else{
@@ -144,7 +144,15 @@
 }?>    
     <div id="paginacion" align="center">
         <?php if(isset($paginacion))echo $paginacion?>
+    </div><br /><br />
+    <?php if($tipo_reporte!='4'){?>
+    <div>
+        
+        
+        <a href="<?php echo $enlace ?>" id="pdf" target="_blank"><img id="pdf" src="..\images\pdf.png"> <font color="blue">Crear reporte en pdf</font></a>
+        
     </div>
+    <?php }?>       
     <div>
     <?php echo form_open('reporteControlador') ?>
         
