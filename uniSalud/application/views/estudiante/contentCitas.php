@@ -42,7 +42,7 @@
                         </td>
                         <td>
                             <?php if($cita->estado == 2):
-                                    echo "No Activa";
+                                    echo "Reservada";
                             else:
                                 echo "Activada";
                             endif;
