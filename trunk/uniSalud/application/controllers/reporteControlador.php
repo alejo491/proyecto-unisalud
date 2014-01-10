@@ -10,16 +10,10 @@ class reporteControlador extends CI_Controller {
     public function index(){
        
         $this->set_session('mensaje', NULL);
-        $data['header'] = 'includes/header';
-            $data['menu'] = 'personal/menu';
-            $data['topcontent'] = 'estandar/topcontent';
-            $data['content'] = 'personal/generarReportes';
-            $data['footerMenu'] = 'personal/footerMenu';
-            $data['title'] = "Reportes";
+        $data['header'] = 'includes/header';$data['menu'] = 'personal/menu'; $data['topcontent'] = 'estandar/topcontent';$data['content'] = 'personal/generarReportes'; $data['footerMenu'] = 'personal/footerMenu'; $data['title'] = "Reportes";
             $data['programas'] = $this->programaSaludModelo->obtenerProgramas();
             $data['personal']=$this->personalSaludModelo->obtenerPersonalSalud();
             $this->load->view('plantilla', $data);
-        
     }
     function reporteEstudiantesProgramaPDF(){
         $id=$this->uri->segment(3);
@@ -79,14 +73,10 @@ class reporteControlador extends CI_Controller {
          * D = Envia el pdf para descarga
          *
          */
-        $this->pdf->Output("reporte.pdf", 'I');
-
-        
+        $this->pdf->Output("reporte.pdf", 'I');     
     }
     
-    function reporteEstudiantesPorFechaPDF(){
-        
-        
+    function reporteEstudiantesPorFechaPDF(){   
         $titulo=$this->session->all_userdata();
         $t= explode('<br /><br />', $titulo['titulo_reporte']);
         $this->load->model('citaModelo');

@@ -116,10 +116,6 @@ class estudianteModelo extends CI_Model {
             return FALSE;
         }
     }
-    /*
-    function ingresarProgramaSalud($programa){
-        return $this->db->insert('programasalud',$programa);
-    }*/
     
     //obtiene los datos de un estudiante especifico de la tabla estudiante
     function buscarEstudiante($id){
@@ -134,17 +130,7 @@ class estudianteModelo extends CI_Model {
         else{
             return FALSE;
         }
-    }
-    /*function editarProgramaSalud($datos){
-        $this->db->where('id_programasalud', $datos['id_programasalud']);
-        return $this->db->update('programasalud', $datos);
-    }
-    function eliminarProgramaSalud($id){
-        $this->db->where('id_programasalud', $id);
-        $this->db->limit(1);
-        return $this->db->delete('programasalud');
-    }*/
-    
+    }    
     //busca mediente un filstro una lista de estudiantes que cumplan dicho filtro en la tabla estudiante
     function buscarFiltradoEstudiante($filtro,$limite=NULL,$inicio=NULL ){
         if($limite!=NULL){

@@ -4,7 +4,6 @@ if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
 class agendaControlador extends CI_Controller {
-
     //constructor de la clase
     function __construct() {
         parent::__construct();
@@ -31,33 +30,13 @@ class agendaControlador extends CI_Controller {
         //Se obtiene la informacion mediante el modelo del personal de salud
         $data['personal'] = $this->personalSaludModelo->buscarPersonal($id);
         //configuracion de la interfaz de usuario que se mostrara en cuanto se carguen los datos
-        $data['header'] = 'includes/header';
-        $data['menu'] = 'personal/menu';
-        $data['topcontent'] = 'estandar/topcontent';
-        $data['content'] = 'personal/contentHorarioAtencion';
-        $data['footerMenu'] = 'personal/footerMenu';
-        $data['title'] = "Horario de Atencion";
+        $data['header'] = 'includes/header';$data['menu'] = 'personal/menu';$data['topcontent'] = 'estandar/topcontent';$data['content'] = 'personal/contentHorarioAtencion';$data['footerMenu'] = 'personal/footerMenu';$data['title'] = "Horario de Atencion";
         //Se obtiene la informacion del horario de antecion que actualmente tiene el personal mediante el modelo
         $agenda= $this->agendaModelo->obtenerAgenda($id);
         //se comprueba que se obtubieron resultados
         if ($agenda != FALSE) {
             //CONFIGURACION DE LA PAGINACION...
-            $opciones = array();
-            //numero de items por pagina
-            $opciones['per_page'] = 5;
-            //linck de la paginacion
-            $opciones['base_url'] = base_url() . '/agendaControlador/buscarDatos';
-            //numero total de tuplas en la base de datos
-            $opciones['total_rows'] = $agenda->num_rows();
-            //segmento que se usara para pasar los datos de la paginacion
-            $opciones['uri_segment'] = 3;
-            //numero de links mostrados en la paginacion antes y despues de la pagina actual
-            $opciones['num_links'] = 2;
-            //nombre de la primera y ultima pagina
-            $opciones['first_link'] = 'Primero';
-            $opciones['last_link'] = 'Ultimo';
-            $opciones['full_tag_open'] = '<h3>';
-            $opciones['full_tag_close'] = '</h3>';
+            $opciones = array(); $opciones['per_page'] = 5;$opciones['base_url'] = base_url() . '/agendaControlador/buscarDatos';$opciones['total_rows'] = $agenda->num_rows();$opciones['uri_segment'] = 3;$opciones['num_links'] = 2;$opciones['first_link'] = 'Primero';$opciones['last_link'] = 'Ultimo';$opciones['full_tag_open'] = '<h3>';$opciones['full_tag_close'] = '</h3>';
             //inicializacion de la paginacion
             $this->pagination->initialize($opciones);
             //consulta a la base de datos segun paginacion
@@ -77,13 +56,7 @@ class agendaControlador extends CI_Controller {
     public function agregarHorarioAtencion() {
         //definicion de la interfaz de usuario
         $this->set_session('mensaje', NULL);
-        $data['id_personalsalud']=$_POST['id_personalsalud'];
-        $data['header'] = 'includes/header';
-        $data['menu'] = 'personal/menu';
-        $data['topcontent'] = 'estandar/topcontent';
-        $data['content'] = 'personal/contentRegistrarHorarioAtencion';
-        $data['footerMenu'] = 'personal/footerMenu';
-        $data['title'] = "Agregar Horario de Atencion";
+        $data['id_personalsalud']=$_POST['id_personalsalud'];$data['header'] = 'includes/header';$data['menu'] = 'personal/menu';$data['topcontent'] = 'estandar/topcontent';$data['content'] = 'personal/contentRegistrarHorarioAtencion';$data['footerMenu'] = 'personal/footerMenu';$data['title'] = "Agregar Horario de Atencion";
         //se carga la vista pertinente y se le envian las variables necesarias
         $this->load->view('plantilla', $data);
     }
@@ -94,31 +67,19 @@ class agendaControlador extends CI_Controller {
             //se corren las validaciones de los campos del formulario
             if ($this->validar() == FALSE) {
                 //en el caso de que la validacion falle se configura nuevamente la vista para ser mostrada
-                $data['id_personalsalud']=$_POST['id_personalsalud'];
-                $data['header'] = 'includes/header';
-                $data['menu'] = 'personal/menu';
-                $data['topcontent'] = 'estandar/topcontent';
-                $data['content'] = 'personal/contentRegistrarHorarioAtencion';
-                $data['footerMenu'] = 'personal/footerMenu';
-                $data['title'] = "Horario de Atencion";
+                $data['id_personalsalud']=$_POST['id_personalsalud'];$data['header'] = 'includes/header';$data['menu'] = 'personal/menu';$data['topcontent'] = 'estandar/topcontent'; $data['content'] = 'personal/contentRegistrarHorarioAtencion';$data['footerMenu'] = 'personal/footerMenu';$data['title'] = "Horario de Atencion";
                 //se carga la vista pertinente y se le envian las variables necesarias
                 $this->load->view('plantilla', $data);
             } else {
                 //si son validos los campos, se procede a recuperar su contenido mendiante POST
-                $horario['id_personalsalud'] = $_POST['id_personalsalud'];
-                $horario['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':00';
-                $horario['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':00';
-                $horario['dia'] = $_POST['dia'];
-                
+                $horario['id_personalsalud'] = $_POST['id_personalsalud'];$horario['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':00'; $horario['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':00';$horario['dia'] = $_POST['dia'];  
                 //se hace el llamado al modelo para ingresar los datos a la bd
                 $id = $this->agendaModelo->ingresarHorarioAgenda($horario);
                 //se comprueba si tubo o no exito el ingreso y se cargan los mensajes pertinentes
                 if ($id) {
-                    $this->set_session('mensaje', 'Horario Ingresado Con Exito');
-                    $this->set_session('exito', TRUE);
+                    $this->set_session('mensaje', 'Horario Ingresado Con Exito'); $this->set_session('exito', TRUE);
                 } else {
-                    $this->set_session('mensaje', 'Fallo al Ingresar el Horario');
-                    $this->set_session('exito', FALSE);
+                    $this->set_session('mensaje', 'Fallo al Ingresar el Horario'); $this->set_session('exito', FALSE);
                 }
                 //$this->buscarDatos();
                 redirect('agendaControlador/buscarDatos');
@@ -193,29 +154,16 @@ class agendaControlador extends CI_Controller {
     public function editarHorarioAtencion() {
         if ($_POST) {
             if ($this->validar() == FALSE) {
-                $data['id_personalsalud']=$_POST['id_personalsalud'];
-                $data['header'] = 'includes/header';
-                $data['menu'] = 'personal/menu';
-                $data['topcontent'] = 'estandar/topcontent';
-                $data['content'] = 'personal/contentRegistrarHorarioAtencion';
-                $data['footerMenu'] = 'personal/footerMenu';
-                $data['title'] = "Agregar Horario Atencion";
+                $data['id_personalsalud']=$_POST['id_personalsalud'];$data['header'] = 'includes/header';$data['menu'] = 'personal/menu';$data['topcontent'] = 'estandar/topcontent';$data['content'] = 'personal/contentRegistrarHorarioAtencion';$data['footerMenu'] = 'personal/footerMenu';$data['title'] = "Agregar Horario Atencion";
                 //se carga la vista pertinente y se le envian las variables necesarias
                 $this->load->view('plantilla', $data);
             } else {
-                $data['id_agenda'] = $_POST['id_agenda'];
-                $data['id_personalsalud'] = $_POST['id_personalsalud'];
-                $data['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':'.$_POST['seg_i'];
-                $data['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':'.$_POST['seg_f'];
-                $data['dia'] = $_POST['dia'];
-                
+                $data['id_agenda'] = $_POST['id_agenda'];$data['id_personalsalud'] = $_POST['id_personalsalud'];$data['hora_inicial'] =$_POST['hora_i'].':'.$_POST['min_i'].':'.$_POST['seg_i'];$data['hora_final'] =$_POST['hora_f'].':'.$_POST['min_f'].':'.$_POST['seg_f'];$data['dia'] = $_POST['dia'];       
                 $respuesta = $this->agendaModelo->actualizarHorarioAtencion($data);
                 if ($respuesta) {
-                    $this->session->set_userdata('mensaje', 'Horario Actualizado Con Exito');
-                    $this->session->set_userdata('exito', TRUE);
+                    $this->session->set_userdata('mensaje', 'Horario Actualizado Con Exito');$this->session->set_userdata('exito', TRUE);
                 } else {
-                    $this->session->set_userdata('mensaje', 'Fallo al Actualizar el Horario');
-                    $this->session->set_userdata('exito', FALSE);
+                    $this->session->set_userdata('mensaje', 'Fallo al Actualizar el Horario');$this->session->set_userdata('exito', FALSE);
                 }
                 redirect('agendaControlador/buscarDatos');
             }
@@ -230,11 +178,9 @@ class agendaControlador extends CI_Controller {
         
             $respuesta = $this->agendaModelo->eliminarHorario($id);
             if ($respuesta) {
-                $this->session->set_userdata('mensaje', 'Horario Eliminado Con Exito');
-                $this->session->set_userdata('exito', TRUE);
+                $this->session->set_userdata('mensaje', 'Horario Eliminado Con Exito');$this->session->set_userdata('exito', TRUE);
             } else {
-                $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Horario');
-                $this->session->set_userdata('exito', FALSE);
+                $this->session->set_userdata('mensaje', 'Fallo al Eliminar el Horario');$this->session->set_userdata('exito', FALSE);
             }
         redirect('AgendaControlador/buscarDatos');
     }
@@ -244,26 +190,12 @@ class agendaControlador extends CI_Controller {
     public function validar() {
         $this->load->library('form_validation');
         $config = array(
-            array(
-                'field' => 'dia',
-                'label' => 'Dia',
-                'rules' => 'trim|required|xss_clean'
-            ),
-            array(
-                'field' => 'hora_i',
-                'label' => 'Hora Inicial',
-                'rules' => 'trim|xss_clean|required'
-            ),
-            array(
-                'field' => 'hora_f',
-                'label' => 'Hora Final',
-                'rules' => 'trim|required|xss_clean'
-            )
+            array('field' => 'dia','label' => 'Dia','rules' => 'trim|required|xss_clean'),
+            array('field' => 'hora_i','label' => 'Hora Inicial','rules' => 'trim|xss_clean|required'),
+            array('field' => 'hora_f','label' => 'Hora Final','rules' => 'trim|required|xss_clean')
         );
-
         $this->form_validation->set_rules($config);
-        $this->form_validation->set_message('required', 'El campo %s es Obligatorio');
-        $this->form_validation->set_message('trim', 'Caracteres Invalidos');
+        $this->form_validation->set_message('required', 'El campo %s es Obligatorio');$this->form_validation->set_message('trim', 'Caracteres Invalidos');
         return $this->form_validation->run();
     }
    //funciones para acceder y modificar las variables de session

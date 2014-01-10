@@ -138,12 +138,9 @@ class citaModelo extends CI_Model {
         }
         else{
             return FALSE;
-        }
-        
+        }   
     }
-    
     function servicioMasSolicitado(){
-        
         $sql = "SELECT tipo_servicio FROM ( SELECT * FROM ( SELECT COUNT( id_estudiante ) AS numero1, tipo_servicio FROM cita NATURAL JOIN programasalud GROUP BY id_programasalud ) AS t ) AS x WHERE numero1 = ( SELECT MAX( numero ) AS numero2 FROM ( SELECT COUNT( id_estudiante ) AS numero FROM cita NATURAL JOIN programasalud GROUP BY id_programasalud ) AS tabla ) ";
         $query = $this->db->query($sql);
         
@@ -153,12 +150,9 @@ class citaModelo extends CI_Model {
         }
         else{
             return FALSE;
-        }
-        
+        } 
     }
-    
     function estudiantesPorFecha($dia,$medico){
-        
         $this->db->select('identificacion,primer_nombre,primer_apellido,hora_inicio,observaciones');
         $this->db->from('cita');
         $this->db->join('estudiante','estudiante.id_estudiante=cita.id_estudiante');
@@ -167,18 +161,14 @@ class citaModelo extends CI_Model {
             'estado'=>0,
             'id_personalsalud'=>$medico
         );
-        
         $this->db->where($where);
-        
-        
         $consulta=$this->db->get();
         if($consulta->num_rows()>0){
             return $consulta;
         }
         else{
             return FALSE;
-        }
-        
+        } 
     } 
 }
 ?>
