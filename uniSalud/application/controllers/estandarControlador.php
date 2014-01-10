@@ -10,31 +10,17 @@ class estandarControlador extends CI_Controller {
         parent::__construct();
         $this->load->database();
         $this->load->model('estudianteModelo');
-        $this->load->library('grocery_CRUD');
     }
     /*Funcion Principal del controlador*/
     public function index(){
-        $this->set_session('mensaje', NULL);
-        
-        $data['header'] = 'includes/headerHome';
-        $data['menu'] = 'estandar/menu';
-        $data['topcontent'] = 'estandar/topcontent';
-        $data['content'] = 'estandar/contentHome';
-        $data['footerMenu'] = 'estandar/footerMenu';
-        $data['facultades']=$this->estudianteModelo->CargarFacultad();
+        $this->set_session('mensaje', NULL);        
+        $data['header'] = 'includes/headerHome';$data['menu'] = 'estandar/menu';$data['topcontent'] = 'estandar/topcontent'; $data['content'] = 'estandar/contentHome';$data['footerMenu'] = 'estandar/footerMenu'; $data['facultades']=$this->estudianteModelo->CargarFacultad();
         $this->load->view('plantilla',$data);
     }
     /*Funcion que se encarga de cargar los datos necesarios para cargar el formulario de registro de un estudiante*/
     public function registrarse(){
-        
         //controlar registrarse segun el rol
-        $data['header'] = 'includes/header';
-        
-        //$data['topcontent'] = 'estandar/topcontentRegistrarse';
-        $data['topcontent']='estandar/topcontent';
-        $data['content'] = 'estandar/registrar_usuario';
-        $data['footerMenu'] = 'estandar/footerMenu';
-        $data['facultades']=$this->estudianteModelo->CargarFacultad();
+        $data['header'] = 'includes/header'; $data['topcontent']='estandar/topcontent'; $data['content'] = 'estandar/registrar_usuario';$data['footerMenu'] = 'estandar/footerMenu';$data['facultades']=$this->estudianteModelo->CargarFacultad();
         $this->load->view('plantilla',$data);
     }
     
@@ -43,7 +29,6 @@ class estandarControlador extends CI_Controller {
         if(isset($user['id_usuario'])){
         redirect(base_url()."estudianteControlador");
         }else{
-            
             redirect(base_url());
         }
     }
@@ -52,53 +37,21 @@ class estandarControlador extends CI_Controller {
      */
     public function registrar(){
         $user = $this->get_session();
-        
-        $this->load->model('usuarioModelo');   
-        $this->load->model('estudianteModelo'); 
+        $this->load->model('usuarioModelo'); $this->load->model('estudianteModelo'); 
         $data['facultades']=$this->estudianteModelo->CargarFacultad();
         if ($_POST) {
-                $data['header'] = 'includes/header';
-                $data['menu'] = 'estandar/menu';
-                //$data['topcontent'] = 'estandar/topcontentRegistrarse';
-                $data['topcontent']='estandar/topcontent';
-                $data['content'] = 'estandar/registrar_usuario';
-                $data['footerMenu'] = 'estandar/footerMenu';
+                $data['header'] = 'includes/header'; $data['menu'] = 'estandar/menu';$data['topcontent']='estandar/topcontent';$data['content'] = 'estandar/registrar_usuario';$data['footerMenu'] = 'estandar/footerMenu';
             if ($this->validar()==FALSE) {
                 $data['errores'] = validation_errors();
             } else {
-                    $data['header'] = 'includes/header';
-                    $data['topcontent'] = 'estandar/topcontent';
-                    $data['content'] = 'estandar/contentHome';
-                    $data['footerMenu'] = 'estandar/footerMenu';
-                    $data['estudiante'] = array(
-                        'id_estudiante' => $_POST['codigoEstudiante'],
-                        'id_programa' => $_POST['programa'],
-
-                        'tipo_identificacion' => $_POST['tipoId'],
-                        'identificacion' => $_POST['numId'],
-                        'primer_nombre' => $_POST['primerNombre'],
-                        'segundo_nombre' => $_POST['segundoNombre'],
-                        'primer_apellido' => $_POST['primerApellido'],
-                        'segundo_apellido' => $_POST['segundoApellido'],
-                        'genero' => $_POST['genero'],
-                        'fecha_nacimiento' =>$_POST['fecha_nac']
-                    );
+                    $data['header'] = 'includes/header'; $data['topcontent'] = 'estandar/topcontent';$data['content'] = 'estandar/contentHome';$data['footerMenu'] = 'estandar/footerMenu';
+                    $data['estudiante'] = array('id_estudiante' => $_POST['codigoEstudiante'],'id_programa' => $_POST['programa'], 'tipo_identificacion' => $_POST['tipoId'],'identificacion' => $_POST['numId'],'primer_nombre' => $_POST['primerNombre'],'segundo_nombre' => $_POST['segundoNombre'],'primer_apellido' => $_POST['primerApellido'],'segundo_apellido' => $_POST['segundoApellido'],'genero' => $_POST['genero'],'fecha_nacimiento' =>$_POST['fecha_nac']);
                   $id = $this->estudianteModelo->registrar($data['estudiante']);
-                 
-                
-                
                 if ($id!=FALSE) {
-                    $data['usuario'] = array(
-                         'id_persona'=>$id,
-                         'email' => $_POST['email'],
-                         'contrasena' => sha1($_POST['contrasena'])
+                    $data['usuario'] = array('id_persona'=>$id,'email' => $_POST['email'],'contrasena' => sha1($_POST['contrasena'])
                      );
                       $this->usuarioModelo->registrar($data['usuario']);
-                      
-                   
                     if (!isset($user['id_usuario'])) {
-                    
-                    
                         $usuarioActual = $this->usuarioModelo->login($_POST['email'], sha1($_POST['contrasena']));
                         $this->set_session('id_usuario', $usuarioActual['id_usuario']);
                         $this->set_session('email', $usuarioActual['email']);
@@ -113,15 +66,8 @@ class estandarControlador extends CI_Controller {
                     }
                 }
             }
-            
-            
-                
                     $this->load->view('plantilla',$data); 
-                
-                
-                     $this->load->view('plantilla',$data); 
-                
-            
+                    $this->load->view('plantilla',$data); 
         }
     }
     
@@ -130,85 +76,24 @@ class estandarControlador extends CI_Controller {
  */
     public function validar(){
         $config = array(
-                array(
-                    'field' => 'codigoEstudiante',
-                    'label' => 'Codigo Estudiante',
-                    'rules' => 'trim|required|is_unique[estudiante.id_estudiante]'
-                ),
-                array(
-                    'field' => 'primerNombre',
-                    'label' => 'Primer Nombre',
-                    'rules' => 'trim|required'
-                ),
-                array(
-                    'field' => 'segundoNombre',
-                    'label' => 'Segundo Nombre',
-                    'rules' => 'trim'
-                ),
-                array(
-                    'field' => 'primerApellido',
-                    'label' => 'Primer Apellido',
-                    'rules' => 'trim|required'
-                ),
-                array(
-                    'field' => 'segundoApellido',
-                    'label' => 'Segundo Apellido',
-                    'rules' => 'trim|'
-                ),
-                array(
-                    'field' => 'facultad',
-                    'label' => 'Facultad',
-                    'rules' => 'trim|callback_isSelected'
-                ),
-                array(
-                    'field' => 'genero',
-                    'label' => 'Genero',
-                    'rules' => 'trim|'
-                ),
-                array(
-                    'field' => 'programa',
-                    'label' => 'Programa',
-                    'rules' => 'trim|callback_isSelected'
-                ),
-                array(
-                    'field' => 'fecha_nac',
-                    'label' => 'Fecha de Nacimiento',
-                    'rules' => 'trim|required'
-                ),
-                array(
-                    'field' => 'tipoId',
-                    'label' => 'tipo de Identificacion',
-                    'rules' => 'trim|'
-                ),
-                array(
-                    'field' => 'numId',
-                    'label' => 'numero de Identificacion',
-                    'rules' => 'trim|required|is_unique[estudiante.identificacion]'
-                ),
-                array(
-                    'field' => 'email',
-                    'label' => 'E-mail',
-                    'rules' => 'trim|required|is_unique[usuario.email]|valid_email'
-                ),
-                array(
-                    'field' => 'contrasena',
-                    'label' => 'Contraseña',
-                    'rules' => 'trim|required|min_length[6],callback_validarPass'
-                ),
-                array(
-                    'field' => 'CContrasena',
-                    'label' => 'Confirmar Contraseña',
-                    'rules' => 'trim|required|matches[contrasena]'
-                )
+                array('field' => 'codigoEstudiante','label' => 'Codigo Estudiante','rules' => 'trim|required|is_unique[estudiante.id_estudiante]'),
+                array('field' => 'primerNombre','label' => 'Primer Nombre','rules' => 'trim|required'),
+                array('field' => 'segundoNombre','label' => 'Segundo Nombre','rules' => 'trim'),
+                array('field' => 'primerApellido','label' => 'Primer Apellido','rules' => 'trim|required'),
+                array('field' => 'segundoApellido','label' => 'Segundo Apellido','rules' => 'trim|'),
+                array('field' => 'facultad','label' => 'Facultad','rules' => 'trim|callback_isSelected'),
+                array('field' => 'genero','label' => 'Genero','rules' => 'trim|'),
+                array('field' => 'programa','label' => 'Programa','rules' => 'trim|callback_isSelected'),
+                array('field' => 'fecha_nac','label' => 'Fecha de Nacimiento','rules' => 'trim|required' ),
+                array('field' => 'tipoId','label' => 'tipo de Identificacion','rules' => 'trim|'),
+                array('field' => 'numId','label' => 'numero de Identificacion','rules' => 'trim|required|is_unique[estudiante.identificacion]'),
+                array('field' => 'email','label' => 'E-mail','rules' => 'trim|required|is_unique[usuario.email]|valid_email'),
+                array('field' => 'contrasena','label' => 'Contraseña','rules' => 'trim|required|min_length[6],callback_validarPass'),
+                array('field' => 'CContrasena','label' => 'Confirmar Contraseña','rules' => 'trim|required|matches[contrasena]')
             );
             $this->load->library('form_validation');
             $this->form_validation->set_rules($config);
-            $this->form_validation->set_message('required', 'El campo %s es requerido');
-            $this->form_validation->set_message('is_unique', 'Este %s ya esta registrado');
-            $this->form_validation->set_message('matches', 'El campo %s no coincide');
-            $this->form_validation->set_message('valid_email', 'El campo %s no corresponde a un Email');
-            $this->form_validation->set_message('trim', 'Caracteres Invalidos');
-            $this->form_validation->set_message('min_length', 'El campo %s debe tener al menos 6 caracteres');
+            $this->form_validation->set_message('required', 'El campo %s es requerido');$this->form_validation->set_message('is_unique', 'Este %s ya esta registrado');$this->form_validation->set_message('matches', 'El campo %s no coincide');$this->form_validation->set_message('valid_email', 'El campo %s no corresponde a un Email');$this->form_validation->set_message('trim', 'Caracteres Invalidos');$this->form_validation->set_message('min_length', 'El campo %s debe tener al menos 6 caracteres');
             return $this->form_validation->run();
     }
     /*Funcion que carga dinamicamente los programas que tiene la facultad escogida*/
@@ -223,10 +108,7 @@ class estandarControlador extends CI_Controller {
     
     /*Funcion que valida el password segun unos estandares considerados para la seguridad*/
     function validarPass($str){
-        $banMin=FALSE;
-        $banMay=FALSE;
-        $banEsp=FALSE;
-        $banNum=FALSE;
+        $banMin=FALSE;$banMay=FALSE; $banEsp=FALSE;$banNum=FALSE;
         for($i=0; $i<strlen($str);$i++){
             if(ord($str[$i])>=33 && ord($str[$i])<=47){
                 $banEsp=TRUE;

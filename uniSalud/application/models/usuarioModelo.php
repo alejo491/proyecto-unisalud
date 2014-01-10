@@ -56,7 +56,6 @@ class usuarioModelo extends CI_Model {
             return TRUE;
         }
     }
-    
     function getRol($str) {
         $id_usuario =  mysql_real_escape_string($str);
         $this->db->limit(1);
@@ -69,7 +68,6 @@ class usuarioModelo extends CI_Model {
         }
     }
     function getId($str){
-        
         $this->db->select('id_persona')->from('usuario')->where('id_usuario',$str);
         $this->db->limit(1);     
         $query=$this->db->get();
