@@ -35,10 +35,12 @@ CREATE TABLE IF NOT EXISTS `atiende` (
 
 
 INSERT INTO `atiende` (`id_programasalud`,`id_personalsalud`) VALUES
-(7,6),
-(8,6),
-(2,7),
-(3,8);
+(7, 6),
+(8, 6),
+(2, 7),
+(3, 8),
+(4, 8),
+(5, 9);
 -- --------------------------------------------------------
 
 --
@@ -49,9 +51,9 @@ CREATE TABLE IF NOT EXISTS `cita` (
   `id_estudiante` int(11) NOT NULL,
   `id_programasalud` int(11) NOT NULL,
   `id_personalsalud` int(11) NOT NULL,
-  `dia` mediumtext NOT NULL,
-  `hora_inicio` int(11) NOT NULL,
-  `hora_fin` int(11) NOT NULL,
+  `dia` date NOT NULL,
+  `hora_inicio` time NOT NULL,
+  `hora_fin` time NOT NULL,
   `estado` smallint(6) NOT NULL,
   `observaciones` mediumtext,
   PRIMARY KEY (`id_estudiante`,`id_programasalud`,`id_personalsalud`),
@@ -59,7 +61,27 @@ CREATE TABLE IF NOT EXISTS `cita` (
   KEY `fk_cita_cita3_personal` (`id_personalsalud`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Volcado de datos para la tabla `cita`
+--
 
+
+INSERT INTO `cita` (`id_estudiante`, `id_programasalud`, `id_personalsalud`, `dia`, `hora_inicio`, `hora_fin`, `estado`, `observaciones`) VALUES
+(78964, 2, 7, '2013-12-19', '00:00:13', '00:00:13', 2, '..'),
+(78964, 7, 6, '2013-12-20', '00:00:12', '00:00:13', 2, '...'),
+(98776, 3, 8, '2013-12-21', '00:00:12', '00:00:12', 2, '..'),
+(98776, 8, 6, '2014-01-06', '07:10:00', '07:30:00', 0, '123'),
+(123852, 4, 8, '2013-12-23', '00:00:13', '00:00:13', 2, '....'),
+(46081021, 2, 7, '2014-01-21', '07:40:00', '08:00:00', 2, '....'),
+(46081022, 2, 7, '2014-01-21', '07:00:00', '07:20:00', 0, '....'),
+(46081023, 2, 7, '2014-01-21', '07:20:00', '07:40:00', 2, '....'),
+(46081024, 2, 7, '2014-01-21', '08:00:00', '08:20:00', 0, '...'),
+(46081026, 3, 8, '2014-01-20', '12:10:00', '12:30:00', 2, '.....'),
+(46081027, 3, 8, '2014-01-20', '13:10:00', '13:30:00', 2, '...'),
+(46081098, 4, 8, '2014-01-04', '00:00:12', '00:00:13', 2, 'asdfg'),
+(46081098, 8, 6, '2013-12-25', '00:00:14', '00:00:14', 2, '....'),
+(46081099, 3, 8, '2014-01-20', '12:50:00', '13:10:00', 2, '.....'),
+(741852963, 2, 7, '2013-12-24', '00:00:12', '00:00:12', 2, '..');
 
 -- --------------------------------------------------------
 
@@ -104,8 +126,25 @@ CREATE TABLE IF NOT EXISTS `estudiante` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=46091095 ;
 
 
-INSERT INTO `estudiante` VALUES
-(46081098,42,'edwar','','giraldo','','1061741945','Cedula de ciudadania','m','1991-10-10');
+INSERT INTO `estudiante` (`id_estudiante`, `id_programa`, `primer_nombre`, `segundo_nombre`, `primer_apellido`, `segundo_apellido`, `identificacion`, `tipo_identificacion`, `genero`, `fecha_nacimiento`) VALUES
+(78964, 7, 'luisa', '', 'lopez', '', '23146894', 'Cedula de Ciudadania', 'f', '2013-12-01'),
+(98776, 3, 'jeni', '', 'duque', '', '0987890', 'Cedula de Ciudadania', 'm', '2008-12-10'),
+(123456, 42, 'luis', '', 'jimenez', '', '10000', 'Tarjeta de Identidad', 'm', '2013-12-02'),
+(123852, 12, 'edwar', '', 'perez', 'muñoz', '423561036', 'Cedula de Ciudadania', 'm', '2013-12-02'),
+(46081098, 42, 'edwar', '', 'giraldo', '', '1061741945', 'Cedula de ciudadania', 'm', '1991-10-10'),
+(96000000, 19, 'maria', '', 'muñoz', '', '45630258964', 'Cedula de Ciudadania', 'f', '2013-12-02'),
+(741852963, 3, 'jorge', '', 'narvaez', '', '1324653', 'Cedula de Ciudadania', 'm', '2013-12-02'),
+(2147483647, 19, 'luisa', '', 'luisa', '', '8790456', 'Cedula de Ciudadania', 'f', '2013-12-01'),
+(46081099, 19, 'pedro', '', 'gomez', '', '123333', 'Cedula de Ciudadania', 'm', '2000-12-01'),
+(46081020, 19, 'juan', '', 'perez', '', '123334', 'Cedula de Ciudadania', 'm', '1995-10-01'),
+(46081021, 19, 'antonio', '', 'perez', '', '123335', 'Cedula de Ciudadania', 'm', '1994-11-11'),
+(46081022, 12, 'ferney', '', 'rendon', '', '123336', 'Cedula de Ciudadania', 'm', '1990-10-01'),
+(46081023, 12, 'juan', '', 'lopez', '', '123337', 'Cedula de Ciudadania', 'm', '1995-01-30'),
+(46081024, 19, 'jenifer', '', 'perez', '', '124034', 'Cedula de Ciudadania', 'f', '1993-10-01'),
+(46081025, 19, 'jorge', '', 'giraldo', '', '123340', 'Cedula de Ciudadania', 'm', '1995-10-01'),
+(46081026, 19, 'william', '', 'marin', '', '123341', 'Cedula de Ciudadania', 'm', '1995-10-01'),
+(46081027, 19, 'mario', '', 'gomez', '', '123342', 'Cedula de Ciudadania', 'm', '1995-10-01');
+
 -- --------------------------------------------------------
 
 --
@@ -149,6 +188,24 @@ CREATE TABLE IF NOT EXISTS `horarioatencion` (
   KEY `fk_horarioa_tiene_2_personal` (`id_personalsalud`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
+
+--
+-- Volcado de datos para la tabla `horarioatencion`
+--
+
+INSERT INTO `horarioatencion` (`id_agenda`, `id_personalsalud`, `dia`, `hora_inicial`, `hora_final`) VALUES
+(6, 6, 'lunes', '07:10:00', '08:00:00'),
+(7, 6, 'miercoles', '13:00:00', '16:00:00'),
+(8, 6, 'viernes', '07:00:00', '13:15:00'),
+(9, 7, 'lunes', '09:00:00', '12:00:00'),
+(10, 7, 'martes', '07:00:00', '14:00:00'),
+(11, 7, 'jueves', '13:00:00', '17:20:00'),
+(12, 8, 'lunes', '12:10:00', '14:00:00'),
+(13, 8, 'sabado', '12:00:00', '16:00:00'),
+(14, 9, 'lunes', '07:10:00', '13:00:00'),
+(15, 9, 'martes', '14:00:00', '18:00:00'),
+(16, 9, 'miercoles', '07:00:00', '12:00:00'),
+(17, 9, 'viernes', '14:00:00', '17:00:00');
 -- --------------------------------------------------------
 
 --
@@ -171,10 +228,12 @@ CREATE TABLE IF NOT EXISTS `personalsalud` (
   KEY `fk_personal_asignado_consulto` (`id_consultorio`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
-INSERT INTO `personalsalud` (`id_personalsalud`,`id_consultorio`, `primer_nombre`, `segundo_nombre`,`primer_apellido`,`segundo_apellido`,`identificacion`,`tipo_identificacion`,`numero_tarjeta`,`especialidad`) VALUES
-(6,3,'Margarita','','Alegria','Ramirez','25000123','Cedula de Ciudadania','15762258','Enfermeria'),
-(7,2,'Alvaro','Fernando','Martinez','Pabon','250234123','Cedula de Ciudadania','10962758','Odontologo'),
-(8,2,'Heli','Francisco','Forero','','1061234123','Cedula de Ciudadania','16022758','Odontologo');
+INSERT INTO `personalsalud` (`id_personalsalud`, `id_consultorio`, `primer_nombre`, `segundo_nombre`, `primer_apellido`, `segundo_apellido`, `identificacion`, `tipo_identificacion`, `numero_tarjeta`, `especialidad`) VALUES
+(6, 3, 'Margarita', '', 'Alegria', 'Ramirez', '25000123', 'Cedula de Ciudadania', '15762258', 'Enfermeria'),
+(7, 2, 'Alvaro', 'Fernando', 'Martinez', 'Pabon', '250234123', 'Cedula de Ciudadania', '10962758', 'Odontologo'),
+(8, 2, 'Heli', 'Francisco', 'Forero', '', '1061234123', 'Cedula de Ciudadania', '16022758', 'Odontologo'),
+(9, 1, 'Cristian', '', 'Narvaez', '', '5632896', 'Cedula de Ciudadania', '85236415', 'Medico General'),
+(10, 4, 'Dayana', '', 'Muñoz', '', '1256328', 'Cedula de Ciudadania', '106153264785', 'Sicologo');
 -- --------------------------------------------------------
 
 --
@@ -194,8 +253,21 @@ CREATE TABLE IF NOT EXISTS `posee` (
 
 INSERT INTO `posee` (`id_usuario`, `id_rol`) VALUES
 (12, 1),
-(13, 3),
-(14,1);
+(14, 1),
+(15, 1),
+(16, 1),
+(17, 1),
+(18, 1),
+(19, 1),
+(20, 1),
+(21, 1),
+(22, 1),
+(23, 1),
+(24, 1),
+(25, 1),
+(26, 1),
+(27, 1),
+(13, 3);
 
 -- --------------------------------------------------------
 
@@ -322,10 +394,24 @@ CREATE TABLE IF NOT EXISTS `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
+
 INSERT INTO `usuario` (`id_usuario`, `id_persona`, `contrasena`, `email`) VALUES
 (12, -1, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'alexis@gmail.com'),
 (13, -1, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'alejo491@gmail.com'),
-(14,46081098,'7c4a8d09ca3762af61e59520943dc26494f8941b','edwar@gmail.com');
+(14, 46081098, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'edwar@gmail.com'),
+(15, 2147483647, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'luis@unicauca.edu.co'),
+(16, 123456, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'luis_perez@gmail.com'),
+(17, 98776, '7c4a8d09ca3762af61e59520943dc26494f8941b', '0987@unicauca.edu.co'),
+(18, 46081020, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'juanperez@GMAIL.COM'),
+(19, 46081022, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'ferney@gmail.com'),
+(20, 46081023, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'juanlopez@gmail.com'),
+(21, 123852, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'ljo@unicauca.edu.co'),
+(22, 46081024, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'pepito@hotmail.com'),
+(23, 46081099, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'pedorgomez@unicauca.edu.co'),
+(24, 96000000, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'maria_maria@gmail.com'),
+(25, 741852963, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'lui@hotmail.com'),
+(26, 46081027, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'mariogomez@hotmail.com'),
+(27, 78964, '7c4a8d09ca3762af61e59520943dc26494f8941b', 'l@gmail.com');
 --
 -- Restricciones para tablas volcadas
 --
