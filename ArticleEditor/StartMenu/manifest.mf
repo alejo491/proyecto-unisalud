@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+OpenIDE-Module: org.ArticleEditor.StartMenu
+OpenIDE-Module-Layer: org/ArticleEditor/StartMenu/layer.xml
+OpenIDE-Module-Localizing-Bundle: org/ArticleEditor/StartMenu/Bundle.properties
+OpenIDE-Module-Specification-Version: 1.0
+
